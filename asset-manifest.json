@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SeredniaAnastasia/react-links-type-script/static/css/main.c5e66184.css",
+    "main.js": "/SeredniaAnastasia/react-links-type-script/static/js/main.726b30ae.js",
+    "index.html": "/SeredniaAnastasia/react-links-type-script/index.html",
+    "main.c5e66184.css.map": "/SeredniaAnastasia/react-links-type-script/static/css/main.c5e66184.css.map",
+    "main.726b30ae.js.map": "/SeredniaAnastasia/react-links-type-script/static/js/main.726b30ae.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c5e66184.css",
+    "static/js/main.726b30ae.js"
+  ]
+}
