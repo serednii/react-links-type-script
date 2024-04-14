@@ -1,0 +1,57 @@
+.submenu-links {
+    position: relative;
+    background-color: cadetblue;
+    max-width: 200px;
+    width: 100%;
+    cursor: pointer;
+    padding: 3px;
+    border: 1px solid black;
+
+    &__links {
+        background-color: rgb(107, 117, 117);
+        top: 5px;
+        left: 60px;
+        z-index: 5;
+        position: absolute;
+        margin-bottom: 0;
+        width: 0;
+        height: 0;
+        visibility: hidden;
+    }
+
+    &__link {
+        border: 1px solid black;
+        display: block;
+    }
+
+    &__parent {
+
+        position: relative;
+
+        .parent-plus {
+            position: absolute;
+            left: 4px;
+            top: -14px;
+            z-index: 10;
+        }
+    }
+
+    &__link:hover {
+        color: red;
+    }
+
+    .link-plus {
+        position: absolute;
+        right: -5px;
+        top: -10px;
+        z-index: 10;
+    }
+
+}
+
+
+.submenu-links:hover>.submenu-links__links {
+    width: max-content;
+    height: auto;
+    visibility: visible;
+}
