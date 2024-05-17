@@ -24,6 +24,13 @@ const ButtonsAdd: React.FC = () => {
         <div className='buttonsAdd'>
             <Button variant="primary" onClick={plusMain}>Add new main category</Button>
             <Button variant="primary" onClick={handlerOpenPopup}>Change categories</Button>
+            {/* <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handlerOpenPopup}>
+                Change categories
+            </button> */}
+
+
+
+
         </div>
     )
 

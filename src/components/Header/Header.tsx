@@ -4,10 +4,19 @@ import './Header.scss'
 const Header: React.FC = () => {
 
     return (
-        <div className='header'>
-            <ButtonsAdd></ButtonsAdd>
-            <h1 className='header__title'>Корисні ссилки</h1>
-        </div>
+        <header className='header mb-5  bg-success bg-gradient bg-opacity-75 rounded-4 p-3'>
+            <div className="row md-3">
+                <div className="col-12">
+                    <h1 className='header__title text-uppercase '>Корисні ссилки</h1>
+                </div>
+            </div>
+            <div className="row ">
+                <div className="col-12">
+                    <ButtonsAdd></ButtonsAdd>
+                </div>
+            </div>
+
+        </header>
     )
 }
 

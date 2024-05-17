@@ -21,6 +21,8 @@ const ChangeLinks: React.FC = () => {
     const [selectActionLink, setSelectActionLink] = useState('');
     const [name, setName] = useState('');
     const [link, setLink] = useState('');
+    const [textCode, setTextCode] = useState('');
+
 
     function OtherAction() {
         valueContext.setDataMain({ ...valueContext.dataMain });
@@ -37,29 +39,35 @@ const ChangeLinks: React.FC = () => {
 
     const addLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-        if (name.length > 2 && urlPattern.test(link)) {
-            dataMenu[key].push({ name, link });
-            OtherAction();
+        if (textCode === 'text code') {
+            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            if (name.length > 2 && urlPattern.test(link)) {
+                dataMenu[key].push({ name, link });
+                OtherAction();
+            }
         }
     }
 
     const changeLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-        if (name.length > 2 && urlPattern.test(link)) {
-            dataMenu[key][+selectActionLink] = { name, link };
-            OtherAction();
+        if (textCode === 'text code') {
+            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            if (name.length > 2 && urlPattern.test(link)) {
+                dataMenu[key][+selectActionLink] = { name, link };
+                OtherAction();
+            }
         }
     }
 
     const deleteLink = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        dataMenu[key].splice(+selectActionLink, 1);
-        if (dataMenu[key].length === 0) {
-            delete dataMenu[key];
+        if (textCode === 'text code') {
+            dataMenu[key].splice(+selectActionLink, 1);
+            if (dataMenu[key].length === 0) {
+                delete dataMenu[key];
+            }
+            OtherAction();
         }
-        OtherAction();
     }
 
     const handleCloseModal = () => {
@@ -70,6 +78,7 @@ const ChangeLinks: React.FC = () => {
     return (
         <div className='change-links modal-window'>
             <div className={`change-links__wrapper modal-window__wrapper ${valueContext.isModal ? 'open' : ''}`}>
+                <input className='add-category__text-code' value={textCode} onChange={(e) => setTextCode(e.target.value)} type="text" />
                 <button className='add-category__btn-close' onClick={handleCloseModal}>{svgIconClose}</button>
 
                 <form className='add-other-form'>

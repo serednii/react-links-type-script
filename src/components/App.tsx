@@ -5,72 +5,28 @@ import AddCategoryMain from "./AddCategoryMain/AddCategoryMain";
 import AddCategoryOther from "./AddCategoryOther/AddCategoryOther";
 import ChangeLinks from "./ChangeLinks/ChangeLinks";
 import { Button } from 'react-bootstrap';
-
+import { getData, outDataServer } from '../functions/requestHelpers';
 import Context from "../Context";
 import '../App.css';
 
 import { DATA_MENU, DATA_LINKS } from '../State';
-import { TGetData, TOutDataServer, IRequestOptions } from './types/data';
+import { Footer } from './Footer/Footer';
 export const URL_SERVER = 'http://smm.zzz.com.ua/api/api.php';
 
 
-const getData: TGetData = async (url, setIsLoading) => {
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(String(error));
-  } finally {
-    setIsLoading(false);
-  }
-}
-
-
-
-const outDataServer: TOutDataServer = (url, method, newData) => {
-  const requestOptions: IRequestOptions = {
-    method: method,
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      // Дополнительные заголовки, если необходимо
-    },
-    body: JSON.stringify(newData),
-  };
-
-  fetch(url, requestOptions)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Data updated successfully:', data);
-      // Обработка успешного обновления данных
-    })
-    .catch(error => {
-      console.error('There was an error updating data:', error);
-      // Обработка ошибки
-    });
-}
 
 const App: React.FC = () => {
-  const [dataMain, setDataMain] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
-  const tempDataRef = useRef<{ test: string; } | null>(null);
   const [isButtonPlus, setIsButtonPlus] = useState(false);
   const [isChangeLinks, setIsChangeLinks] = useState(false);
   const [isAddCategoryMain, setIsAddCategoryMain] = useState(false);
   const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
   const [isChangeLink, setIsChangeLink] = useState(false);
-  const [openAddCategory, setOpenAddCategory] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
-
+  const tempDataRef = useRef<{ test: string; } | null>(null);
+  const [dataMain, setDataMain] = useState<any>({});
+  const [openAddCategory, setOpenAddCategory] = useState(false);
   const [listLinkData, setListLinkData] = useState<any[]>([]);
   const [sluice, setSluice] = useState({});
   const sluiceLinks = useRef({});
@@ -139,15 +95,19 @@ const App: React.FC = () => {
 
   return (
     <Context.Provider value={value} >
-      <div className="App">
-        {isLoading && <h1>Loading...</h1>}
-        <Header />
-        <UsefulLinks />
-        {isAddCategoryMain && <AddCategoryMain />}
-        {isAddCategoryOther && <AddCategoryOther />}
-        {isChangeLinks && <ChangeLinks />}
-        {/* <Button onClick={handlerGetDate}>Get Data</Button>
+      <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
+        <main className='flex-grow-1 d-flex flex-column'>
+
+          {isLoading && <h1>Loading...</h1>}
+          <Header />
+          <UsefulLinks />
+          {isAddCategoryMain && <AddCategoryMain />}
+          {isAddCategoryOther && <AddCategoryOther />}
+          {isChangeLinks && <ChangeLinks />}
+          {/* <Button onClick={handlerGetDate}>Get Data</Button>
         <Button onClick={handlerPostDate}>Put Data</Button> */}
+        </main>
+        <Footer></Footer>
       </div>
     </Context.Provider>
   );

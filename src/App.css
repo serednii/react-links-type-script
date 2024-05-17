@@ -32,7 +32,49 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
+  }
+}
+
+section {
+  margin-bottom: 50px;
+}
+
+@media all and (min-width: 992px) {
+  .dropdown-menu {
+    width: 13rem;
+  }
+
+  .mega-submenu {
+    left: 100%;
+    top: 0;
+    min-width: 25rem;
+  }
+
+  .ktm-mega-menu {
+    position: static;
+  }
+
+  .mega-menu {
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .dropdown-menu li {
+    position: relative;
+  }
+
+  .dropdown-menu .submenu {
+    display: none;
+    left: 100%;
+    top: 0;
+  }
+
+  .dropdown-menu>li:hover>.submenu,
+  .dropdown:hover>.dropdown-menu {
+    display: block;
   }
 }

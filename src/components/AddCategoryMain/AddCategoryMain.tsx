@@ -24,13 +24,31 @@ const AddCategory: React.FC = () => {
 
     return (
         <div className="add-category modal-window">
-            <div className={`add-category__wrapper modal-window__wrapper ${valueContext.isModal ? 'open' : ''} `}>
-                <button className='add-category__btn-close' onClick={handlerClosePopup}>{svgIconClose}</button>
-                <input value={text} onChange={(e) => setText(e.target.value)} type="text" />
-                <button className='add-category__btn-apply' onClick={handlerAddPopup}>Add</button>
+            <div className={`add-category__wrapper p-3 modal-window__wrapper ${valueContext.isModal ? 'open' : ''} `}>
+                <form>
+                    <button className='add-category__btn-close' onClick={handlerClosePopup}>{svgIconClose}</button>
+                    <input className="form-control" value={text} onChange={(e) => setText(e.target.value)} type="text" />
+                    <button className='add-category__btn-apply' onClick={handlerAddPopup}>Add</button>
+                </form>
+                {/* <form>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                        <input type="password" className="form-control" id="exampleInputPassword1" />
+                    </div>
+                    <div className="mb-3 form-check">
+                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                        <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </form> */}
+
             </div>
         </div>
-
     )
 }
 
