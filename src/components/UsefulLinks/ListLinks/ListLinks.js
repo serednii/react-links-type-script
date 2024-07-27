@@ -6,9 +6,17 @@ import { Button } from 'react-bootstrap';
 
 
 function ListLinks() {
-    const valueContext = useContext(Context);
-    const { dataMenu, key } = valueContext.listLinkData;
-    // valueContext.sluiceLinks.current = dataMenu[key];
+    const {
+        listLinkData,
+        setIsAddCategoryOther,
+        setIsButtonPlus,
+        isChangeLink,
+        isChangeLinks,
+        setIsChangeLinks,
+        setIsModal,
+    } = useContext(Context);
+    const { dataMenu, key } = listLinkData;
+    // sluiceLinks.current = dataMenu[key];
     console.log(dataMenu)
     console.log(key)
     let dataArrayElements
@@ -17,11 +25,10 @@ function ListLinks() {
     }
 
     function handlerChangeLink() {
-        valueContext.setIsModal(true);
-        valueContext.setIsChangeLinks(!valueContext.isChangeLinks);
-        valueContext.setIsAddCategoryMain(false);
-        valueContext.setIsAddCategoryOther(false);
-        valueContext.setIsButtonPlus(false);
+        setIsModal(true);
+        setIsChangeLinks(!isChangeLinks);
+        setIsAddCategoryOther(false);
+        setIsButtonPlus(false);
     }
 
 
@@ -31,7 +38,7 @@ function ListLinks() {
         dataArrayElements = dataMenu[key].map((obj) => {
             return (
                 <li key={Math.random()} className="list-group-item bg-secondary-subtle rounded-3 mb-2">
-                    {valueContext.isChangeLink && (<span className="link-plus" onClick={() => plusOther()} >{svgIconChange}</span>)}
+                    {isChangeLink && (<span className="link-plus" onClick={() => plusOther()} >{svgIconChange}</span>)}
                     <a className='active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover' target="blank" href={obj.link}>{obj.name}</a>
                 </li>
             )
