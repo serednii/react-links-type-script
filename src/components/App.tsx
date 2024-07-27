@@ -1,55 +1,25 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import Header from "./Header/Header";
 import UsefulLinks from "./UsefulLinks/UsefulLinks";
 import AddCategoryOther from "./AddCategoryOther/AddCategoryOther";
 import ChangeLinks from "./ChangeLinks/ChangeLinks";
-import { Button } from "react-bootstrap";
+import { MyContext } from "../MyContext";
 import { getData, outDataServer } from "../functions/requestHelpers";
-import Context from "../Context";
+import { Footer } from "./Footer/Footer";
+import { MyProvider } from "../MyContext";
 import "../App.css";
 
-import { DATA_MENU, DATA_LINKS } from "../State";
-import { Footer } from "./Footer/Footer";
-export const URL_SERVER = "http://smm.zzz.com.ua/api/api.php";
-
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isButtonPlus, setIsButtonPlus] = useState(false);
-  const [isChangeLinks, setIsChangeLinks] = useState(false);
-  const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
-  const [isChangeLink, setIsChangeLink] = useState(false);
-  const [isModal, setIsModal] = useState(false);
+  const {
+    URL_SERVER,
+    isLoading,
+    setIsLoading,
+    setDataMain,
+    isAddCategoryOther,
+    isChangeLinks,
+  } = useContext(MyContext);
 
   const tempDataRef = useRef<{ test: string } | null>(null);
-  const [dataMain, setDataMain] = useState<any>({});
-  const [openAddCategory, setOpenAddCategory] = useState(false);
-  const [listLinkData, setListLinkData] = useState<any[]>([]);
-  const [sluice, setSluice] = useState({});
-  const sluiceLinks = useRef({});
-
-  const value = {
-    DATA_LINKS,
-    dataMain,
-    setDataMain,
-    openAddCategory,
-    setOpenAddCategory,
-    listLinkData,
-    setListLinkData,
-    isAddCategoryOther,
-    setIsAddCategoryOther,
-    isButtonPlus,
-    setIsButtonPlus,
-    sluice,
-    setSluice,
-    outDataServer,
-    isChangeLink,
-    setIsChangeLink,
-    isChangeLinks,
-    setIsChangeLinks,
-    sluiceLinks,
-    isModal,
-    setIsModal,
-  };
 
   const handlerGetDate = (): void => {
     getData(URL_SERVER, setIsLoading)
@@ -86,13 +56,12 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Context.Provider value={value}>
+    <MyProvider>
       <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
         <main className="flex-grow-1 d-flex flex-column">
           {isLoading && <h1>Loading...</h1>}
           <Header />
           <UsefulLinks />
-          {/* {isAddCategoryMain && <AddCategoryMain />} */}
           {isAddCategoryOther && <AddCategoryOther />}
           {isChangeLinks && <ChangeLinks />}
           {/* <Button onClick={handlerGetDate}>Get Data</Button>
@@ -100,7 +69,7 @@ const App: React.FC = () => {
         </main>
         <Footer></Footer>
       </div>
-    </Context.Provider>
+    </MyProvider>
   );
 };
 

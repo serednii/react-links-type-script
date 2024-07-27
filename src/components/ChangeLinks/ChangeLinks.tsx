@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import Context from "../../Context";
 
 import { svgIconClose } from "../../icon";
-import { URL_SERVER } from "../App";
 
 interface LinkData {
   name: string;
@@ -12,6 +11,7 @@ interface LinkData {
 
 const ChangeLinks: React.FC = () => {
   const {
+    URL_SERVER,
     listLinkData,
     setDataMain,
     outDataServer,

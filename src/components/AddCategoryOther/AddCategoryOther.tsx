@@ -3,10 +3,9 @@ import "./AddCategoryOther.scss";
 import Context from "../../Context";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
-import { URL_SERVER } from "../App";
-
 const AddCategory: React.FC = () => {
   const {
+    URL_SERVER,
     sluice,
     dataMain,
     setDataMain,
