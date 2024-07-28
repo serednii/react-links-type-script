@@ -4,15 +4,13 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
+    const URL_SERVER = "http://smm.zzz.com.ua/api/api.php";
     const [isLoading, setIsLoading] = useState(false);
     const [isButtonPlus, setIsButtonPlus] = useState(false);
     const [isChangeLinks, setIsChangeLinks] = useState(false);
     const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
     const [isModal, setIsModal] = useState(false);
-
-    const URL_SERVER = "http://smm.zzz.com.ua/api/api.php";
-
     const [dataMain, setDataMain] = useState({});
     const [openAddCategory, setOpenAddCategory] = useState(false);
     const [listLinkData, setListLinkData] = useState([]);

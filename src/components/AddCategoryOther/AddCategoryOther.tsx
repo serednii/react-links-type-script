@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import "./AddCategoryOther.scss";
-import Context from "../../Context";
+import { MyContext } from "../../MyContext";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
 const AddCategory: React.FC = () => {
@@ -13,7 +13,8 @@ const AddCategory: React.FC = () => {
     setIsAddCategoryOther,
     isModal,
     setIsModal,
-  } = useContext(Context);
+  } = useContext(MyContext);
+
   const [text, setText] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const tempRef = useRef<any>([]);

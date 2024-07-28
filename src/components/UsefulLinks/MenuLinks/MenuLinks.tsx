@@ -1,8 +1,8 @@
 import "./MenuLinks.scss";
-import Context from "../../../Context";
+import { MyContext } from "../../../MyContext";
 import { useContext, useState } from "react";
 import { isObject, isArray } from "../../../functions/functions";
-import { svgIconPlus, svgIconArrowRight } from "../../../icon";
+import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 
 interface IMenuLInksProps {
   dataMenu: Record<string, any>;
@@ -21,7 +21,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
     isButtonPlus,
     setSluice,
     setIsModal,
-  } = useContext(Context);
+  } = useContext(MyContext);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState("");
 
   const printLinks = (obj: IMenuLInks): void => {
@@ -58,7 +58,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
                   className="svg-plus"
                   onClick={() => plusOther({ dataMenu, key })}
                 >
-                  {svgIconPlus}
+                  {svgIconPencil}
                 </span>
               )}
 

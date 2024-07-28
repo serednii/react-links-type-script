@@ -2,7 +2,7 @@ import React from "react";
 import "./ButtonsAdd.scss";
 // import { Button } from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
-import Context from "../../../Context";
+import { MyContext } from "../../../MyContext";
 import { useContext } from "react";
 
 const ButtonsAdd: React.FC = () => {
@@ -13,7 +13,7 @@ const ButtonsAdd: React.FC = () => {
     setIsButtonPlus,
     setIsChangeLinks,
     isButtonPlus,
-  } = useContext(Context);
+  } = useContext(MyContext);
 
   function handlerOpenPopup(): void {
     setIsButtonPlus(!isButtonPlus);

@@ -1,11 +1,11 @@
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
 import "./UsefulLinks.scss";
-import Context from "../../Context";
+import { MyContext } from "../../MyContext";
 import { useContext } from "react";
 
 function UsefulLinks() {
-  const { dataMain } = useContext(Context);
+  const { dataMain } = useContext(MyContext);
   return (
     //bg-success bg-gradient
     <section className="useFull_links flex-grow-1 d-flex flex-column  p-3 rounded-4">

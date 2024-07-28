@@ -1,6 +1,6 @@
 import "./ChangeLinks.scss";
 import { useContext, useState } from "react";
-import Context from "../../Context";
+import { MyContext } from "../../MyContext";
 
 import { svgIconClose } from "../../icon";
 
@@ -19,7 +19,7 @@ const ChangeLinks: React.FC = () => {
     isModal,
     setIsModal,
     setIsChangeLinks,
-  } = useContext(Context);
+  } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");

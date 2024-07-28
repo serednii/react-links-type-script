@@ -1,6 +1,6 @@
 import './ListLinks.scss';
 import { useContext } from "react";
-import Context from '../../../Context';
+import { MyContext } from '../../../MyContext';
 import { svgIconChange } from '../../../icon';
 import { Button } from 'react-bootstrap';
 
@@ -14,7 +14,7 @@ function ListLinks() {
         isChangeLinks,
         setIsChangeLinks,
         setIsModal,
-    } = useContext(Context);
+    } = useContext(MyContext);
     const { dataMenu, key } = listLinkData;
     // sluiceLinks.current = dataMenu[key];
     console.log(dataMenu)
