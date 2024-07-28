@@ -1,7 +1,7 @@
 import "./ChangeLinks.scss";
 import { useContext, useState } from "react";
 import { MyContext } from "../../MyContext";
-
+import { postDataGraphQLMenu } from "../../functions/requestHelpersGraphQL";
 import { svgIconClose } from "../../icon";
 
 interface LinkData {
@@ -14,7 +14,6 @@ const ChangeLinks: React.FC = () => {
     URL_SERVER,
     listLinkData,
     setDataMain,
-    outDataServer,
     dataMain,
     isModal,
     setIsModal,
@@ -29,7 +28,7 @@ const ChangeLinks: React.FC = () => {
 
   function OtherAction() {
     setDataMain({ ...dataMain });
-    outDataServer(URL_SERVER, "PUT", dataMain);
+    postDataGraphQLMenu(dataMain);
     setName("");
     setLink("");
   }

@@ -3,13 +3,15 @@ import "./AddCategoryOther.scss";
 import { MyContext } from "../../MyContext";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
+import {
+  postDataGraphQLMenu,
+  postDataGraphQLLink,
+} from "../../functions/requestHelpersGraphQL";
 const AddCategory: React.FC = () => {
   const {
-    URL_SERVER,
     sluice,
     dataMain,
     setDataMain,
-    outDataServer,
     setIsAddCategoryOther,
     isModal,
     setIsModal,
@@ -38,13 +40,22 @@ const AddCategory: React.FC = () => {
       setDataMain(tempRef.current.pop());
     });
     // console.log(valueContext.dataMain);
-    outDataServer(URL_SERVER, "PUT", dataMain);
+    postDataGraphQLMenu(dataMain);
     console.log(key);
   };
 
   const handlerSetSelectAction = (select: string) => {
     setSelectAction(select);
     if (select === "rename") setText(key);
+  };
+
+  const handleSetText = (value: string) => {
+    // value = value.trim().replaceAll(" ", "_");
+    const regex = /^[a-zA-Z_0-9]*$/;
+    if (regex.test(value)) {
+      console.log(value);
+      setText(value);
+    }
   };
 
   const renameMenu = (
@@ -109,15 +120,25 @@ const AddCategory: React.FC = () => {
     if (textCode === "text code") {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
       if (text.length > 2 && urlPattern.test(url)) {
-        if (sluice.dataMenu[key] === null) sluice.dataMenu[key] = [];
-        if (isArray(sluice.dataMenu[key]))
-          sluice.dataMenu[key].push({
-            name: text,
-            link: url,
+        postDataGraphQLLink(url)
+          .then((resId) => {
+            if (sluice.dataMenu[key] === null) sluice.dataMenu[key] = [];
+            if (isArray(sluice.dataMenu[key]))
+              sluice.dataMenu[key].push({
+                name: text,
+                link: resId,
+              });
+            console.log(sluice.dataMenu);
+            OtherAction();
+            setText("");
+          })
+          .catch((error) => {
+            console.error(
+              "Error, failed to add link. Please try again later",
+              error
+            );
+            throw error;
           });
-        console.log(sluice.dataMenu);
-        OtherAction();
-        setText("");
       }
     }
   }
@@ -165,9 +186,10 @@ const AddCategory: React.FC = () => {
           <div className="action">
             {selectAction === "rename" && (
               <div>
+                <p>a-zA-Z_</p>
                 <input
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => handleSetText(e.target.value)}
                   type="text"
                 />
                 <button
@@ -197,9 +219,10 @@ const AddCategory: React.FC = () => {
             )}
             {selectAction === "add-menu" && (
               <div>
+                <p>a-zA-Z_</p>
                 <input
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add sub menu"
                   type="text"
                 />
@@ -213,9 +236,10 @@ const AddCategory: React.FC = () => {
             )}
             {selectAction === "add-sub-menu" && (
               <div>
+                <p>a-zA-Z_</p>
                 <input
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add sub menu"
                   type="text"
                 />
@@ -231,7 +255,7 @@ const AddCategory: React.FC = () => {
               <div>
                 <input
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name link"
                   type="text"
                 />
