@@ -22,7 +22,6 @@ interface LinkData {
 
 const ChangeLinks: React.FC = () => {
   const {
-    URL_SERVER,
     listLinkData,
     setDataMain,
     dataMain,
@@ -31,14 +30,16 @@ const ChangeLinks: React.FC = () => {
     setIsChangeLinks,
     setError,
     setInfo,
+    password,
   } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
+  console.log("listLinkData", listLinkData);
+
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
   const [textCode, setTextCode] = useState("");
-  const [text, setText] = useState<string>("");
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
@@ -55,7 +56,7 @@ const ChangeLinks: React.FC = () => {
     // value = value.trim().replaceAll(" ", "_");
     const regex = /^[a-zA-Z_0-9]*$/;
     if (regex.test(value)) {
-      setText(value);
+      setName(value);
     }
   };
 
@@ -92,7 +93,7 @@ const ChangeLinks: React.FC = () => {
           setError("Error get Article");
         });
     }
-    setText(dataMenu[key][+select].name);
+    setName(dataMenu[key][+select].name);
   };
 
   const handleAddLink = (
@@ -101,12 +102,12 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
@@ -118,7 +119,7 @@ const ChangeLinks: React.FC = () => {
 
     addDataGraphQLLink(link)
       .then((resId) => {
-        dataMenu[key].push({ name: text, link: resId });
+        dataMenu[key].push({ name, link: resId });
         OtherAction();
       })
       .catch((error) => {
@@ -135,21 +136,21 @@ const ChangeLinks: React.FC = () => {
   ) {
     event.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
 
     addDataGraphQLArticle(article)
       .then((resId) => {
-        dataMenu[key].push({ name: text, article: resId });
+        dataMenu[key].push({ name, article: resId });
         OtherAction();
-        setText("");
+        setName("");
       })
       .catch((error) => {
         console.error(
@@ -165,11 +166,11 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
@@ -183,7 +184,7 @@ const ChangeLinks: React.FC = () => {
       updateDataGraphQLLink(selectId.current, link)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
-            name: text,
+            name,
             link: selectId.current,
           };
           setInfo("Update link");
@@ -198,7 +199,7 @@ const ChangeLinks: React.FC = () => {
       updateDataGraphQLArticle(selectId.current, article)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
-            name: text,
+            name,
             article: selectId.current,
           };
           setInfo("Update Article");
@@ -217,7 +218,7 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -286,7 +287,7 @@ const ChangeLinks: React.FC = () => {
             <option value="delete">Delete</option>
           </select>
 
-          {selectAction !== "add-link" && (
+          {selectAction !== "add-link" && selectAction !== "add-article" && (
             <div>
               <label htmlFor="action">Select link:</label>
               <select
@@ -310,7 +311,7 @@ const ChangeLinks: React.FC = () => {
             {selectAction === "add-link" && (
               <div className="action-type">
                 <input
-                  value={text}
+                  value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name link"
                   type="text"
@@ -321,7 +322,10 @@ const ChangeLinks: React.FC = () => {
                   placeholder="Add link"
                   type="text"
                 />
-                <button className="add-other__btn" onClick={handleAddLink}>
+                <button
+                  className="add-other__btn"
+                  onClick={(e) => handleAddLink(e)}
+                >
                   Add New Link
                 </button>
               </div>
@@ -330,7 +334,7 @@ const ChangeLinks: React.FC = () => {
             {selectAction === "add-article" && (
               <>
                 <input
-                  // value={text}
+                  value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name Article"
                   type="text"
@@ -354,7 +358,7 @@ const ChangeLinks: React.FC = () => {
               <div className="action-type">
                 <input
                   disabled={selectActionLink === ""}
-                  value={text}
+                  value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name link"
                   type="text"
