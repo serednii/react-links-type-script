@@ -19,16 +19,18 @@ const AddCategory: React.FC = () => {
     isModal,
     setIsModal,
     setError,
+    password,
   } = useContext(MyContext);
 
   const [text, setText] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+  const [link, setLink] = useState<string>("");
   const tempRef = useRef<any>([]);
   const [selectAction, setSelectAction] = useState<string>("");
   const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
 
   let { dataMenu, key } = sluice;
+  console.log("sluice", sluice);
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
 
@@ -62,7 +64,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -84,7 +86,7 @@ const AddCategory: React.FC = () => {
   ) {
     event.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -101,7 +103,7 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     event.preventDefault();
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -121,7 +123,7 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     event.preventDefault();
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -141,7 +143,7 @@ const AddCategory: React.FC = () => {
   ) {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -151,12 +153,12 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!urlPattern.test(url)) {
-      setError("Error synaxsys url");
+    if (!urlPattern.test(link)) {
+      setError("Error synaxsys link");
       return;
     }
 
-    addDataGraphQLLink(url)
+    addDataGraphQLLink(link)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
         if (isArray(dataMenu[key]))
@@ -181,7 +183,7 @@ const AddCategory: React.FC = () => {
   ) {
     event.preventDefault();
 
-    if (textCode !== "text code") {
+    if (textCode !== password) {
       setError("Error control code");
       return;
     }
@@ -249,8 +251,6 @@ const AddCategory: React.FC = () => {
             {!isObj && <option value="add-link">Add link</option>}
             {!isObj && <option value="add-article">Add Article</option>}
           </select>
-
-          {/* <button className='add-other__btn' onClick={() => handlerClosePopup()}>Add</button> */}
 
           <div className="action">
             {selectAction === "rename" && (
@@ -329,8 +329,8 @@ const AddCategory: React.FC = () => {
                   type="text"
                 />
                 <input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
                   placeholder="Add link"
                   type="text"
                 />
@@ -343,7 +343,7 @@ const AddCategory: React.FC = () => {
               </div>
             )}
             {selectAction === "add-article" && (
-              <>
+              <div>
                 <input
                   value={text}
                   onChange={(e) => handleSetText(e.target.value)}
@@ -362,7 +362,7 @@ const AddCategory: React.FC = () => {
                 >
                   Add New Article
                 </button>
-              </>
+              </div>
             )}
           </div>
         </form>
