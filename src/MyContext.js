@@ -13,14 +13,16 @@ const MyProvider = ({ children }) => {
     const [isModal, setIsModal] = useState(false);
     const [dataMain, setDataMain] = useState({});
     const [openAddCategory, setOpenAddCategory] = useState(false);
-    const [listLinkData, setListLinkData] = useState([]);
+    const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
     const [error, setError] = useState(null)
     const [info, setInfo] = useState(null)
+    const password = password
     const value =
     {
         info,
+        password,
         setInfo,
         error,
         setError,
