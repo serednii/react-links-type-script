@@ -51,8 +51,8 @@ button:hover {
     display: none;
     opacity: 0;
     // scale: 0;
-    max-width: 500px;
-    width: 100%;
+    // max-width: 80%;
+    width: 80%;
     min-height: 200px;
     background-color: #628076;
     border: 1px solid red;
@@ -72,4 +72,8 @@ button:hover {
       // scale: 0;
     }
   }
+}
+
+.openmodal {
+  background-color: #faebd7;
 }

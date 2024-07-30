@@ -16,9 +16,14 @@ const MyProvider = ({ children }) => {
     const [listLinkData, setListLinkData] = useState([]);
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
-
+    const [error, setError] = useState(null)
+    const [info, setInfo] = useState(null)
     const value =
     {
+        info,
+        setInfo,
+        error,
+        setError,
         URL_SERVER,
         isLoading,
         setIsLoading,

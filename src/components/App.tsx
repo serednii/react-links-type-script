@@ -7,10 +7,15 @@ import { MyContext } from "../MyContext";
 import {
   getDataGraphQLMenu,
   getDataGraphQLLink,
-  postDataGraphQLLink,
+  addDataGraphQLLink,
+  addDataGraphQLArticle,
 } from "../functions/requestHelpersGraphQL";
 import { Footer } from "./Footer/Footer";
 import "../App.css";
+import Errors from "./Errors/Errors";
+// import { useTransition } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
+import InfoModal from "./InfoModal/InfoModal";
 
 const App: React.FC = () => {
   const {
@@ -21,9 +26,16 @@ const App: React.FC = () => {
     dataMain,
     isAddCategoryOther,
     isChangeLinks,
+    error,
+    setError,
+    info,
+    setInfo,
   } = useContext(MyContext);
   const tempDataRef = useRef<{ test: string } | null>(null);
-
+  const animation = useSpring({
+    opacity: error ? 1 : 0,
+    transform: error ? "translateY(0)" : "translateY(-100%)",
+  });
   // const handlerGetDate = (): void => {
   //   getData(URL_SERVER, setIsLoading)
   //     .then((data: any) => {
@@ -35,13 +47,18 @@ const App: React.FC = () => {
   //       // throw new Error(String(error));
   //     });
   // };
-
+  console.log(error);
   useEffect(() => {
-    postDataGraphQLLink("kjdhseirhseoigshei")
+    addDataGraphQLArticle(
+      "kjdhseirhfdsfgsdfgbsdfbgf df sdf f f ff fgdfgseoigshei"
+    )
       .then((res) => {
         console.log("link ", res);
       })
-      .catch((error) => console.error("Error fetching menu data:", error));
+      .catch((error) => {
+        console.error("Error fetching menu data:", error);
+        setError("Error fetching menu data:");
+      });
   }, []);
 
   useEffect(() => {
@@ -52,12 +69,12 @@ const App: React.FC = () => {
         setDataMain(data);
       } catch (error) {
         console.error("Error fetching menu data:", error);
+        setError("Error fetching menu data:");
       }
     };
 
     fetchData();
   }, []);
-
   // useEffect(() => {
   //   getData(URL_SERVER, setIsLoading)
   //     .then((data: any) => {
@@ -81,6 +98,12 @@ const App: React.FC = () => {
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
+        <button
+          className="openmodal"
+          onClick={() => setError("Error fetching menu data:")}
+        >
+          open modal
+        </button>
         {isLoading && <h1>Loading...</h1>}
         <Header />
         <UsefulLinks />
@@ -90,6 +113,9 @@ const App: React.FC = () => {
         <Button onClick={handlerPostDate}>Put Data</Button> */}
       </main>
       {/* <Footer></Footer> */}
+
+      {error && <Errors />}
+      {info && <InfoModal />}
     </div>
   );
 };
