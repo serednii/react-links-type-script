@@ -64,10 +64,7 @@ const ListLinks: React.FC = () => {
             console.log("ListLinks.js id", id);
 
             return (
-              <li
-                key={id}
-                className="list-group-item bg-secondary-subtle rounded-3 mb-2"
-              >
+              <li key={id} className="list-group-item  rounded-3 mb-2">
                 {isChangeLink && (
                   <span className="link-plus" onClick={() => plusOther()}>
                     {svgIconChange}
@@ -101,7 +98,7 @@ const ListLinks: React.FC = () => {
   }, [dataMenu, key]);
 
   return (
-    <div className="list_links col-12 col-md-8 bg-info">
+    <div className="list_links col-12 col-md-8">
       <div className="d-grid gap-2 d-md-flex justify-content-md-end">
         {dataArrayElements && dataArrayElements.length > 0 && (
           <Button

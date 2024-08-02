@@ -15,7 +15,12 @@ function UsefulLinks() {
     //bg-success bg-gradient
     <section className="useFull_links flex-grow-1 d-flex flex-column  p-3 rounded-4">
       <div className="row px-3">
-        <MenuLinks key={Math.random()} dataMenu={dataMain} firstMenu={true} />
+        <MenuLinks
+          key={"MenuLinks"}
+          dataMenu={dataMain}
+          firstMenu={true}
+          level={0}
+        />
         <Routes>
           <Route path="/" element={<ListLinks />} />
           <Route path="/article/:id" element={<ArticlePage />} />

@@ -14,6 +14,7 @@ import {
 } from "../../functions/requestHelpersGraphQL";
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import MyInput from "../formComponents/MyInput/MyInput";
 
 interface LinkData {
   name: string;
@@ -43,14 +44,15 @@ const ChangeLinks: React.FC = () => {
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
-  function OtherAction() {
+
+  const OtherAction = () => {
     setDataMain({ ...dataMain });
     postDataGraphQLMenu(dataMain);
     setName("");
     setLink("");
     setSelectActionLink("");
     setArticle("");
-  }
+  };
 
   const handleSetText = (value: string) => {
     // value = value.trim().replaceAll(" ", "_");
@@ -131,9 +133,9 @@ const ChangeLinks: React.FC = () => {
       });
   };
 
-  function handleAddArticle(
+  const handleAddArticle = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
 
     if (textCode !== password) {
@@ -159,7 +161,7 @@ const ChangeLinks: React.FC = () => {
         );
         setError("Error, failed to add Article. Please try again later");
       });
-  }
+  };
 
   const handleSaveChang = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -262,21 +264,33 @@ const ChangeLinks: React.FC = () => {
         className={`change-links__wrapper modal-window__wrapper ${
           isModal ? "open" : ""
         }`}
+        style={{
+          maxWidth: selectAction === "add-article" ? "1200px" : "500px",
+        }}
       >
-        <input
-          className="add-category__text-code"
+        <MyInput
+          value={textCode}
+          type="password"
+          callbackFunction={setTextCode}
+        />
+        {/* <input
+          className="add-category__text-code form-control"
           value={textCode}
           onChange={(e) => setTextCode(e.target.value)}
           type="password"
-        />
+        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
 
         <form className="add-other-form">
-          <label htmlFor="action">Select an action:</label>
+          <label className="form-label" htmlFor="action">
+            Select an action:
+          </label>
 
           <select
+            className="form-select select-action"
+            aria-label="Default select example"
             name="action"
             id="action"
             onChange={(event) => setSelectAction(event.target.value)}
@@ -286,11 +300,16 @@ const ChangeLinks: React.FC = () => {
             <option value="change">Change</option>
             <option value="delete">Delete</option>
           </select>
+        </form>
 
-          {selectAction !== "add-link" && selectAction !== "add-article" && (
-            <div>
-              <label htmlFor="action">Select link:</label>
+        {selectAction !== "add-link" && selectAction !== "add-article" && (
+          <div>
+            <form className="add-other-form ">
+              <label className="form-label" htmlFor="action">
+                Select link:
+              </label>
               <select
+                className="form-select select-action"
                 name="links"
                 id="action"
                 onChange={(event) => handlerSetSelectAction(event.target.value)}
@@ -304,41 +323,66 @@ const ChangeLinks: React.FC = () => {
                   );
                 })}
               </select>
-            </div>
-          )}
+            </form>
+          </div>
+        )}
 
-          <div className="action">
-            {selectAction === "add-link" && (
-              <div className="action-type">
-                <input
+        <div className="action">
+          {selectAction === "add-link" && (
+            <div className="action-type">
+              <form className="add-other-form">
+                <MyInput
+                  value={name}
+                  type="text"
+                  callbackFunction={handleSetText}
+                  placeholder="Add Name link"
+                />
+                {/* <input
+                  className="form-control input-name"
                   value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name link"
                   type="text"
+                /> */}
+                <MyInput
+                  value={link}
+                  type="text"
+                  callbackFunction={setLink}
+                  placeholder="Add link"
                 />
-                <input
+                {/* <input
+                  className="form-control"
                   value={link}
                   onChange={(e) => setLink(e.target.value)}
                   placeholder="Add link"
                   type="text"
-                />
+                /> */}
                 <button
                   className="add-other__btn"
                   onClick={(e) => handleAddLink(e)}
                 >
                   Add New Link
                 </button>
-              </div>
-            )}
+              </form>
+            </div>
+          )}
 
-            {selectAction === "add-article" && (
-              <>
-                <input
+          {selectAction === "add-article" && (
+            <div>
+              <form className="add-other-form">
+                <MyInput
+                  value={name}
+                  type="text"
+                  callbackFunction={handleSetText}
+                  placeholder="Add Name Article"
+                />
+                {/* <input
+                  className="form-control input-name"
                   value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name Article"
                   type="text"
-                />
+                /> */}
                 <MyJoditEditor
                   placeholder={"Вставте свій текст"}
                   article={article}
@@ -351,26 +395,44 @@ const ChangeLinks: React.FC = () => {
                 >
                   Add New Article
                 </button>
-              </>
-            )}
+              </form>
+            </div>
+          )}
 
-            {selectAction === "change" && (
-              <div className="action-type">
-                <input
+          {selectAction === "change" && (
+            <div className="action-type">
+              <form className="add-other-form">
+              <MyInput
+                  value={name}
+                  type="text"
+                  disabled={selectActionLink === ""}
+                  callbackFunction={handleSetText}
+                  placeholder="Add Name link"
+                />
+                {/* <input
+                  className="form-control input-name"
                   disabled={selectActionLink === ""}
                   value={name}
                   onChange={(e) => handleSetText(e.target.value)}
                   placeholder="Add Name link"
                   type="text"
-                />
+                /> */}
                 {isTypeSelect.current === "link" && (
-                  <input
-                    disabled={selectActionLink === ""}
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                    placeholder="Add link"
-                    type="text"
-                  />
+                            <MyInput
+                            value={link}
+                            type="text"
+                            disabled={selectActionLink === ""}
+                            callbackFunction={setLink}
+                            placeholder="Add link"
+                          />
+                  // <input
+                  //   className="form-control"
+                  //   disabled={selectActionLink === ""}
+                  //   value={link}
+                  //   onChange={(e) => setLink(e.target.value)}
+                  //   placeholder="Add link"
+                  //   type="text"
+                  // />
                 )}
                 {isTypeSelect.current === "article" && (
                   <MyJoditEditor
@@ -387,11 +449,13 @@ const ChangeLinks: React.FC = () => {
                   {isTypeSelect.current === "link" && "Change link"}
                   {isTypeSelect.current === "article" && "Change Article"}
                 </button>
-              </div>
-            )}
+              </form>
+            </div>
+          )}
 
-            {selectAction === "delete" && (
-              <div className="action-type">
+          {selectAction === "delete" && (
+            <div className="action-type">
+              <form className="add-other-form">
                 <p>
                   Are you sure you want to delete the menu item{" "}
                   {selectActionLink !== "" &&
@@ -406,10 +470,10 @@ const ChangeLinks: React.FC = () => {
                 >
                   Delete menu
                 </button>
-              </div>
-            )}
-          </div>
-        </form>
+              </form>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

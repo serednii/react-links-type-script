@@ -7,12 +7,22 @@ a {
 .list_links {
     border: 1px solid black;
     padding: 20px;
-    // background-color: #5b4d4d;
+    background-color: rgb(23 89 103);
     max-width: 1000px;
     // min-width: 300px;
     min-height: 300px;
     color: white;
     border-radius: 20px;
 
-    .list-group-item {}
+    .list-group-item {
+        background-color: #cbcbcc;
+
+        a {
+            color: black !important;
+        }
+
+        a:hover {
+            color: rgb(89, 20, 20) !important;
+        }
+    }
 }

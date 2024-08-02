@@ -9,6 +9,7 @@ import {
   addDataGraphQLLink,
   addDataGraphQLArticle,
 } from "../../functions/requestHelpersGraphQL";
+import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
   const {
@@ -42,8 +43,8 @@ const AddCategory: React.FC = () => {
     setTimeout(() => {
       setDataMain(tempRef.current.pop());
     });
-    // console.log(valueContext.dataMain);
     postDataGraphQLMenu(dataMain);
+    handleCloseModal();
   };
 
   const handlerSetSelectAction = (select: string) => {
@@ -81,9 +82,9 @@ const AddCategory: React.FC = () => {
     setText(text);
   };
 
-  function handleDeleteMenu(
+  const handleDeleteMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
 
     if (textCode !== password) {
@@ -97,11 +98,11 @@ const AddCategory: React.FC = () => {
     }
     OtherAction();
     setIsAddCategoryOther(false);
-  }
+  };
 
-  function handleAddSubMenu(
+  const handleAddSubMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
     if (textCode !== password) {
       setError("Error control code");
@@ -117,11 +118,11 @@ const AddCategory: React.FC = () => {
     if (isObject(dataMenu[key])) dataMenu[key][text] = null;
     OtherAction();
     setText("");
-  }
+  };
 
-  function handleAddMenu(
+  const handleAddMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
     if (textCode !== password) {
       setError("Error control code");
@@ -136,11 +137,11 @@ const AddCategory: React.FC = () => {
     sluice.dataMenu[text] = null;
     OtherAction();
     setText("");
-  }
+  };
 
-  function handleAddLink(
+  const handleAddLink = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
     if (textCode !== password) {
@@ -176,11 +177,11 @@ const AddCategory: React.FC = () => {
         );
         throw error;
       });
-  }
+  };
 
-  function handleAddArticle(
+  const handleAddArticle = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  ) => {
     event.preventDefault();
 
     if (textCode !== password) {
@@ -211,7 +212,7 @@ const AddCategory: React.FC = () => {
         );
         throw error;
       });
-  }
+  };
 
   const handleCloseModal = () => {
     setIsModal(false);
@@ -224,13 +225,21 @@ const AddCategory: React.FC = () => {
         className={`add-category__wrapper modal-window__wrapper ${
           isModal ? "open" : ""
         }`}
+        style={{
+          maxWidth: selectAction === "add-article" ? "1200px" : "500px",
+        }}
       >
-        <input
-          className="add-category__text-code"
+        <MyInput
+          value={textCode}
+          type="password"
+          callbackFunction={setTextCode}
+        />
+        {/* <input
+          className="add-category__text-code form-control"
           value={textCode}
           onChange={(e) => setTextCode(e.target.value)}
           type="password"
-        />
+        /> */}
 
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
@@ -251,121 +260,162 @@ const AddCategory: React.FC = () => {
             {!isObj && <option value="add-link">Add link</option>}
             {!isObj && <option value="add-article">Add Article</option>}
           </select>
-
-          <div className="action">
-            {selectAction === "rename" && (
-              <div>
-                <p>a-zA-Z_</p>
-                <input
-                  value={text}
-                  onChange={(e) => handleSetText(e.target.value)}
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleRenameMenu(event)}
-                >
-                  Rename menu
-                </button>
-              </div>
-            )}
-            {selectAction === "delete" && (
-              <div>
-                <p>Ви дійсно хочете видалити пункт меню {key}</p>
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleDeleteMenu(event)}
-                >
-                  Delete menu
-                </button>
-                <button
-                  className="add-other__btn"
-                  onClick={() => setIsAddCategoryOther(false)}
-                >
-                  No
-                </button>
-              </div>
-            )}
-            {selectAction === "add-menu" && (
-              <div>
-                <p>a-zA-Z_</p>
-                <input
-                  value={text}
-                  onChange={(e) => handleSetText(e.target.value)}
-                  placeholder="Add sub menu"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleAddMenu(event)}
-                >
-                  Add menu
-                </button>
-              </div>
-            )}
-            {selectAction === "add-sub-menu" && (
-              <div>
-                <p>a-zA-Z_</p>
-                <input
-                  value={text}
-                  onChange={(e) => handleSetText(e.target.value)}
-                  placeholder="Add sub menu"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleAddSubMenu(event)}
-                >
-                  Add menu
-                </button>
-              </div>
-            )}
-            {selectAction === "add-link" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => handleSetText(e.target.value)}
-                  placeholder="Add Name link"
-                  type="text"
-                />
-                <input
-                  value={link}
-                  onChange={(e) => setLink(e.target.value)}
-                  placeholder="Add link"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleAddLink(event)}
-                >
-                  Add New Link
-                </button>
-              </div>
-            )}
-            {selectAction === "add-article" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => handleSetText(e.target.value)}
-                  placeholder="Add Name Article"
-                  type="text"
-                />
-                <MyJoditEditor
-                  placeholder={"Вставте свій текст"}
-                  article={article}
-                  setArticle={setArticle}
-                />
-
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => handleAddArticle(event)}
-                >
-                  Add New Article
-                </button>
-              </div>
-            )}
-          </div>
         </form>
+
+        <div className="action">
+          {selectAction === "rename" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={text}
+                type="text"
+                callbackFunction={handleSetText}
+              />
+              {/* <input
+                className="form-control"
+                value={text}
+                onChange={(e) => handleSetText(e.target.value)}
+                type="text"
+              /> */}
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleRenameMenu(event)}
+              >
+                Rename menu
+              </button>
+            </form>
+          )}
+          {selectAction === "delete" && (
+            <form className="add-other-form ">
+              <p>Ви дійсно хочете видалити пункт меню {key}</p>
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleDeleteMenu(event)}
+              >
+                Delete menu
+              </button>
+              <button
+                className="add-other__btn"
+                onClick={() => setIsAddCategoryOther(false)}
+              >
+                No
+              </button>
+            </form>
+          )}
+          {selectAction === "add-menu" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={text}
+                type="text"
+                placeholder="Add menu"
+                callbackFunction={handleSetText}
+              />
+              {/* <input
+                className="form-control"
+                value={text}
+                onChange={(e) => handleSetText(e.target.value)}
+                placeholder="Add  menu"
+                type="text"
+              /> */}
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleAddMenu(event)}
+              >
+                Add menu
+              </button>
+            </form>
+          )}
+          {selectAction === "add-sub-menu" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={text}
+                type="text"
+                placeholder="Add sub menu"
+                callbackFunction={handleSetText}
+              />
+              {/* <input
+                className="form-control"
+                value={text}
+                onChange={(e) => handleSetText(e.target.value)}
+                placeholder="Add sub menu"
+                type="text"
+              /> */}
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleAddSubMenu(event)}
+              >
+                Add sub menu
+              </button>
+            </form>
+          )}
+          {selectAction === "add-link" && (
+            <form className="add-other-form ">
+              <MyInput
+                value={text}
+                type="text"
+                placeholder="Add Name link"
+                callbackFunction={handleSetText}
+              />
+              {/* <input
+                className="form-control"
+                value={text}
+                onChange={(e) => handleSetText(e.target.value)}
+                placeholder="Add Name link"
+                type="text"
+              /> */}
+              <MyInput
+                value={link}
+                type="text"
+                placeholder="Add link"
+                callbackFunction={setLink}
+              />
+              {/* <input
+                className="form-control"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                placeholder="Add link"
+                type="text"
+              /> */}
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleAddLink(event)}
+              >
+                Add New Link
+              </button>
+            </form>
+          )}
+          {selectAction === "add-article" && (
+            <form className="add-other-form ">
+              <MyInput
+                value={text}
+                type="text"
+                placeholder="Add Name Article"
+                callbackFunction={handleSetText}
+              />
+              {/* <input
+                className="form-control"
+                value={text}
+                onChange={(e) => handleSetText(e.target.value)}
+                placeholder="Add Name Article"
+                type="text"
+              /> */}
+              <MyJoditEditor
+                placeholder={"Вставте свій текст"}
+                article={article}
+                setArticle={setArticle}
+              />
+
+              <button
+                className="add-other__btn"
+                onClick={(event) => handleAddArticle(event)}
+              >
+                Add New Article
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

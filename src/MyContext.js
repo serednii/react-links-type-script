@@ -18,7 +18,7 @@ const MyProvider = ({ children }) => {
     const sluiceLinks = useRef({});
     const [error, setError] = useState(null)
     const [info, setInfo] = useState(null)
-    const password = password
+    const password = "text code"
     const value =
     {
         info,

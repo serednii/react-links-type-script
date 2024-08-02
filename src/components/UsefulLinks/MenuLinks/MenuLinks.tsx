@@ -4,9 +4,13 @@ import { useContext, useState } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 
+type MenuFunctionType = () => void;
+
 interface IMenuLInksProps {
   dataMenu: Record<string, any>;
   firstMenu: boolean;
+  level: number;
+  activesMenu: MenuFunctionType[];
 }
 
 interface IMenuLInks {
@@ -14,7 +18,11 @@ interface IMenuLInks {
   key: string;
 }
 
-const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
+const MenuLinks: React.FC<IMenuLInksProps> = ({
+  dataMenu,
+  firstMenu,
+  level = 0,
+}) => {
   const {
     setListLinkData,
     setIsAddCategoryOther,
@@ -22,7 +30,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
     setSluice,
     setIsModal,
   } = useContext(MyContext);
-  const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState("");
+  const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
 
   const printLinks = (obj: IMenuLInks): void => {
     console.log(obj);
@@ -44,11 +52,10 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
           : "submenu-links__parent col-0 col-md-4"
       }
     >
-      <ul className="submenu-list" key={Math.random()}>
+      <ul className="submenu-list">
         {Object.keys(dataMenu).map((key: string) => {
           return (
             <li
-              key={Math.random()}
               className={`submenu-links ${
                 isOpenCloseSubMenu === key && "open-click"
               }`}
@@ -86,9 +93,10 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({ dataMenu, firstMenu }) => {
                   </button>
 
                   <MenuLinks
-                    key={Math.random()}
+                    key={key}
                     dataMenu={dataMenu[key]}
                     firstMenu={false}
+                    level={level + 1}
                   />
                 </>
               )}

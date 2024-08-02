@@ -98,22 +98,12 @@ const App: React.FC = () => {
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
-        <button
-          className="openmodal"
-          onClick={() => setError("Error fetching menu data:")}
-        >
-          open modal
-        </button>
         {isLoading && <h1>Loading...</h1>}
         <Header />
         <UsefulLinks />
         {isAddCategoryOther && <AddCategoryOther />}
         {isChangeLinks && <ChangeLinks />}
-        {/* <Button onClick={handlerGetDate}>Get Data</Button>
-        <Button onClick={handlerPostDate}>Put Data</Button> */}
       </main>
-      {/* <Footer></Footer> */}
-
       {error && <Errors />}
       {info && <InfoModal />}
     </div>
@@ -121,90 +111,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-// const { ApolloServer, gql } = require('apollo-server');
-
-// // Схема GraphQL
-// const typeDefs = gql`
-//   type Query {
-//     getMenu: Menu
-//   }
-
-//   type Menu {
-//     level: Int
-//     type: String
-//     menu: [MenuItem]
-//     idLinks: [LinkItem]
-//   }
-
-//   type MenuItem {
-//     level: Int
-//     nameMenu: String
-//     type: String
-//     menu: [MenuItem]
-//     idLinks: [LinkItem]
-//   }
-
-//   type LinkItem {
-//     link: String
-//     name: String
-//     idArticle: Int
-//   }
-// `;
-
-// // Дані
-// const data = {
-//     level: 0,
-//     type: "menu",
-//     menu: [
-//         {
-//             level: 1,
-//             nameMenu: "java",
-//             type: null
-//         },
-//         {
-//             level: 1,
-//             nameMenu: "js",
-//             type: 'menu',
-//             menu: [
-//                 {
-//                     level: 2,
-//                     nameMenu: "java",
-//                     type: null
-//                 },
-//                 {
-//                     level: 2,
-//                     nameMenu: "js",
-//                     type: null
-//                 }
-//             ]
-//         },
-//         {
-//             level: 1,
-//             nameMenu: "java",
-//             type: "idLinks",
-//             idLinks: [
-// {
-//     "link": "https://vertex-academy.com/tutorials/ru/sozdanie-peremennyx-i-tipy-peremenny/",
-//         "name": "Переменные в Java"
-// },
-// {
-//     "link": "https://javarush.com/groups/posts/peremennie-v-java",
-//         "name": "Переменные в Java и константы"
-// },
-// {
-//     "link": "https://metanit.com/java/tutorial/2.1.php",
-//         "name": "Переменные и константы"
-// },
-// {
-//     "idArticle": 1,
-//         "name": "Переменные и константы"
-//                 },
-// {
-//     "idArticle": 1,
-//         "name": "Переменные и константы"
-//                 }
-//             ]
-//         }
-//     ]
-// };
