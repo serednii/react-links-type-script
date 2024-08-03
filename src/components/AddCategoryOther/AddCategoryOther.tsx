@@ -21,9 +21,10 @@ const AddCategory: React.FC = () => {
     setIsModal,
     setError,
     password,
+    setUpdate,
   } = useContext(MyContext);
 
-  const [text, setText] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
   const tempRef = useRef<any>([]);
   const [selectAction, setSelectAction] = useState<string>("");
@@ -49,13 +50,13 @@ const AddCategory: React.FC = () => {
 
   const handlerSetSelectAction = (select: string) => {
     setSelectAction(select);
-    if (select === "rename") setText(key);
+    if (select === "rename") setName(key);
   };
 
   const handleSetText = (value: string) => {
     const regex = /^[a-zA-Z_0-9]*$/;
     if (regex.test(value)) {
-      setText(value);
+      setName(value);
     }
   };
 
@@ -69,16 +70,16 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
 
-    dataMenu[text] = dataMenu[key];
+    dataMenu[name] = dataMenu[key];
     delete dataMenu[key];
-    key = text;
+    key = name;
     OtherAction();
-    setText(text);
+    setName(name);
   };
 
   const handleDeleteMenu = (
@@ -108,15 +109,15 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
 
     if (dataMenu[key] === null) dataMenu[key] = {};
-    if (isObject(dataMenu[key])) dataMenu[key][text] = null;
+    if (isObject(dataMenu[key])) dataMenu[key][name] = null;
     OtherAction();
-    setText("");
+    setName("");
   };
 
   const handleAddMenu = (
@@ -128,14 +129,14 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
 
-    sluice.dataMenu[text] = null;
+    sluice.dataMenu[name] = null;
     OtherAction();
-    setText("");
+    setName("");
   };
 
   const handleAddLink = (
@@ -148,7 +149,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
@@ -163,11 +164,12 @@ const AddCategory: React.FC = () => {
         if (dataMenu[key] === null) dataMenu[key] = [];
         if (isArray(dataMenu[key]))
           dataMenu[key].push({
-            name: text,
+            name: name,
             link: resId,
           });
         OtherAction();
-        setText("");
+        setName("");
+        setUpdate((prev: boolean) => !prev);
       })
       .catch((error) => {
         console.error(
@@ -188,7 +190,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    if (!text.length) {
+    if (!name.length) {
       setError("Add name Link");
       return;
     }
@@ -198,11 +200,12 @@ const AddCategory: React.FC = () => {
         if (dataMenu[key] === null) dataMenu[key] = [];
         if (isArray(dataMenu[key]))
           dataMenu[key].push({
-            name: text,
+            name: name,
             article: resId,
           });
         OtherAction();
-        setText("");
+        setName("");
+        setUpdate((prev: boolean) => !prev);
       })
       .catch((error) => {
         console.error(
@@ -233,13 +236,6 @@ const AddCategory: React.FC = () => {
           type="password"
           callbackFunction={setTextCode}
         />
-        {/* <input
-          className="add-category__text-code form-control"
-          value={textCode}
-          onChange={(e) => setTextCode(e.target.value)}
-          type="password"
-        /> */}
-
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
@@ -266,16 +262,10 @@ const AddCategory: React.FC = () => {
             <form className="add-other-form ">
               <p>a-zA-Z_</p>
               <MyInput
-                value={text}
+                value={name}
                 type="text"
                 callbackFunction={handleSetText}
               />
-              {/* <input
-                className="form-control"
-                value={text}
-                onChange={(e) => handleSetText(e.target.value)}
-                type="text"
-              /> */}
               <button
                 className="add-other__btn"
                 onClick={(event) => handleRenameMenu(event)}
@@ -305,18 +295,11 @@ const AddCategory: React.FC = () => {
             <form className="add-other-form ">
               <p>a-zA-Z_</p>
               <MyInput
-                value={text}
+                value={name}
                 type="text"
                 placeholder="Add menu"
                 callbackFunction={handleSetText}
               />
-              {/* <input
-                className="form-control"
-                value={text}
-                onChange={(e) => handleSetText(e.target.value)}
-                placeholder="Add  menu"
-                type="text"
-              /> */}
               <button
                 className="add-other__btn"
                 onClick={(event) => handleAddMenu(event)}
@@ -329,18 +312,12 @@ const AddCategory: React.FC = () => {
             <form className="add-other-form ">
               <p>a-zA-Z_</p>
               <MyInput
-                value={text}
+                value={name}
                 type="text"
                 placeholder="Add sub menu"
                 callbackFunction={handleSetText}
               />
-              {/* <input
-                className="form-control"
-                value={text}
-                onChange={(e) => handleSetText(e.target.value)}
-                placeholder="Add sub menu"
-                type="text"
-              /> */}
+
               <button
                 className="add-other__btn"
                 onClick={(event) => handleAddSubMenu(event)}
@@ -352,31 +329,18 @@ const AddCategory: React.FC = () => {
           {selectAction === "add-link" && (
             <form className="add-other-form ">
               <MyInput
-                value={text}
+                value={name}
                 type="text"
                 placeholder="Add Name link"
-                callbackFunction={handleSetText}
+                callbackFunction={setName}
               />
-              {/* <input
-                className="form-control"
-                value={text}
-                onChange={(e) => handleSetText(e.target.value)}
-                placeholder="Add Name link"
-                type="text"
-              /> */}
               <MyInput
                 value={link}
                 type="text"
                 placeholder="Add link"
                 callbackFunction={setLink}
               />
-              {/* <input
-                className="form-control"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-                placeholder="Add link"
-                type="text"
-              /> */}
+
               <button
                 className="add-other__btn"
                 onClick={(event) => handleAddLink(event)}
@@ -388,24 +352,16 @@ const AddCategory: React.FC = () => {
           {selectAction === "add-article" && (
             <form className="add-other-form ">
               <MyInput
-                value={text}
+                value={name}
                 type="text"
                 placeholder="Add Name Article"
-                callbackFunction={handleSetText}
+                callbackFunction={setName}
               />
-              {/* <input
-                className="form-control"
-                value={text}
-                onChange={(e) => handleSetText(e.target.value)}
-                placeholder="Add Name Article"
-                type="text"
-              /> */}
               <MyJoditEditor
                 placeholder={"Вставте свій текст"}
                 article={article}
                 setArticle={setArticle}
               />
-
               <button
                 className="add-other__btn"
                 onClick={(event) => handleAddArticle(event)}

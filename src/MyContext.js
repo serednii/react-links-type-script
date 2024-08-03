@@ -19,9 +19,12 @@ const MyProvider = ({ children }) => {
     const [error, setError] = useState("")
     const [info, setInfo] = useState("")
     const [idArticle, setIdArticle] = useState("")
+    const [update, setUpdate] = useState(false)
     const password = "text code"
     const value =
     {
+        update,
+        setUpdate,
         idArticle,
         setIdArticle,
         info,

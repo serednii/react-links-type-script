@@ -21,6 +21,7 @@ const ListLinks: React.FC = () => {
     setIsChangeLinks,
     setIsModal,
     setIdArticle,
+    update,
   } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
@@ -92,7 +93,7 @@ const ListLinks: React.FC = () => {
     };
 
     fetchLinks();
-  }, [dataMenu, key]);
+  }, [dataMenu, key, update]);
 
   if (loading) {
     return (
