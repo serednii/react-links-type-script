@@ -1,3 +1,10 @@
 .article {
     background-color: aliceblue;
+
+    .back-home {
+        position: relative;
+        display: block;
+        left: 0;
+        text-align: left;
+    }
 }

@@ -3,8 +3,6 @@
     background-color: cadetblue;
     width: 100%;
     cursor: pointer;
-    // padding: 3px 20px 3px 20px;
-    // padding-right: 20px;
     border: 1px solid black;
     border-right: 2px solid black;
     border-left: 2px solid black;
@@ -47,13 +45,7 @@
 
         width: max-content;
         position: relative;
-
-        // .parent-plus {
-        //     position: absolute;
-        //     left: 4px;
-        //     top: -14px;
-        //     z-index: 10;
-        // }
+        padding-right: 10px;
     }
 
     &__link:hover {

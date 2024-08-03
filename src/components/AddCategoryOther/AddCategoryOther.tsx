@@ -53,7 +53,6 @@ const AddCategory: React.FC = () => {
   };
 
   const handleSetText = (value: string) => {
-    // value = value.trim().replaceAll(" ", "_");
     const regex = /^[a-zA-Z_0-9]*$/;
     if (regex.test(value)) {
       setText(value);

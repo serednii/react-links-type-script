@@ -1,6 +1,6 @@
 import "./MenuLinks.scss";
 import { MyContext } from "../../../MyContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 
@@ -38,25 +38,29 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   } = useContext(MyContext);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
 
-  const handlePrintLinks = (obj: IMenuLInks): void => {
-    console.log(obj);
-    const findIndex = activesMenu.findIndex((e) => e.level === level);
-    const slice = activesMenu.slice(findIndex);
+  const handlePrintLinks = useCallback(
+    (obj: IMenuLInks): void => {
+      const findIndex = activesMenu.findIndex((e) => e.level === level);
+      const slice = activesMenu.slice(findIndex);
 
-    if (findIndex >= 0) {
-      activesMenu.splice(findIndex);
+      if (findIndex >= 0) {
+        activesMenu.splice(findIndex);
+        slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+      }
       console.log("activesMenu", activesMenu);
-      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-    }
-    console.log("activesMenu", activesMenu);
-    setListLinkData(obj);
-  };
+      setListLinkData(obj);
+    },
+    [activesMenu, level, setListLinkData]
+  );
 
-  function plusOther(data: IMenuLInks): void {
-    setIsModal(true);
-    setIsAddCategoryOther(true);
-    setSluice(data); //передаємо ссилку на бєкт який будемо міняти
-  }
+  const plusOther = useCallback(
+    (data: IMenuLInks): void => {
+      setIsModal(true);
+      setIsAddCategoryOther(true);
+      setSluice(data); //передаємо ссилку на бєкт який будемо міняти
+    },
+    [setIsModal, setIsAddCategoryOther, setSluice]
+  );
 
   useEffect(() => {
     // Оновлюємо activesMenu після зміни isOpenCloseSubMenu
@@ -66,45 +70,95 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
         isOpenCloseSubMenu,
         level,
       });
-      console.log("activesMenu", activesMenu);
     }
-  }, [isOpenCloseSubMenu]);
+  }, [isOpenCloseSubMenu, activesMenu, level]);
 
-  const handleSetIsOpenCloseSubMenu = (key: string) => {
-    const findIndex = activesMenu.findIndex((e) => e.level === level);
-    const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
-    console.log(menuLevel);
-    const slice = activesMenu.slice(findIndex);
-    console.log("slice", slice);
-    console.log("level", level);
-    console.log("key", key);
+  //Closes nested menus
+  const handleSetIsOpenCloseSubMenu = useCallback(
+    (key: string) => {
+      const findIndex = activesMenu.findIndex((e) => e.level === level);
+      const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
+      const slice = activesMenu.slice(findIndex);
 
-    if (findIndex >= 0) {
-      activesMenu.splice(findIndex);
-      console.log("activesMenu", activesMenu);
-      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-    }
+      if (findIndex >= 0) {
+        activesMenu.splice(findIndex);
+        slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+      }
 
-    console.log("findIndex", findIndex);
-    if (findIndex !== level) {
-      setIsOpenCloseSubMenu((prev) => (prev ? (prev === key ? "" : key) : key));
-    }
-    if (findIndex === level && menuLevel !== key) {
-      setIsOpenCloseSubMenu(key);
-    }
+      if (findIndex !== level) {
+        setIsOpenCloseSubMenu((prev) =>
+          prev ? (prev === key ? "" : key) : key
+        );
+      }
 
-    // if(level===0){
+      if (findIndex === level && menuLevel !== key) {
+        setIsOpenCloseSubMenu(key);
+      }
+    },
+    [activesMenu, level]
+  );
 
-    // }
+  const menuItems = useMemo(() => {
+    return Object.keys(dataMenu).map((key: string) => (
+      <li
+        key={key}
+        className={`submenu-links ${
+          isOpenCloseSubMenu === key && "open-click"
+        }`}
+      >
+        {isButtonPlus && (
+          <span
+            className="svg-plus"
+            onClick={() => plusOther({ dataMenu, key })}
+          >
+            {svgIconPencil}
+          </span>
+        )}
 
-    console.log("**********************************");
-    // console.log(slice);
-    // console.log(findIndex);
-    console.log("key", key);
-    console.log("isOpenCloseSubMenu", isOpenCloseSubMenu);
-    console.log("level", level);
-    console.log("**********************************");
-  };
+        {isArray(dataMenu[key]) && (
+          <button
+            className="submenu-links__menu"
+            onClick={() => handlePrintLinks({ dataMenu, key })}
+          >
+            {key}
+          </button>
+        )}
+
+        {isObject(dataMenu[key]) && (
+          <>
+            <button
+              className="submenu-links__menu"
+              onClick={() => handleSetIsOpenCloseSubMenu(key)}
+            >
+              {key}
+              <span className="svg-arrow-right">{svgIconArrowRight}</span>
+            </button>
+
+            <MenuLinks
+              key={key}
+              dataMenu={dataMenu[key]}
+              firstMenu={false}
+              level={level + 1}
+              activesMenu={activesMenu}
+            />
+          </>
+        )}
+
+        {dataMenu[key] === null && (
+          <span className="submenu-links__null">{key}</span>
+        )}
+      </li>
+    ));
+  }, [
+    dataMenu,
+    isButtonPlus,
+    isOpenCloseSubMenu,
+    handlePrintLinks,
+    handleSetIsOpenCloseSubMenu,
+    activesMenu,
+    level,
+    plusOther,
+  ]);
 
   return (
     <div
@@ -114,61 +168,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
           : "submenu-links__parent col-0 col-md-4"
       }
     >
-      <ul className="submenu-list">
-        {Object.keys(dataMenu).map((key: string) => {
-          return (
-            <li
-              className={`submenu-links ${
-                isOpenCloseSubMenu === key && "open-click"
-              }`}
-            >
-              {isButtonPlus && (
-                <span
-                  className="svg-plus"
-                  onClick={() => plusOther({ dataMenu, key })}
-                >
-                  {svgIconPencil}
-                </span>
-              )}
-
-              {isArray(dataMenu[key]) && (
-                <button
-                  className="submenu-links__menu"
-                  onClick={() => handlePrintLinks({ dataMenu, key })}
-                >
-                  {key}
-                </button>
-              )}
-
-              {isObject(dataMenu[key]) && (
-                <>
-                  <button
-                    className="submenu-links__menu"
-                    onClick={() => handleSetIsOpenCloseSubMenu(key)}
-                  >
-                    {key}
-                    <span className="svg-arrow-right">{svgIconArrowRight}</span>
-                  </button>
-
-                  <MenuLinks
-                    key={key}
-                    dataMenu={dataMenu[key]}
-                    firstMenu={false}
-                    level={level + 1}
-                    activesMenu={activesMenu}
-                  />
-                </>
-              )}
-
-              {dataMenu[key] === null && (
-                <>
-                  <span className="submenu-links__null">{key}</span>{" "}
-                </>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+      <ul className="submenu-list">{menuItems}</ul>
     </div>
   );
 };
