@@ -1,16 +1,21 @@
 import "./MenuLinks.scss";
 import { MyContext } from "../../../MyContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 
-type MenuFunctionType = () => void;
+type MenuFunctionType = (value: string) => void;
+type ActiveMenuType = {
+  setIsOpenCloseSubMenu: MenuFunctionType;
+  isOpenCloseSubMenu: string;
+  level: number;
+};
 
 interface IMenuLInksProps {
   dataMenu: Record<string, any>;
   firstMenu: boolean;
   level: number;
-  activesMenu: MenuFunctionType[];
+  activesMenu: ActiveMenuType[];
 }
 
 interface IMenuLInks {
@@ -22,6 +27,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   dataMenu,
   firstMenu,
   level = 0,
+  activesMenu,
 }) => {
   const {
     setListLinkData,
@@ -32,17 +38,73 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   } = useContext(MyContext);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
 
-  const printLinks = (obj: IMenuLInks): void => {
+  const handlePrintLinks = (obj: IMenuLInks): void => {
     console.log(obj);
+    const findIndex = activesMenu.findIndex((e) => e.level === level);
+    const slice = activesMenu.slice(findIndex);
+
+    if (findIndex >= 0) {
+      activesMenu.splice(findIndex);
+      console.log("activesMenu", activesMenu);
+      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+    }
+    console.log("activesMenu", activesMenu);
     setListLinkData(obj);
   };
 
   function plusOther(data: IMenuLInks): void {
-    console.log(data);
     setIsModal(true);
     setIsAddCategoryOther(true);
     setSluice(data); //передаємо ссилку на бєкт який будемо міняти
   }
+
+  useEffect(() => {
+    // Оновлюємо activesMenu після зміни isOpenCloseSubMenu
+    if (isOpenCloseSubMenu) {
+      activesMenu.push({
+        setIsOpenCloseSubMenu: setIsOpenCloseSubMenu,
+        isOpenCloseSubMenu,
+        level,
+      });
+      console.log("activesMenu", activesMenu);
+    }
+  }, [isOpenCloseSubMenu]);
+
+  const handleSetIsOpenCloseSubMenu = (key: string) => {
+    const findIndex = activesMenu.findIndex((e) => e.level === level);
+    const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
+    console.log(menuLevel);
+    const slice = activesMenu.slice(findIndex);
+    console.log("slice", slice);
+    console.log("level", level);
+    console.log("key", key);
+
+    if (findIndex >= 0) {
+      activesMenu.splice(findIndex);
+      console.log("activesMenu", activesMenu);
+      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+    }
+
+    console.log("findIndex", findIndex);
+    if (findIndex !== level) {
+      setIsOpenCloseSubMenu((prev) => (prev ? (prev === key ? "" : key) : key));
+    }
+    if (findIndex === level && menuLevel !== key) {
+      setIsOpenCloseSubMenu(key);
+    }
+
+    // if(level===0){
+
+    // }
+
+    console.log("**********************************");
+    // console.log(slice);
+    // console.log(findIndex);
+    console.log("key", key);
+    console.log("isOpenCloseSubMenu", isOpenCloseSubMenu);
+    console.log("level", level);
+    console.log("**********************************");
+  };
 
   return (
     <div
@@ -72,7 +134,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
               {isArray(dataMenu[key]) && (
                 <button
                   className="submenu-links__menu"
-                  onClick={() => printLinks({ dataMenu, key })}
+                  onClick={() => handlePrintLinks({ dataMenu, key })}
                 >
                   {key}
                 </button>
@@ -82,11 +144,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
                 <>
                   <button
                     className="submenu-links__menu"
-                    onClick={() =>
-                      setIsOpenCloseSubMenu((prev) =>
-                        prev ? (prev === key ? "" : key) : key
-                      )
-                    }
+                    onClick={() => handleSetIsOpenCloseSubMenu(key)}
                   >
                     {key}
                     <span className="svg-arrow-right">{svgIconArrowRight}</span>
@@ -97,6 +155,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
                     dataMenu={dataMenu[key]}
                     firstMenu={false}
                     level={level + 1}
+                    activesMenu={activesMenu}
                   />
                 </>
               )}
