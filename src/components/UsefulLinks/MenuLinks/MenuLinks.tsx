@@ -163,9 +163,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   return (
     <div
       className={
-        !firstMenu
-          ? "submenu-links__links col-0 col-md-4"
-          : "submenu-links__parent col-0 col-md-4"
+        !firstMenu ? "submenu-links__links " : "submenu-links__parent "
       }
     >
       <ul className="submenu-list">{menuItems}</ul>

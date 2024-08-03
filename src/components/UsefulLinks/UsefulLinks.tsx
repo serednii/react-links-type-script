@@ -1,11 +1,9 @@
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
-import { Routes, Route } from "react-router-dom";
 import "./UsefulLinks.scss";
 import { MyContext } from "../../MyContext";
 import { useContext, useEffect, useRef, useCallback } from "react";
-import { ArticlePage } from "../../pages/ArticlePage";
-import { NotFoundPage } from "../../pages/NotFoundPage";
+import Article from "../Article/Article";
 
 type MenuFunctionType = (value: string) => void;
 
@@ -16,7 +14,7 @@ type ActiveMenuType = {
 };
 
 function UsefulLinks() {
-  const { dataMain } = useContext(MyContext);
+  const { dataMain, idArticle } = useContext(MyContext);
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -53,8 +51,8 @@ function UsefulLinks() {
   }, [handleClickOutside, handleEscapePress]);
 
   return (
-    <section className="useFull_links flex-grow-1 d-flex flex-column  p-3 rounded-4">
-      <div className="row px-3">
+    <section className="useFull_links flex-grow-1 d-flex flex-column rounded-4">
+      <main className="main">
         <div ref={menuRef} className="menu-wrapper">
           <MenuLinks
             key={"MenuLinks"}
@@ -64,12 +62,10 @@ function UsefulLinks() {
             activesMenu={activesMenu.current}
           />
         </div>
-        <Routes>
-          <Route path="/" element={<ListLinks />} />
-          <Route path="/article/:id" element={<ArticlePage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </div>
+
+        <ListLinks />
+        {idArticle && <Article />}
+      </main>
     </section>
   );
 }

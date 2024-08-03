@@ -16,11 +16,14 @@ const MyProvider = ({ children }) => {
     const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
-    const [error, setError] = useState(null)
-    const [info, setInfo] = useState(null)
+    const [error, setError] = useState("")
+    const [info, setInfo] = useState("")
+    const [idArticle, setIdArticle] = useState("")
     const password = "text code"
     const value =
     {
+        idArticle,
+        setIdArticle,
         info,
         password,
         setInfo,

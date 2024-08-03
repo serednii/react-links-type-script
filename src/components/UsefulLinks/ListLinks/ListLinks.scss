@@ -8,11 +8,10 @@ a {
     border: 1px solid black;
     padding: 20px;
     background-color: rgb(23 89 103);
-    max-width: 1000px;
-    // min-width: 300px;
     min-height: 300px;
     color: white;
     border-radius: 20px;
+    margin-bottom: 20px;
 
     .list-group-item {
         background-color: #cbcbcc;
@@ -24,5 +23,11 @@ a {
         a:hover {
             color: rgb(89, 20, 20) !important;
         }
+    }
+}
+
+@media(max-width: 576px) {
+    .list_links {
+        grid-column: 1/3;
     }
 }

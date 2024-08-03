@@ -3,7 +3,6 @@ import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../MyContext";
 import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 
 import { getDataGraphQLLink } from "../../../functions/requestHelpersGraphQL";
 
@@ -21,14 +20,11 @@ const ListLinks: React.FC = () => {
     isChangeLinks,
     setIsChangeLinks,
     setIsModal,
+    setIdArticle,
   } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
-  // sluiceLinks.current = dataMenu[key];
-  dataMenu &&
-    key &&
-    dataMenu[key] &&
-    console.log("dataMenu[key]  ", dataMenu[key]);
-  //   console.log(key);
+  const [dataArrayElements, setDataArrayElements] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
 
   function plusOther() {}
 
@@ -39,12 +35,10 @@ const ListLinks: React.FC = () => {
     setIsButtonPlus(false);
   }
 
-  const [dataArrayElements, setDataArrayElements] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  //   console.log(dataArrayElements);
   useEffect(() => {
     const fetchLinks = async () => {
       if (dataMenu && key && dataMenu[key]) {
+        setLoading(true);
         const elements = await Promise.all(
           dataMenu[key].map(async (obj: any) => {
             let resLink: ILink | null = null;
@@ -73,6 +67,7 @@ const ListLinks: React.FC = () => {
 
                 {obj.link && (
                   <a
+                    onClick={() => setIdArticle("")}
                     className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                     target="_blank"
                     href={link}
@@ -81,15 +76,17 @@ const ListLinks: React.FC = () => {
                     {obj.name}
                   </a>
                 )}
-
-                {obj.article && <Link to={`/article/${id}`}>{obj.name}</Link>}
+                {obj.article ? (
+                  <button onClick={() => setIdArticle(id)}>{obj.name}</button>
+                ) : null}
               </li>
             );
           })
         );
         setDataArrayElements(elements);
+        setLoading(false);
       } else {
-        setDataArrayElements(<p>Немає даних</p>);
+        setDataArrayElements(<p>No data available</p>);
       }
       setLoading(false);
     };
@@ -97,8 +94,18 @@ const ListLinks: React.FC = () => {
     fetchLinks();
   }, [dataMenu, key]);
 
+  if (loading) {
+    return (
+      <div className="list_links">
+        <h1>Loading...</h1>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="list_links col-12 col-md-8">
+    <div className="list_links">
       <div className="d-grid gap-2 d-md-flex justify-content-md-end">
         {dataArrayElements && dataArrayElements.length > 0 && (
           <Button

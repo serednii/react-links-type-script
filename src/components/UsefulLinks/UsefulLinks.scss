@@ -1,8 +1,19 @@
-.menu-wrapper {
-    display: contents;
-
+.main {
+    display: grid;
+    grid-template-columns: minmax(150px, 18%) auto;
+    row-gap: 20px;
 }
+
+
 
 ul {
     padding-left: 0;
+}
+
+@media(max-width: 576px) {
+    .main {
+        display: block;
+        position: relative;
+
+    }
 }
