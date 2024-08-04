@@ -6,7 +6,6 @@ const MyContext = createContext();
 const MyProvider = ({ children }) => {
     const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
-    const [isModal, setIsModal] = useState(false);
     const [dataMain, setDataMain] = useState({});
     const [openAddCategory, setOpenAddCategory] = useState(false);
     const [listLinkData, setListLinkData] = useState({});
@@ -35,8 +34,6 @@ const MyProvider = ({ children }) => {
         sluiceLinks,
         isChangeLink,
         setIsChangeLink,
-        isModal,
-        setIsModal,
     };
 
     return (

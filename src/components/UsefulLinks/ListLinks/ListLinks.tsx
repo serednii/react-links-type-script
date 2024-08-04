@@ -4,7 +4,7 @@ import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  // setModal,
+  setModal,
   // setAddCategoryOther,
   setChangeLinks,
   setButtonPlus,
@@ -25,7 +25,6 @@ const ListLinks: React.FC = () => {
     listLinkData,
     setIsAddCategoryOther,
 
-    setIsModal,
     setIdArticle,
     update,
   } = useContext(MyContext);
@@ -43,7 +42,7 @@ const ListLinks: React.FC = () => {
   function plusOther() {}
 
   function handlerChangeLink() {
-    setIsModal(true);
+    dispatch(setModal(true));
     dispatch(setChangeLinks(!isChangeLinks));
     setIsAddCategoryOther(false);
     dispatch(setButtonPlus(false));

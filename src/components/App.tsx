@@ -23,6 +23,9 @@ const App: React.FC = () => {
   const { info, error, isChangeLinks, isLoading } = useSelector(
     (state: RootState) => state.ui
   );
+
+  const { updateDataMain } = useSelector((state: RootState) => state.data);
+
   const tempDataRef = useRef<{ test: string } | null>(null);
   const animation = useSpring({
     opacity: error ? 1 : 0,
@@ -42,7 +45,7 @@ const App: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [updateDataMain]);
 
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">

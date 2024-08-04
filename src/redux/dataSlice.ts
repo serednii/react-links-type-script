@@ -6,6 +6,7 @@ interface DataState {
     sluice: any;
     idArticle: string;
     update: boolean;
+    updateDataMain: boolean;
 }
 
 const initialState: DataState = {
@@ -14,6 +15,7 @@ const initialState: DataState = {
     sluice: {},
     idArticle: '',
     update: false,
+    updateDataMain: false,
 };
 
 const dataSlice = createSlice({
@@ -35,6 +37,9 @@ const dataSlice = createSlice({
         setUpdate(state) {
             state.update = !state.update;
         },
+        toggleUpdateDataMain(state) {
+            state.updateDataMain = !state.updateDataMain;
+        },
     },
 });
 
@@ -44,6 +49,7 @@ export const {
     setSluice,
     setIdArticle,
     setUpdate,
+    toggleUpdateDataMain,
 } = dataSlice.actions;
 
 export default dataSlice.reducer;

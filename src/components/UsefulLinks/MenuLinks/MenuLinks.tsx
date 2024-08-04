@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { useSelector, useDispatch } from "react-redux";
-// import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
+import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
 // import { setSluice, setListLinkData } from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
 import "./MenuLinks.scss";
@@ -33,14 +33,12 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   level = 0,
   activesMenu,
 }) => {
-  const { setListLinkData, setIsAddCategoryOther, setSluice, setIsModal } =
+  const { setListLinkData, setIsAddCategoryOther, setSluice } =
     useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
-
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
-
   const handlePrintLinks = useCallback(
     (obj: IMenuLInks): void => {
       const findIndex = activesMenu.findIndex((e) => e.level === level);
@@ -58,11 +56,11 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
 
   const plusOther = useCallback(
     (data: IMenuLInks): void => {
-      setIsModal(true);
+      dispatch(setModal(true));
       setIsAddCategoryOther(true);
       setSluice(data); //передаємо ссилку на бєкт який будемо міняти
     },
-    [setIsModal, setIsAddCategoryOther, setSluice]
+    [setIsAddCategoryOther, setSluice]
   );
 
   useEffect(() => {

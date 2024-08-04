@@ -11,24 +11,21 @@ import {
   addDataGraphQLArticle,
 } from "../../functions/requestHelpersGraphQL";
 import { useSelector, useDispatch } from "react-redux";
-import { setError } from "../../redux/uiSlice";
-// import { setDataMain, setUpdate } from "../../redux/dataSlice";
+import { setError, setModal } from "../../redux/uiSlice";
+import {
+  setDataMain,
+  setUpdate,
+  toggleUpdateDataMain,
+} from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
-  const {
-    sluice,
-    dataMain,
-    setDataMain,
-    setIsAddCategoryOther,
-    isModal,
-    setIsModal,
-    setUpdate,
-  } = useContext(MyContext);
+  const { sluice, dataMain, setDataMain, setIsAddCategoryOther, setUpdate } =
+    useContext(MyContext);
 
   const dispatch = useDispatch();
-  // const { isModal } = useSelector((state: RootState) => state.ui);
+  const { isModal } = useSelector((state: RootState) => state.ui);
   // const { dataMain, sluice } = useSelector((state: RootState) => state.data);
 
   const [name, setName] = useState<string>("");
@@ -39,19 +36,16 @@ const AddCategory: React.FC = () => {
   const [article, setArticle] = useState("");
 
   let { dataMenu, key } = sluice;
+
+  // console.log(dataMenu === sluice.dataMenu);
   console.log("sluice", sluice);
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    tempRef.current.push(dataMain);
-    setDataMain((prev: any) => {
-      return { ...prev };
+    postDataGraphQLMenu(dataMain).then(() => {
+      dispatch(toggleUpdateDataMain()); //restart
     });
-    setTimeout(() => {
-      setDataMain(tempRef.current.pop());
-    });
-    postDataGraphQLMenu(dataMain);
     handleCloseModal();
   };
 
@@ -98,11 +92,16 @@ const AddCategory: React.FC = () => {
       dispatch(setError("Error control code"));
       return;
     }
+    console.log(dataMenu[key]);
+    console.log(dataMenu);
+    console.log(key);
+    delete sluice.dataMenu[key];
+    console.log(sluice.dataMenu);
 
-    delete dataMenu[key];
-    if (Object.keys(dataMenu).length === 0) {
-      dataMenu = null;
+    if (Object.keys(sluice.dataMenu).length === 0) {
+      console.log("add null");
     }
+
     OtherAction();
     setIsAddCategoryOther(false);
   };
@@ -120,7 +119,7 @@ const AddCategory: React.FC = () => {
       dispatch(setError("Add name Link"));
       return;
     }
-
+    console.log(dataMenu);
     if (dataMenu[key] === null) dataMenu[key] = {};
     if (isObject(dataMenu[key])) dataMenu[key][name] = null;
     OtherAction();
@@ -224,7 +223,7 @@ const AddCategory: React.FC = () => {
   };
 
   const handleCloseModal = () => {
-    setIsModal(false);
+    dispatch(setModal(false));
     setTimeout(() => setIsAddCategoryOther(false), 1000);
   };
 

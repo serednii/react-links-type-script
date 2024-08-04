@@ -18,7 +18,7 @@ import MyInput from "../formComponents/MyInput/MyInput";
 import { PASSWORD } from "../../const";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  // setModal,
+  setModal,
   setChangeLinks,
   setError,
   setInfo,
@@ -33,20 +33,13 @@ interface LinkData {
 
 const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
-  // const { isModal } = useSelector((state: RootState) => state.ui);
+  const { isModal } = useSelector((state: RootState) => state.ui);
   // const { listLinkData, dataMain } = useSelector(
   //   (state: RootState) => state.data
   // );
 
-  const {
-    listLinkData,
-    setDataMain,
-    dataMain,
-    isModal,
-    setIsModal,
-
-    setUpdate,
-  } = useContext(MyContext);
+  const { listLinkData, setDataMain, dataMain, setUpdate } =
+    useContext(MyContext);
   const { dataMenu, key } = listLinkData;
   console.log("listLinkData", listLinkData);
 
@@ -268,7 +261,9 @@ const ChangeLinks: React.FC = () => {
           dispatch(setError("Error Deleted Link"));
         });
     }
+    console.log(dataMenu);
     console.log(dataMenu[key]);
+
     if (dataMenu[key].length === 0) {
       dataMenu[key] = null;
     }
@@ -276,7 +271,7 @@ const ChangeLinks: React.FC = () => {
   };
 
   const handleCloseModal = () => {
-    setIsModal(false);
+    dispatch(setModal(false));
     setTimeout(() => dispatch(setChangeLinks(false), 1000));
   };
 
