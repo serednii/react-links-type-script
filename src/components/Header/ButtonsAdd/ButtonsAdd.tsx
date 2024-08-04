@@ -1,9 +1,14 @@
 import React from "react";
-import "./ButtonsAdd.scss";
 // import { Button } from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
 import { MyContext } from "../../../MyContext";
 import { useContext } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setButtonPlus, setChangeLinks } from "../../../redux/uiSlice";
+
+import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import "./ButtonsAdd.scss";
 
 const ButtonsAdd: React.FC = () => {
   const {
@@ -11,13 +16,14 @@ const ButtonsAdd: React.FC = () => {
     setIsAddCategoryMain,
     setIsAddCategoryOther,
     setIsButtonPlus,
-    setIsChangeLinks,
     isButtonPlus,
   } = useContext(MyContext);
+  const dispatch = useDispatch();
+  // const { isButtonPlus } = useSelector((state: RootState) => state.ui);
 
   function handlerOpenPopup(): void {
     setIsButtonPlus(!isButtonPlus);
-    setIsChangeLinks(false);
+    dispatch(setChangeLinks(false));
   }
 
   function plusMain(): void {

@@ -19,7 +19,7 @@ import { PASSWORD } from "../../const";
 import { useSelector, useDispatch } from "react-redux";
 import {
   // setModal,
-  // setChangeLinks,
+  setChangeLinks,
   setError,
   setInfo,
 } from "../../redux/uiSlice";
@@ -44,8 +44,7 @@ const ChangeLinks: React.FC = () => {
     dataMain,
     isModal,
     setIsModal,
-    setIsChangeLinks,
-    // setInfo,
+
     setUpdate,
   } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
@@ -278,7 +277,7 @@ const ChangeLinks: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModal(false);
-    setTimeout(() => setIsChangeLinks(false), 1000);
+    setTimeout(() => dispatch(setChangeLinks(false), 1000));
   };
 
   return (

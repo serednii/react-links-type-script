@@ -1,10 +1,19 @@
-import "./ListLinks.scss";
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../MyContext";
 import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setModal,
+  setChangeLinks,
+  setAddCategoryOther,
+  setButtonPlus,
+} from "../../../redux/uiSlice";
+import { setIdArticle } from "../../../redux/dataSlice";
+import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
 import { getDataGraphQLLink } from "../../../functions/requestHelpersGraphQL";
+
+import "./ListLinks.scss";
 
 interface ILink {
   id: string;
@@ -16,13 +25,17 @@ const ListLinks: React.FC = () => {
     listLinkData,
     setIsAddCategoryOther,
     setIsButtonPlus,
-    isChangeLink,
-    isChangeLinks,
-    setIsChangeLinks,
     setIsModal,
     setIdArticle,
     update,
   } = useContext(MyContext);
+
+  const dispatch = useDispatch();
+  const { isChangeLinks } = useSelector((state: RootState) => state.ui);
+  // const { listLinkData, update } = useSelector(
+  //   (state: RootState) => state.data
+  // );
+
   const { dataMenu, key } = listLinkData;
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +44,7 @@ const ListLinks: React.FC = () => {
 
   function handlerChangeLink() {
     setIsModal(true);
-    setIsChangeLinks(!isChangeLinks);
+    dispatch(setChangeLinks(!isChangeLinks));
     setIsAddCategoryOther(false);
     setIsButtonPlus(false);
   }
@@ -60,7 +73,7 @@ const ListLinks: React.FC = () => {
 
             return (
               <li key={id} className="list-group-item  rounded-3 mb-2">
-                {isChangeLink && (
+                {isChangeLinks && (
                   <span className="link-plus" onClick={() => plusOther()}>
                     {svgIconChange}
                   </span>

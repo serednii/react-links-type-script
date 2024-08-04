@@ -7,7 +7,6 @@ const MyProvider = ({ children }) => {
     const URL_SERVER = "http://smm.zzz.com.ua/api/api.php";
     const [isLoading, setIsLoading] = useState(false);
     const [isButtonPlus, setIsButtonPlus] = useState(false);
-    const [isChangeLinks, setIsChangeLinks] = useState(false);
     const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
     const [isModal, setIsModal] = useState(false);
@@ -50,8 +49,6 @@ const MyProvider = ({ children }) => {
         sluiceLinks,
         isChangeLink,
         setIsChangeLink,
-        isChangeLinks,
-        setIsChangeLinks,
         isModal,
         setIsModal,
     };

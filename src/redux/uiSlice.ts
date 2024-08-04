@@ -6,7 +6,6 @@ export interface UIState {
     isButtonPlus: boolean;
     isChangeLinks: boolean;
     isAddCategoryOther: boolean;
-    isChangeLink: boolean;
     isModal: boolean;
     openAddCategory: boolean;
     error: string;
@@ -18,7 +17,6 @@ const initialState: UIState = {
     isButtonPlus: false,
     isChangeLinks: false,
     isAddCategoryOther: false,
-    isChangeLink: false,
     isModal: false,
     openAddCategory: false,
     error: '',
@@ -41,9 +39,6 @@ const uiSlice = createSlice({
         setAddCategoryOther(state, action: PayloadAction<boolean>) {
             state.isAddCategoryOther = action.payload;
         },
-        setChangeLink(state, action: PayloadAction<boolean>) {
-            state.isChangeLink = action.payload;
-        },
         setModal(state, action: PayloadAction<boolean>) {
             state.isModal = action.payload;
         },
@@ -64,7 +59,6 @@ export const {
     setButtonPlus,
     setChangeLinks,
     setAddCategoryOther,
-    setChangeLink,
     setModal,
     setOpenAddCategory,
     setError,
