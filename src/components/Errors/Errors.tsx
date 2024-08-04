@@ -1,18 +1,19 @@
-import { useContext, useRef, useState } from "react";
-import { MyContext } from "../../MyContext";
+import { useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../../redux/uiSlice";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import "./errors.scss";
 const Errors = () => {
-  const { error, setError } = useContext(MyContext);
+  const { error } = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch();
   const modalParent = useRef(null);
   const modalContent = useRef(null);
 
   console.log("modalParent", modalParent);
   const [a, setA] = useState("");
-const handleClose = () => {
-setError(null)
-
-}
-
+  const handleClose = () => {
+    dispatch(setError(""));
+  };
 
   return (
     // <div

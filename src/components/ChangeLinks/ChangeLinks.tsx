@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   // setModal,
   // setChangeLinks,
-  // setError,
+  setError,
   setInfo,
 } from "../../redux/uiSlice";
 import { setDataMain, setUpdate } from "../../redux/dataSlice";
@@ -45,7 +45,6 @@ const ChangeLinks: React.FC = () => {
     isModal,
     setIsModal,
     setIsChangeLinks,
-    setError,
     // setInfo,
     setUpdate,
   } = useContext(MyContext);
@@ -96,7 +95,7 @@ const ChangeLinks: React.FC = () => {
           setLink(res.link);
         })
         .catch(() => {
-          setError("Error get Link");
+          dispatch(setError("Error get Link"));
         });
     }
 
@@ -108,7 +107,7 @@ const ChangeLinks: React.FC = () => {
           setArticle(res.article);
         })
         .catch(() => {
-          setError("Error get Article");
+          dispatch(setError("Error get Article"));
         });
     }
     setName(dataMenu[key][+select].name);
@@ -121,17 +120,17 @@ const ChangeLinks: React.FC = () => {
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
     if (!urlPattern.test(link)) {
-      setError("Error synaxsys url");
+      dispatch(setError("Error synaxsys url"));
       return;
     }
 
@@ -146,7 +145,7 @@ const ChangeLinks: React.FC = () => {
           "Error, failed to add link. Please try again later",
           error
         );
-        setError("Error, failed to add link. Please try again later");
+        dispatch(setError("Error, failed to add link. Please try again later"));
       });
   };
 
@@ -156,12 +155,12 @@ const ChangeLinks: React.FC = () => {
     event.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
@@ -177,7 +176,9 @@ const ChangeLinks: React.FC = () => {
           "Error, failed to add link. Please try again later",
           error
         );
-        setError("Error, failed to add Article. Please try again later");
+        dispatch(
+          setError("Error, failed to add Article. Please try again later")
+        );
       });
   };
 
@@ -187,18 +188,18 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
     if (isTypeSelect.current === "link") {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
       if (!urlPattern.test(link)) {
-        setError("Error synaxsys url");
+        dispatch(setError("Error synaxsys url"));
         return;
       }
       updateDataGraphQLLink(selectId.current, link)
@@ -212,7 +213,7 @@ const ChangeLinks: React.FC = () => {
         })
         .catch((error) => {
           console.error("Error, update link Please try again later", error);
-          setError("Error  update link. Please try again later");
+          dispatch(setError("Error  update link. Please try again later"));
         });
     }
 
@@ -228,7 +229,7 @@ const ChangeLinks: React.FC = () => {
         })
         .catch((error) => {
           console.error("Error, update article. Please try again later", error);
-          setError("Error, update Article. Please try again later");
+          dispatch(setError("Error, update Article. Please try again later"));
         });
     }
 
@@ -241,7 +242,7 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
@@ -254,7 +255,7 @@ const ChangeLinks: React.FC = () => {
           dispatch(setInfo("Successful Deleted Link"));
         })
         .catch((error) => {
-          setError("Error Deleted Link", error);
+          dispatch(setError("Error Deleted Link"));
         });
     }
 
@@ -265,7 +266,7 @@ const ChangeLinks: React.FC = () => {
           dispatch(setInfo("Successful Deleted Article"));
         })
         .catch((error) => {
-          setError("Error Deleted Link", error);
+          dispatch(setError("Error Deleted Link"));
         });
     }
     console.log(dataMenu[key]);

@@ -10,6 +10,10 @@ import {
   addDataGraphQLLink,
   addDataGraphQLArticle,
 } from "../../functions/requestHelpersGraphQL";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../../redux/uiSlice";
+// import { setDataMain, setUpdate } from "../../redux/dataSlice";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
@@ -20,9 +24,12 @@ const AddCategory: React.FC = () => {
     setIsAddCategoryOther,
     isModal,
     setIsModal,
-    setError,
     setUpdate,
   } = useContext(MyContext);
+
+  const dispatch = useDispatch();
+  // const { isModal } = useSelector((state: RootState) => state.ui);
+  // const { dataMain, sluice } = useSelector((state: RootState) => state.data);
 
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
@@ -66,12 +73,12 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
@@ -88,7 +95,7 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
@@ -105,12 +112,12 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
@@ -125,12 +132,12 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
@@ -145,17 +152,17 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 
     if (!urlPattern.test(link)) {
-      setError("Error synaxsys link");
+      dispatch(setError("Error synaxsys link"));
       return;
     }
 
@@ -186,12 +193,12 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (textCode !== PASSWORD) {
-      setError("Error control code");
+      dispatch(setError("Error control code"));
       return;
     }
 
     if (!name.length) {
-      setError("Add name Link");
+      dispatch(setError("Add name Link"));
       return;
     }
 

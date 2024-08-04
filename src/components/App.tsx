@@ -7,15 +7,9 @@ import { MyContext } from "../MyContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
 
-// import { setError } from "../redux/uiSlice";
+import { setError } from "../redux/uiSlice";
 // import { setDataMain } from "../redux/dataSlice";
-import {
-  getDataGraphQLMenu,
-  getDataGraphQLLink,
-  addDataGraphQLLink,
-  addDataGraphQLArticle,
-} from "../functions/requestHelpersGraphQL";
-import { Footer } from "./Footer/Footer";
+import { getDataGraphQLMenu } from "../functions/requestHelpersGraphQL";
 import "../App.css";
 import Errors from "./Errors/Errors";
 // import { useTransition } from "react-spring";
@@ -29,11 +23,10 @@ const App: React.FC = () => {
     dataMain,
     isAddCategoryOther,
     isChangeLinks,
-    error,
-    setError,
   } = useContext(MyContext);
 
-  const { info } = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch();
+  const { info, error } = useSelector((state: RootState) => state.ui);
   const tempDataRef = useRef<{ test: string } | null>(null);
   const animation = useSpring({
     opacity: error ? 1 : 0,
@@ -48,7 +41,7 @@ const App: React.FC = () => {
         setDataMain(data);
       } catch (error) {
         console.error("Error fetching menu data:", error);
-        setError("Error fetching menu data:");
+        dispatch(setError("Error fetching menu data:"));
       }
     };
 
