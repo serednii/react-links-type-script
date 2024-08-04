@@ -5,8 +5,8 @@ interface DataState {
     listLinkData: any;
     sluice: any;
     idArticle: string;
-    updateListLink: boolean;
-    updateDataMain: boolean;
+    updateListLink: boolean;//
+    updateDataMain: boolean;//
 }
 
 const initialState: DataState = {
@@ -34,10 +34,10 @@ const dataSlice = createSlice({
         setIdArticle(state, action: PayloadAction<string>) {
             state.idArticle = action.payload;
         },
-        toggleUpdateListLink(state) {
+        toggleUpdateListLink(state) {//
             state.updateListLink = !state.updateListLink;
         },
-        toggleUpdateDataMain(state) {
+        toggleUpdateDataMain(state) {//
             state.updateDataMain = !state.updateDataMain;
         },
     },

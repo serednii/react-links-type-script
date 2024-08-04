@@ -1,15 +1,14 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { getDataGraphQLArticle } from "../../functions/requestHelpersGraphQL";
-import { MyContext } from "../../MyContext";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../../redux/uiSlice";
+
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 
 import "./article.scss";
 const Article: React.FC = () => {
-  const { idArticle } = useContext(MyContext);
   const dispatch = useDispatch();
-  // const { idArticle } = useSelector((state: RootState) => state.data);
+  const { idArticle } = useSelector((state: RootState) => state.data);
   const [html, setHtml] = useState("");
   const [loadingArticle, setLoadingArticle] = useState(true);
   useEffect(() => {

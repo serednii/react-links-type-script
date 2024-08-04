@@ -21,7 +21,7 @@ interface ILink {
 }
 
 const ListLinks: React.FC = () => {
-  const { listLinkData, setIdArticle } = useContext(MyContext);
+  const { listLinkData } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
@@ -75,7 +75,7 @@ const ListLinks: React.FC = () => {
 
                 {obj.link && (
                   <a
-                    onClick={() => setIdArticle("")}
+                    onClick={() => dispatch(setIdArticle(""))}
                     className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                     target="_blank"
                     href={link}
@@ -85,7 +85,9 @@ const ListLinks: React.FC = () => {
                   </a>
                 )}
                 {obj.article ? (
-                  <button onClick={() => setIdArticle(id)}>{obj.name}</button>
+                  <button onClick={() => dispatch(setIdArticle(id))}>
+                    {obj.name}
+                  </button>
                 ) : null}
               </li>
             );
