@@ -3,7 +3,7 @@ import { getDataGraphQLArticle } from "../../functions/requestHelpersGraphQL";
 import { MyContext } from "../../MyContext";
 
 import "./article.scss";
-const Article = () => {
+const Article: React.FC = () => {
   const { setError, idArticle } = useContext(MyContext);
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(true);
