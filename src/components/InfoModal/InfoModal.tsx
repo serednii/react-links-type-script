@@ -1,12 +1,16 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { MyContext } from "../../MyContext";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setInfo } from "../../redux/uiSlice";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import "./InfoModal.scss";
+
 const InfoModal = () => {
-  const { info, setInfo } = useContext(MyContext);
+  const { info } = useSelector((state: RootState) => state.ui);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
-      setInfo(null);
+      dispatch(setInfo(""));
     }, 3000);
   }, []);
 

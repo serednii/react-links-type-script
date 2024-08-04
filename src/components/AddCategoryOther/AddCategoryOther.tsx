@@ -4,6 +4,7 @@ import { MyContext } from "../../MyContext";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import { PASSWORD } from "../../const";
 import {
   postDataGraphQLMenu,
   addDataGraphQLLink,
@@ -20,7 +21,6 @@ const AddCategory: React.FC = () => {
     isModal,
     setIsModal,
     setError,
-    password,
     setUpdate,
   } = useContext(MyContext);
 
@@ -65,7 +65,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -87,7 +87,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -104,7 +104,7 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -124,7 +124,7 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -144,7 +144,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -185,7 +185,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
