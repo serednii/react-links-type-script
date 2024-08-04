@@ -21,17 +21,14 @@ interface ILink {
 }
 
 const ListLinks: React.FC = () => {
-  const {
-    listLinkData,
-    setIdArticle,
-    update,
-  } = useContext(MyContext);
+  const { listLinkData, setIdArticle } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
-  // const { listLinkData, update } = useSelector(
-  //   (state: RootState) => state.data
-  // );
+  const {
+    // listLinkData,
+    updateListLink,
+  } = useSelector((state: RootState) => state.data);
 
   const { dataMenu, key } = listLinkData;
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
@@ -103,7 +100,7 @@ const ListLinks: React.FC = () => {
     };
 
     fetchLinks();
-  }, [dataMenu, key, update]);
+  }, [dataMenu, key, updateListLink]);
 
   if (loadingList) {
     return (

@@ -14,14 +14,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
 import {
   setDataMain,
-  setUpdate,
+  toggleUpdateListLink,
   toggleUpdateDataMain,
 } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
-  const { sluice, dataMain, setDataMain, setUpdate } = useContext(MyContext);
+  const { sluice, dataMain, setDataMain } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
@@ -174,7 +174,7 @@ const AddCategory: React.FC = () => {
           });
         OtherAction();
         setName("");
-        setUpdate((prev: boolean) => !prev);
+        dispatch(toggleUpdateListLink());
       })
       .catch((error) => {
         console.error(
@@ -210,7 +210,7 @@ const AddCategory: React.FC = () => {
           });
         OtherAction();
         setName("");
-        setUpdate((prev: boolean) => !prev);
+        dispatch(toggleUpdateListLink());
       })
       .catch((error) => {
         console.error(

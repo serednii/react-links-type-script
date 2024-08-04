@@ -23,7 +23,7 @@ import {
   setError,
   setInfo,
 } from "../../redux/uiSlice";
-import { setDataMain, setUpdate } from "../../redux/dataSlice";
+import { setDataMain, toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 
 interface LinkData {
@@ -38,8 +38,7 @@ const ChangeLinks: React.FC = () => {
   //   (state: RootState) => state.data
   // );
 
-  const { listLinkData, setDataMain, dataMain, setUpdate } =
-    useContext(MyContext);
+  const { listLinkData, setDataMain, dataMain } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
   console.log("listLinkData", listLinkData);
 
@@ -129,7 +128,7 @@ const ChangeLinks: React.FC = () => {
     addDataGraphQLLink(link)
       .then((resId) => {
         dataMenu[key].push({ name, link: resId });
-        setUpdate((prev: boolean) => !prev);
+        dispatch(toggleUpdateListLink());
         OtherAction();
       })
       .catch((error) => {
@@ -159,7 +158,7 @@ const ChangeLinks: React.FC = () => {
     addDataGraphQLArticle(article)
       .then((resId) => {
         dataMenu[key].push({ name, article: resId });
-        setUpdate((prev: boolean) => !prev);
+        dispatch(toggleUpdateListLink());
         OtherAction();
         setName("");
       })
@@ -200,7 +199,7 @@ const ChangeLinks: React.FC = () => {
             name,
             link: selectId.current,
           };
-          setUpdate((prev: boolean) => !prev);
+          dispatch(toggleUpdateListLink());
           dispatch(setInfo("Update link"));
         })
         .catch((error) => {
@@ -216,7 +215,7 @@ const ChangeLinks: React.FC = () => {
             name,
             article: selectId.current,
           };
-          setUpdate((prev: boolean) => !prev);
+          dispatch(toggleUpdateListLink());
           dispatch(setInfo("Update Article"));
         })
         .catch((error) => {
@@ -243,7 +242,7 @@ const ChangeLinks: React.FC = () => {
     if (deletedLink[0].link) {
       deleteDataGraphQLLink(deletedLink[0].link)
         .then((res) => {
-          setUpdate((prev: boolean) => !prev);
+          dispatch(toggleUpdateListLink());
           dispatch(setInfo("Successful Deleted Link"));
         })
         .catch((error) => {
@@ -254,7 +253,7 @@ const ChangeLinks: React.FC = () => {
     if (deletedLink[0].article) {
       deleteDataGraphQLArticle(deletedLink[0].article)
         .then((res) => {
-          setUpdate((prev: boolean) => !prev);
+          dispatch(toggleUpdateListLink());
           dispatch(setInfo("Successful Deleted Article"));
         })
         .catch((error) => {

@@ -10,12 +10,9 @@ const MyProvider = ({ children }) => {
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
     const [idArticle, setIdArticle] = useState("")
-    const [update, setUpdate] = useState(false)
     const password = "text code"
     const value =
     {
-        update,
-        setUpdate,
         idArticle,
         setIdArticle,
         password,

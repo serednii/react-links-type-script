@@ -5,7 +5,7 @@ interface DataState {
     listLinkData: any;
     sluice: any;
     idArticle: string;
-    update: boolean;
+    updateListLink: boolean;
     updateDataMain: boolean;
 }
 
@@ -14,7 +14,7 @@ const initialState: DataState = {
     listLinkData: {},
     sluice: {},
     idArticle: '',
-    update: false,
+    updateListLink: false,
     updateDataMain: false,
 };
 
@@ -34,8 +34,8 @@ const dataSlice = createSlice({
         setIdArticle(state, action: PayloadAction<string>) {
             state.idArticle = action.payload;
         },
-        setUpdate(state) {
-            state.update = !state.update;
+        toggleUpdateListLink(state) {
+            state.updateListLink = !state.updateListLink;
         },
         toggleUpdateDataMain(state) {
             state.updateDataMain = !state.updateDataMain;
@@ -48,7 +48,7 @@ export const {
     setListLinkData,
     setSluice,
     setIdArticle,
-    setUpdate,
+    toggleUpdateListLink,
     toggleUpdateDataMain,
 } = dataSlice.actions;
 
