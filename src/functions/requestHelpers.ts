@@ -1,6 +1,6 @@
 
 import { TGetData, TOutDataServer, IRequestOptions } from '../components/types/data';
-export const getData: TGetData = async (url, setIsLoading) => {
+export const getData: TGetData = async (url, setLoading) => {
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -8,7 +8,7 @@ export const getData: TGetData = async (url, setIsLoading) => {
     } catch (error) {
         throw new Error(String(error));
     } finally {
-        setIsLoading(false);
+        setLoading(false);
     }
 }
 

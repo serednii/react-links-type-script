@@ -38,7 +38,7 @@ const ListLinks: React.FC = () => {
 
   const { dataMenu, key } = listLinkData;
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingList, setLoadingList] = useState(true);
 
   function plusOther() {}
 
@@ -52,7 +52,7 @@ const ListLinks: React.FC = () => {
   useEffect(() => {
     const fetchLinks = async () => {
       if (dataMenu && key && dataMenu[key]) {
-        setLoading(true);
+        setLoadingList(true);
         const elements = await Promise.all(
           dataMenu[key].map(async (obj: any) => {
             let resLink: ILink | null = null;
@@ -98,17 +98,17 @@ const ListLinks: React.FC = () => {
           })
         );
         setDataArrayElements(elements);
-        setLoading(false);
+        setLoadingList(false);
       } else {
         setDataArrayElements(<p>No data available</p>);
       }
-      setLoading(false);
+      setLoadingList(false);
     };
 
     fetchLinks();
   }, [dataMenu, key, update]);
 
-  if (loading) {
+  if (loadingList) {
     return (
       <div className="list_links">
         <h1>Loading...</h1>

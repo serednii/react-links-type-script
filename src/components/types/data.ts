@@ -7,7 +7,7 @@ export interface ITodo {
 
 type TSetLoading = (b: boolean) => void;
 
-export type TGetData = (url: string, setIsLoading: TSetLoading) => any;
+export type TGetData = (url: string, setLoading: TSetLoading) => any;
 export type TOutDataServer = (url: string, method: 'PUT' | 'POP' | 'PUSH' | 'PATCH' | 'DELETE', newData: any) => any;
 
 

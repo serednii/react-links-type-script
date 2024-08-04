@@ -11,9 +11,9 @@ const Article: React.FC = () => {
   const dispatch = useDispatch();
   // const { idArticle } = useSelector((state: RootState) => state.data);
   const [html, setHtml] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loadingArticle, setLoadingArticle] = useState(true);
   useEffect(() => {
-    setLoading(true);
+    setLoadingArticle(true);
     getDataGraphQLArticle(idArticle)
       .then((res) => {
         console.log(res);
@@ -23,12 +23,12 @@ const Article: React.FC = () => {
         console.error("Error download Article", error);
         dispatch(setError("Error download Article"));
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingArticle(false));
     console.log(idArticle);
   }, [idArticle]);
 
   console.log("HTML", html);
-  if (loading) {
+  if (loadingArticle) {
     return (
       <div className="article">
         <h1>Loading...</h1>

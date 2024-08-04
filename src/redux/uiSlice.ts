@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 export interface UIState {
-    isLoading: boolean;
+    isLoading: boolean;//
     isButtonPlus: boolean;
-    isChangeLinks: boolean;
+    isChangeLinks: boolean;//
     isAddCategoryOther: boolean;
     isModal: boolean;
     openAddCategory: boolean;
-    error: string;
-    info: string;
+    error: string;//
+    info: string;//
 }
 
 const initialState: UIState = {
@@ -27,13 +27,13 @@ const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-        setLoading(state, action: PayloadAction<boolean>) {
+        setLoading(state, action: PayloadAction<boolean>) {//
             state.isLoading = action.payload;
         },
         setButtonPlus(state, action: PayloadAction<boolean>) {
             state.isButtonPlus = action.payload;
         },
-        setChangeLinks(state, action: PayloadAction<boolean>) {
+        setChangeLinks(state, action: PayloadAction<boolean>) {//
             state.isChangeLinks = action.payload;
         },
         setAddCategoryOther(state, action: PayloadAction<boolean>) {
@@ -45,10 +45,10 @@ const uiSlice = createSlice({
         setOpenAddCategory(state, action: PayloadAction<boolean>) {
             state.openAddCategory = action.payload;
         },
-        setError(state, action: PayloadAction<string>) {
+        setError(state, action: PayloadAction<string>) {//
             state.error = action.payload;
         },
-        setInfo(state, action: PayloadAction<string>) {
+        setInfo(state, action: PayloadAction<string>) {//
             state.info = action.payload;
         },
     },

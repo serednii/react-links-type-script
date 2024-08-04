@@ -4,8 +4,6 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const URL_SERVER = "http://smm.zzz.com.ua/api/api.php";
-    const [isLoading, setIsLoading] = useState(false);
     const [isButtonPlus, setIsButtonPlus] = useState(false);
     const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
@@ -15,8 +13,6 @@ const MyProvider = ({ children }) => {
     const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
-    const [error, setError] = useState("")
-    const [info, setInfo] = useState("")
     const [idArticle, setIdArticle] = useState("")
     const [update, setUpdate] = useState(false)
     const password = "text code"
@@ -28,12 +24,6 @@ const MyProvider = ({ children }) => {
         setIdArticle,
         info,
         password,
-        setInfo,
-        error,
-        setError,
-        URL_SERVER,
-        isLoading,
-        setIsLoading,
         dataMain,
         setDataMain,
         openAddCategory,
