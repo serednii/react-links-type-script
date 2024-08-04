@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UIState {
     isLoading: boolean;//
-    isButtonPlus: boolean;
+    isButtonPlus: boolean;//
     isChangeLinks: boolean;//
     isAddCategoryOther: boolean;
     isModal: boolean;
@@ -30,7 +30,7 @@ const uiSlice = createSlice({
         setLoading(state, action: PayloadAction<boolean>) {//
             state.isLoading = action.payload;
         },
-        setButtonPlus(state, action: PayloadAction<boolean>) {
+        setButtonPlus(state, action: PayloadAction<boolean>) {//
             state.isButtonPlus = action.payload;
         },
         setChangeLinks(state, action: PayloadAction<boolean>) {//

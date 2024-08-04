@@ -4,9 +4,9 @@ import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setModal,
+  // setModal,
+  // setAddCategoryOther,
   setChangeLinks,
-  setAddCategoryOther,
   setButtonPlus,
 } from "../../../redux/uiSlice";
 import { setIdArticle } from "../../../redux/dataSlice";
@@ -24,7 +24,7 @@ const ListLinks: React.FC = () => {
   const {
     listLinkData,
     setIsAddCategoryOther,
-    setIsButtonPlus,
+
     setIsModal,
     setIdArticle,
     update,
@@ -46,7 +46,7 @@ const ListLinks: React.FC = () => {
     setIsModal(true);
     dispatch(setChangeLinks(!isChangeLinks));
     setIsAddCategoryOther(false);
-    setIsButtonPlus(false);
+    dispatch(setButtonPlus(false));
   }
 
   useEffect(() => {
@@ -118,6 +118,7 @@ const ListLinks: React.FC = () => {
       </div>
     );
   }
+
   return (
     <div className="list_links">
       <div className="d-grid gap-2 d-md-flex justify-content-md-end">

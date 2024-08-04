@@ -1,8 +1,12 @@
-import "./MenuLinks.scss";
 import { MyContext } from "../../../MyContext";
 import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
+import { useSelector, useDispatch } from "react-redux";
+// import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
+// import { setSluice, setListLinkData } from "../../../redux/dataSlice";
+import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import "./MenuLinks.scss";
 
 type MenuFunctionType = (value: string) => void;
 type ActiveMenuType = {
@@ -29,13 +33,12 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   level = 0,
   activesMenu,
 }) => {
-  const {
-    setListLinkData,
-    setIsAddCategoryOther,
-    isButtonPlus,
-    setSluice,
-    setIsModal,
-  } = useContext(MyContext);
+  const { setListLinkData, setIsAddCategoryOther, setSluice, setIsModal } =
+    useContext(MyContext);
+
+  const dispatch = useDispatch();
+  const { isButtonPlus } = useSelector((state: RootState) => state.ui);
+
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
 
   const handlePrintLinks = useCallback(

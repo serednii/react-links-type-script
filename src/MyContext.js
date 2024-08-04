@@ -4,7 +4,6 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const [isButtonPlus, setIsButtonPlus] = useState(false);
     const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
     const [isModal, setIsModal] = useState(false);
@@ -22,7 +21,6 @@ const MyProvider = ({ children }) => {
         setUpdate,
         idArticle,
         setIdArticle,
-        info,
         password,
         dataMain,
         setDataMain,
@@ -32,8 +30,6 @@ const MyProvider = ({ children }) => {
         setListLinkData,
         isAddCategoryOther,
         setIsAddCategoryOther,
-        isButtonPlus,
-        setIsButtonPlus,
         sluice,
         setSluice,
         sluiceLinks,
