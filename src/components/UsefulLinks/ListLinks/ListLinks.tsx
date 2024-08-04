@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
-  // setAddCategoryOther,
+  setAddCategoryOther,
   setChangeLinks,
   setButtonPlus,
 } from "../../../redux/uiSlice";
@@ -23,8 +23,6 @@ interface ILink {
 const ListLinks: React.FC = () => {
   const {
     listLinkData,
-    setIsAddCategoryOther,
-
     setIdArticle,
     update,
   } = useContext(MyContext);
@@ -44,7 +42,7 @@ const ListLinks: React.FC = () => {
   function handlerChangeLink() {
     dispatch(setModal(true));
     dispatch(setChangeLinks(!isChangeLinks));
-    setIsAddCategoryOther(false);
+    dispatch(setAddCategoryOther(false));
     dispatch(setButtonPlus(false));
   }
 

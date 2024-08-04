@@ -4,7 +4,6 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const [isAddCategoryOther, setIsAddCategoryOther] = useState(false);
     const [isChangeLink, setIsChangeLink] = useState(false);
     const [dataMain, setDataMain] = useState({});
     const [openAddCategory, setOpenAddCategory] = useState(false);
@@ -27,8 +26,6 @@ const MyProvider = ({ children }) => {
         setOpenAddCategory,
         listLinkData,
         setListLinkData,
-        isAddCategoryOther,
-        setIsAddCategoryOther,
         sluice,
         setSluice,
         sluiceLinks,

@@ -6,7 +6,7 @@ export interface UIState {
     isButtonPlus: boolean;//
     isChangeLinks: boolean;//
     isAddCategoryOther: boolean;
-    isModal: boolean;
+    isModal: boolean;//
     openAddCategory: boolean;
     error: string;//
     info: string;//

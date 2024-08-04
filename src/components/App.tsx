@@ -17,12 +17,11 @@ import { useSpring, animated } from "@react-spring/web";
 import InfoModal from "./InfoModal/InfoModal";
 
 const App: React.FC = () => {
-  const { setDataMain, dataMain, isAddCategoryOther } = useContext(MyContext);
+  const { setDataMain, dataMain } = useContext(MyContext);
 
   const dispatch = useDispatch();
-  const { info, error, isChangeLinks, isLoading } = useSelector(
-    (state: RootState) => state.ui
-  );
+  const { info, error, isChangeLinks, isLoading, isAddCategoryOther } =
+    useSelector((state: RootState) => state.ui);
 
   const { updateDataMain } = useSelector((state: RootState) => state.data);
 

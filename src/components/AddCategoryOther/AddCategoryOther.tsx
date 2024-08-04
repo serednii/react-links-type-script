@@ -11,7 +11,7 @@ import {
   addDataGraphQLArticle,
 } from "../../functions/requestHelpersGraphQL";
 import { useSelector, useDispatch } from "react-redux";
-import { setError, setModal } from "../../redux/uiSlice";
+import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
 import {
   setDataMain,
   setUpdate,
@@ -21,8 +21,7 @@ import { RootState } from "../../redux/rootReducer"; // Убедитесь, чт
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
-  const { sluice, dataMain, setDataMain, setIsAddCategoryOther, setUpdate } =
-    useContext(MyContext);
+  const { sluice, dataMain, setDataMain, setUpdate } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
@@ -103,7 +102,7 @@ const AddCategory: React.FC = () => {
     }
 
     OtherAction();
-    setIsAddCategoryOther(false);
+    dispatch(setAddCategoryOther(false));
   };
 
   const handleAddSubMenu = (
@@ -224,7 +223,7 @@ const AddCategory: React.FC = () => {
 
   const handleCloseModal = () => {
     dispatch(setModal(false));
-    setTimeout(() => setIsAddCategoryOther(false), 1000);
+    setTimeout(() => dispatch(setAddCategoryOther(false), 1000));
   };
 
   return (
@@ -291,7 +290,7 @@ const AddCategory: React.FC = () => {
               </button>
               <button
                 className="add-other__btn"
-                onClick={() => setIsAddCategoryOther(false)}
+                onClick={() => dispatch(setAddCategoryOther(false))}
               >
                 No
               </button>

@@ -33,8 +33,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   level = 0,
   activesMenu,
 }) => {
-  const { setListLinkData, setIsAddCategoryOther, setSluice } =
-    useContext(MyContext);
+  const { setListLinkData, setSluice } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
@@ -57,10 +56,10 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   const plusOther = useCallback(
     (data: IMenuLInks): void => {
       dispatch(setModal(true));
-      setIsAddCategoryOther(true);
+      dispatch(setAddCategoryOther(true));
       setSluice(data); //передаємо ссилку на бєкт який будемо міняти
     },
-    [setIsAddCategoryOther, setSluice]
+    [setSluice]
   );
 
   useEffect(() => {
