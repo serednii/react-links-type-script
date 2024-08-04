@@ -6,7 +6,6 @@ const MyContext = createContext();
 const MyProvider = ({ children }) => {
     const [isChangeLink, setIsChangeLink] = useState(false);
     const [dataMain, setDataMain] = useState({});
-    const [openAddCategory, setOpenAddCategory] = useState(false);
     const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
     const sluiceLinks = useRef({});
@@ -22,8 +21,6 @@ const MyProvider = ({ children }) => {
         password,
         dataMain,
         setDataMain,
-        openAddCategory,
-        setOpenAddCategory,
         listLinkData,
         setListLinkData,
         sluice,
