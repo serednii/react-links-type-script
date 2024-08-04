@@ -15,6 +15,16 @@ import {
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
+import { PASSWORD } from "../../const";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  // setModal,
+  // setChangeLinks,
+  // setError,
+  setInfo,
+} from "../../redux/uiSlice";
+import { setDataMain, setUpdate } from "../../redux/dataSlice";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 
 interface LinkData {
   name: string;
@@ -22,6 +32,12 @@ interface LinkData {
 }
 
 const ChangeLinks: React.FC = () => {
+  const dispatch = useDispatch();
+  // const { isModal } = useSelector((state: RootState) => state.ui);
+  // const { listLinkData, dataMain } = useSelector(
+  //   (state: RootState) => state.data
+  // );
+
   const {
     listLinkData,
     setDataMain,
@@ -30,8 +46,7 @@ const ChangeLinks: React.FC = () => {
     setIsModal,
     setIsChangeLinks,
     setError,
-    setInfo,
-    password,
+    // setInfo,
     setUpdate,
   } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
@@ -105,7 +120,7 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -140,7 +155,7 @@ const ChangeLinks: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -171,7 +186,7 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -193,7 +208,7 @@ const ChangeLinks: React.FC = () => {
             link: selectId.current,
           };
           setUpdate((prev: boolean) => !prev);
-          setInfo("Update link");
+          dispatch(setInfo("Update link"));
         })
         .catch((error) => {
           console.error("Error, update link Please try again later", error);
@@ -209,7 +224,7 @@ const ChangeLinks: React.FC = () => {
             article: selectId.current,
           };
           setUpdate((prev: boolean) => !prev);
-          setInfo("Update Article");
+          dispatch(setInfo("Update Article"));
         })
         .catch((error) => {
           console.error("Error, update article. Please try again later", error);
@@ -225,7 +240,7 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== password) {
+    if (textCode !== PASSWORD) {
       setError("Error control code");
       return;
     }
@@ -236,7 +251,7 @@ const ChangeLinks: React.FC = () => {
       deleteDataGraphQLLink(deletedLink[0].link)
         .then((res) => {
           setUpdate((prev: boolean) => !prev);
-          setInfo("Successful Deleted Link");
+          dispatch(setInfo("Successful Deleted Link"));
         })
         .catch((error) => {
           setError("Error Deleted Link", error);
@@ -247,7 +262,7 @@ const ChangeLinks: React.FC = () => {
       deleteDataGraphQLArticle(deletedLink[0].article)
         .then((res) => {
           setUpdate((prev: boolean) => !prev);
-          setInfo("Successful Deleted Article");
+          dispatch(setInfo("Successful Deleted Article"));
         })
         .catch((error) => {
           setError("Error Deleted Link", error);

@@ -4,6 +4,11 @@ import UsefulLinks from "./UsefulLinks/UsefulLinks";
 import AddCategoryOther from "./AddCategoryOther/AddCategoryOther";
 import ChangeLinks from "./ChangeLinks/ChangeLinks";
 import { MyContext } from "../MyContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
+
+// import { setError } from "../redux/uiSlice";
+// import { setDataMain } from "../redux/dataSlice";
 import {
   getDataGraphQLMenu,
   getDataGraphQLLink,
@@ -26,8 +31,9 @@ const App: React.FC = () => {
     isChangeLinks,
     error,
     setError,
-    info,
   } = useContext(MyContext);
+
+  const { info } = useSelector((state: RootState) => state.ui);
   const tempDataRef = useRef<{ test: string } | null>(null);
   const animation = useSpring({
     opacity: error ? 1 : 0,
