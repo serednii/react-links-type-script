@@ -12,6 +12,8 @@ import {
   updateDataGraphQLArticle,
   deleteDataGraphQLArticle,
 } from "../../functions/requestHelpersGraphQL";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../mobx/store";
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
@@ -23,7 +25,7 @@ import {
   setError,
   setInfo,
 } from "../../redux/uiSlice";
-import { setDataMain, toggleUpdateListLink } from "../../redux/dataSlice";
+import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 
 interface LinkData {
@@ -34,11 +36,8 @@ interface LinkData {
 const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
-  // const { listLinkData, dataMain } = useSelector(
-  //   (state: RootState) => state.data
-  // );
 
-  const { listLinkData, setDataMain, dataMain } = useContext(MyContext);
+  const { listLinkData } = useContext(MyContext);
   const { dataMenu, key } = listLinkData;
   console.log("listLinkData", listLinkData);
 
@@ -52,8 +51,8 @@ const ChangeLinks: React.FC = () => {
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
-    setDataMain({ ...dataMain });
-    postDataGraphQLMenu(dataMain);
+    todoStore.setDataMain({ ...todoStore.dataMain });
+    postDataGraphQLMenu(todoStore.dataMain);
     setName("");
     setLink("");
     setSelectActionLink("");
@@ -454,4 +453,4 @@ const ChangeLinks: React.FC = () => {
   );
 };
 
-export default ChangeLinks;
+export default observer(ChangeLinks);

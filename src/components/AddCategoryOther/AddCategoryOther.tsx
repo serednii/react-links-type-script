@@ -5,6 +5,8 @@ import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import { PASSWORD } from "../../const";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../mobx/store";
 import {
   postDataGraphQLMenu,
   addDataGraphQLLink,
@@ -13,7 +15,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
 import {
-  setDataMain,
   toggleUpdateListLink,
   toggleUpdateDataMain,
 } from "../../redux/dataSlice";
@@ -21,15 +22,14 @@ import { RootState } from "../../redux/rootReducer"; // Убедитесь, чт
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
-  const { sluice, dataMain, setDataMain } = useContext(MyContext);
+  const { sluice } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
-  // const { dataMain, sluice } = useSelector((state: RootState) => state.data);
+  // const {  sluice } = useSelector((state: RootState) => state.data);
 
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
-  const tempRef = useRef<any>([]);
   const [selectAction, setSelectAction] = useState<string>("");
   const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
@@ -42,7 +42,7 @@ const AddCategory: React.FC = () => {
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    postDataGraphQLMenu(dataMain).then(() => {
+    postDataGraphQLMenu(todoStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
     });
     handleCloseModal();
@@ -381,4 +381,4 @@ const AddCategory: React.FC = () => {
   );
 };
 
-export default AddCategory;
+export default observer(AddCategory);

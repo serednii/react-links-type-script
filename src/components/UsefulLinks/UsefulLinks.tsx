@@ -1,10 +1,15 @@
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
-import "./UsefulLinks.scss";
 import { MyContext } from "../../MyContext";
 import { useContext, useEffect, useRef, useCallback } from "react";
 import Article from "../Article/Article";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../mobx/store";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+
+import "./UsefulLinks.scss";
 type MenuFunctionType = (value: string) => void;
 
 type ActiveMenuType = {
@@ -14,9 +19,9 @@ type ActiveMenuType = {
 };
 
 function UsefulLinks() {
-  const { dataMain, idArticle } = useContext(MyContext);
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { idArticle } = useSelector((state: RootState) => state.data);
 
   const clearClickMenu = useCallback(() => {
     activesMenu.current.forEach((e) => e.setIsOpenCloseSubMenu(""));
@@ -56,7 +61,7 @@ function UsefulLinks() {
         <div ref={menuRef} className="menu-wrapper">
           <MenuLinks
             key={"MenuLinks"}
-            dataMenu={dataMain}
+            dataMenu={todoStore.dataMain}
             firstMenu={true}
             level={0}
             activesMenu={activesMenu.current}
@@ -70,4 +75,4 @@ function UsefulLinks() {
   );
 }
 
-export default UsefulLinks;
+export default observer(UsefulLinks);

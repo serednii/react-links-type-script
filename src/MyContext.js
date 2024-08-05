@@ -4,24 +4,14 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const [isChangeLink, setIsChangeLink] = useState(false);
-    const [dataMain, setDataMain] = useState({});
     const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
-    const sluiceLinks = useRef({});
-    const password = "text code"
     const value =
     {
-        password,
-        dataMain,
-        setDataMain,
         listLinkData,
         setListLinkData,
         sluice,
         setSluice,
-        sluiceLinks,
-        isChangeLink,
-        setIsChangeLink,
     };
 
     return (

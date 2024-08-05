@@ -1,14 +1,13 @@
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect } from "react";
 import Header from "./Header/Header";
 import UsefulLinks from "./UsefulLinks/UsefulLinks";
 import AddCategoryOther from "./AddCategoryOther/AddCategoryOther";
 import ChangeLinks from "./ChangeLinks/ChangeLinks";
-import { MyContext } from "../MyContext";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
-
+import { observer } from "mobx-react-lite";
+import todoStore from "../mobx/store";
 import { setError } from "../redux/uiSlice";
-// import { setDataMain } from "../redux/dataSlice";
 import { getDataGraphQLMenu } from "../functions/requestHelpersGraphQL";
 import "../App.css";
 import Errors from "./Errors/Errors";
@@ -17,8 +16,6 @@ import { useSpring, animated } from "@react-spring/web";
 import InfoModal from "./InfoModal/InfoModal";
 
 const App: React.FC = () => {
-  const { setDataMain, dataMain } = useContext(MyContext);
-
   const dispatch = useDispatch();
   const { info, error, isChangeLinks, isLoading, isAddCategoryOther } =
     useSelector((state: RootState) => state.ui);
@@ -36,7 +33,7 @@ const App: React.FC = () => {
       try {
         const data = await getDataGraphQLMenu();
         console.log(data);
-        setDataMain(data);
+        todoStore.setDataMain(data);
       } catch (error) {
         console.error("Error fetching menu data:", error);
         dispatch(setError("Error fetching menu data:"));
@@ -61,4 +58,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default observer(App);
