@@ -4,7 +4,7 @@
 
 
 
-
+const url = "http://localhost:3040/graphql/";
 
 
 const formatObjectForGraphQL = (obj: any) => {
@@ -50,7 +50,7 @@ const makeRequest = async (query: string,) => {
 };
 
 
-const url = "http://localhost:3040/graphql/";
+
 
 
 const queryGetMenu = `

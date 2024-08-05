@@ -1,12 +1,11 @@
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { MyContext } from "../../../MyContext";
-import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
 import todoStore from "../../../mobx/store";
 import { useSelector, useDispatch } from "react-redux";
 import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
-// import { setSluice} from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
 import "./MenuLinks.scss";
 
@@ -17,20 +16,20 @@ type ActiveMenuType = {
   level: number;
 };
 
-interface IMenuLInksProps {
+interface IMenuLinksProps {
   dataMenu: Record<string, any>;
   firstMenu: boolean;
   level: number;
   activesMenu: ActiveMenuType[];
 }
 
-interface IMenuLInks {
+interface IMenuLinks {
   dataMenu: Record<string, any>;
   key: string;
 }
 
-const MenuLinks: React.FC<IMenuLInksProps> = ({
-  dataMenu,
+const MenuLinks: React.FC<IMenuLinksProps> = ({
+  dataMenu = {},
   firstMenu,
   level = 0,
   activesMenu,
@@ -40,8 +39,9 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
+
   const handlePrintLinks = useCallback(
-    (obj: IMenuLInks): void => {
+    (obj: IMenuLinks): void => {
       const findIndex = activesMenu.findIndex((e) => e.level === level);
       const slice = activesMenu.slice(findIndex);
 
@@ -52,30 +52,28 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
       console.log("activesMenu", activesMenu);
       todoStore.setListLinkData(obj);
     },
-    [activesMenu, level, todoStore.setListLinkData]
+    [activesMenu, level]
   );
 
   const plusOther = useCallback(
-    (data: IMenuLInks): void => {
+    (data: IMenuLinks): void => {
       dispatch(setModal(true));
       dispatch(setAddCategoryOther(true));
-      setSluice(data); //передаємо ссилку на бєкт який будемо міняти
+      setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
     },
-    [setSluice]
+    [dispatch, setSluice]
   );
 
   useEffect(() => {
-    // Оновлюємо activesMenu після зміни isOpenCloseSubMenu
     if (isOpenCloseSubMenu) {
       activesMenu.push({
-        setIsOpenCloseSubMenu: setIsOpenCloseSubMenu,
+        setIsOpenCloseSubMenu,
         isOpenCloseSubMenu,
         level,
       });
     }
   }, [isOpenCloseSubMenu, activesMenu, level]);
 
-  //Closes nested menus
   const handleSetIsOpenCloseSubMenu = useCallback(
     (key: string) => {
       const findIndex = activesMenu.findIndex((e) => e.level === level);
@@ -100,7 +98,9 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
     [activesMenu, level]
   );
 
-  const menuItems = useMemo(() => {
+  const menuItems = () => {
+    if (!dataMenu) return null;
+
     return Object.keys(dataMenu).map((key: string) => (
       <li
         key={key}
@@ -151,16 +151,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
         )}
       </li>
     ));
-  }, [
-    dataMenu,
-    isButtonPlus,
-    isOpenCloseSubMenu,
-    handlePrintLinks,
-    handleSetIsOpenCloseSubMenu,
-    activesMenu,
-    level,
-    plusOther,
-  ]);
+  };
 
   return (
     <div
@@ -168,7 +159,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
         !firstMenu ? "submenu-links__links " : "submenu-links__parent "
       }
     >
-      <ul className="submenu-list">{menuItems}</ul>
+      <ul className="submenu-list">{menuItems()}</ul>
     </div>
   );
 };

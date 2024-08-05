@@ -26,7 +26,7 @@ const ListLinks: React.FC = () => {
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
   const { updateListLink } = useSelector((state: RootState) => state.data);
 
-  const { dataMenu, key } = todoStore.listLinkData;
+  const { dataMenu, key } = todoStore?.listLinkData || {};
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(true);
 
@@ -93,12 +93,12 @@ const ListLinks: React.FC = () => {
         setLoadingList(false);
       } else {
         setDataArrayElements(<p>No data available</p>);
+        setLoadingList(false);
       }
-      setLoadingList(false);
     };
 
     fetchLinks();
-  }, [dataMenu, key, updateListLink]);
+  }, [dataMenu, key, updateListLink, isChangeLinks]);
 
   if (loadingList) {
     return (
