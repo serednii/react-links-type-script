@@ -24,7 +24,7 @@ const Article: React.FC = () => {
       })
       .finally(() => setLoadingArticle(false));
     console.log(idArticle);
-  }, [idArticle]);
+  }, [idArticle, dispatch]);
 
   console.log("HTML", html);
   if (loadingArticle) {

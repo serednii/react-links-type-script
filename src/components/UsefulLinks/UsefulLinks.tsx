@@ -1,7 +1,6 @@
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
-import { MyContext } from "../../MyContext";
-import { useContext, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Article from "../Article/Article";
 import { observer } from "mobx-react-lite";
 import todoStore from "../../mobx/store";

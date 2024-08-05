@@ -10,7 +10,6 @@ const Errors = () => {
   const modalContent = useRef(null);
 
   console.log("modalParent", modalParent);
-  const [a, setA] = useState("");
   const handleClose = () => {
     dispatch(setError(""));
   };

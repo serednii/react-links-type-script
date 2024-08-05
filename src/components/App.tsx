@@ -22,11 +22,11 @@ const App: React.FC = () => {
 
   const { updateDataMain } = useSelector((state: RootState) => state.data);
 
-  const tempDataRef = useRef<{ test: string } | null>(null);
-  const animation = useSpring({
-    opacity: error ? 1 : 0,
-    transform: error ? "translateY(0)" : "translateY(-100%)",
-  });
+  // const tempDataRef = useRef<{ test: string } | null>(null);
+  // const animation = useSpring({
+  //   opacity: error ? 1 : 0,
+  //   transform: error ? "translateY(0)" : "translateY(-100%)",
+  // });
 
   useEffect(() => {
     const fetchData = async () => {

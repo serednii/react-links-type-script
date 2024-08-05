@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import { MyContext } from "../../../MyContext";
+import React, { useEffect, useState, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";

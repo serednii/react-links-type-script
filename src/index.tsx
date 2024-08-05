@@ -4,7 +4,6 @@ import "reset-css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.scss";
 import App from "./components/App";
-import { MyProvider } from "./MyContext";
 import { BrowserRouter as Router } from "react-router-dom"; // Додайте цей імпорт
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -17,11 +16,9 @@ root.render(
     <Router>
       {" "}
       {/* Обгорніть ваш додаток в Router */}
-      <MyProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </MyProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
     </Router>
   </React.StrictMode>
 );

@@ -1,11 +1,4 @@
-
-
-
-
-
-
 const url = "http://localhost:3040/graphql/";
-
 
 const formatObjectForGraphQL = (obj: any) => {
   if (typeof obj !== "object" || obj === null) {
@@ -205,21 +198,13 @@ export const postDataGraphQLMenu = async (menu: object)=> {
 
   try{
     const mut = mutationMenu(menu)
-    const data = await makeRequest(mutationMenu(menu));
+    const data = await makeRequest(mut);
     console.log(data)
   }catch(error){
     console.error("Error mutation Menu:", error);
     throw error;
   }
 }
-
-// interface ILink {
-//   id: string;
-//   link: string;
-// }
-
-
-
 
 
 

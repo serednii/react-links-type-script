@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./AddCategoryOther.scss";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";

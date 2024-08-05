@@ -57,13 +57,13 @@ const ChangeLinks: React.FC = () => {
     setArticle("");
   };
 
-  const handleSetText = (value: string) => {
-    // value = value.trim().replaceAll(" ", "_");
-    const regex = /^[a-zA-Z_0-9]*$/;
-    if (regex.test(value)) {
-      setName(value);
-    }
-  };
+  // const handleSetText = (value: string) => {
+  //   // value = value.trim().replaceAll(" ", "_");
+  //   const regex = /^[a-zA-Z_0-9]*$/;
+  //   if (regex.test(value)) {
+  //     setName(value);
+  //   }
+  // };
 
   const handlerSetSelectAction = (select: string) => {
     if (select === "Empty") {
