@@ -1,7 +1,8 @@
-import { useContext, useState, useEffect } from "react";
-import { MyContext } from "../../../MyContext";
+import { useState, useEffect } from "react";
 import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../../mobx/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -21,16 +22,11 @@ interface ILink {
 }
 
 const ListLinks: React.FC = () => {
-  const { listLinkData } = useContext(MyContext);
-
   const dispatch = useDispatch();
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
-  const {
-    // listLinkData,
-    updateListLink,
-  } = useSelector((state: RootState) => state.data);
+  const { updateListLink } = useSelector((state: RootState) => state.data);
 
-  const { dataMenu, key } = listLinkData;
+  const { dataMenu, key } = todoStore.listLinkData;
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(true);
 
@@ -132,4 +128,4 @@ const ListLinks: React.FC = () => {
     </div>
   );
 };
-export default ListLinks;
+export default observer(ListLinks);

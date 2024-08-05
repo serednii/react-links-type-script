@@ -1,6 +1,5 @@
 import "./ChangeLinks.scss";
-import { useContext, useRef, useState } from "react";
-import { MyContext } from "../../MyContext";
+import { useRef, useState } from "react";
 import {
   postDataGraphQLMenu,
   getDataGraphQLLink,
@@ -37,9 +36,8 @@ const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
 
-  const { listLinkData } = useContext(MyContext);
-  const { dataMenu, key } = listLinkData;
-  console.log("listLinkData", listLinkData);
+  const { dataMenu, key } = todoStore.listLinkData;
+  console.log("listLinkData", todoStore.listLinkData);
 
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");

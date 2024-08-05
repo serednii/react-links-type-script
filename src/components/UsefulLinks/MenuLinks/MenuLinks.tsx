@@ -2,9 +2,11 @@ import { MyContext } from "../../../MyContext";
 import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { isObject, isArray } from "../../../functions/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../../mobx/store";
 import { useSelector, useDispatch } from "react-redux";
 import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
-// import { setSluice, setListLinkData } from "../../../redux/dataSlice";
+// import { setSluice} from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
 import "./MenuLinks.scss";
 
@@ -33,7 +35,7 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   level = 0,
   activesMenu,
 }) => {
-  const { setListLinkData, setSluice } = useContext(MyContext);
+  const { setSluice } = useContext(MyContext);
 
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
@@ -48,9 +50,9 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
         slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
       }
       console.log("activesMenu", activesMenu);
-      setListLinkData(obj);
+      todoStore.setListLinkData(obj);
     },
-    [activesMenu, level, setListLinkData]
+    [activesMenu, level, todoStore.setListLinkData]
   );
 
   const plusOther = useCallback(
@@ -171,4 +173,4 @@ const MenuLinks: React.FC<IMenuLInksProps> = ({
   );
 };
 
-export default MenuLinks;
+export default observer(MenuLinks);

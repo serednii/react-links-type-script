@@ -4,12 +4,9 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const [listLinkData, setListLinkData] = useState({});
     const [sluice, setSluice] = useState({});
     const value =
     {
-        listLinkData,
-        setListLinkData,
         sluice,
         setSluice,
     };
