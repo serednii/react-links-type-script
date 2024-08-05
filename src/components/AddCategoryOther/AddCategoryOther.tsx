@@ -1,6 +1,5 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./AddCategoryOther.scss";
-import { MyContext } from "../../MyContext";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
@@ -22,11 +21,8 @@ import { RootState } from "../../redux/rootReducer"; // Убедитесь, чт
 import MyInput from "../formComponents/MyInput/MyInput";
 
 const AddCategory: React.FC = () => {
-  const { sluice } = useContext(MyContext);
-
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
-  // const {  sluice } = useSelector((state: RootState) => state.data);
 
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
@@ -34,10 +30,8 @@ const AddCategory: React.FC = () => {
   const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
 
-  let { dataMenu, key } = sluice;
+  let { dataMenu, key } = todoStore.sluice || {};
 
-  // console.log(dataMenu === sluice.dataMenu);
-  console.log("sluice", sluice);
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
 
@@ -94,10 +88,10 @@ const AddCategory: React.FC = () => {
     console.log(dataMenu[key]);
     console.log(dataMenu);
     console.log(key);
-    delete sluice.dataMenu[key];
-    console.log(sluice.dataMenu);
+    delete dataMenu[key];
+    console.log(dataMenu);
 
-    if (Object.keys(sluice.dataMenu).length === 0) {
+    if (Object.keys(dataMenu).length === 0) {
       console.log("add null");
     }
 
@@ -139,7 +133,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    sluice.dataMenu[name] = null;
+    dataMenu[name] = null;
     OtherAction();
     setName("");
   };

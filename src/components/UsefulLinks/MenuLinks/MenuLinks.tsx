@@ -34,8 +34,6 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
   level = 0,
   activesMenu,
 }) => {
-  const { setSluice } = useContext(MyContext);
-
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
@@ -59,9 +57,9 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
     (data: IMenuLinks): void => {
       dispatch(setModal(true));
       dispatch(setAddCategoryOther(true));
-      setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
+      todoStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
     },
-    [dispatch, setSluice]
+    [dispatch, todoStore.setSluice]
   );
 
   useEffect(() => {

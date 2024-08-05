@@ -4,11 +4,9 @@ import React, { createContext, useState, useRef } from 'react';
 const MyContext = createContext();
 
 const MyProvider = ({ children }) => {
-    const [sluice, setSluice] = useState({});
     const value =
     {
-        sluice,
-        setSluice,
+
     };
 
     return (
