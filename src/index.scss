@@ -30,10 +30,19 @@ button:hover {
   // background-color: blueviolet;
 }
 
-#root {
+body {
   background-image: url('./images/gd2.jpg');
-  background-size: 100% 100%;
+  // background-size: 100% 100%;
+  min-height: 100wh;
+  min-width: 350px;
+
 }
+
+
+
+
+
+
 
 .modal-window {
   position: fixed;
@@ -41,20 +50,21 @@ button:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(#faebd7, 0.2);
+  background-color: rgba(#faebd7, 0);
   z-index: 10;
 
   &__wrapper {
     position: absolute;
+    padding: 10px;
     transition-duration: 1s;
     transition-behavior: allow-discrete;
     display: none;
     opacity: 0;
     // scale: 0;
-    max-width: 500px;
+    // max-width: 500px;
     width: 100%;
     min-height: 200px;
-    background-color: #628076;
+    background-color: #ced7d4;
     border: 1px solid red;
     border-radius: 15px;
     left: 50%;
@@ -72,4 +82,70 @@ button:hover {
       // scale: 0;
     }
   }
+
+  .add-category__text-code {
+    width: 250px;
+  }
+
+  .add-other-form {
+    // width: 40%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 10px;
+
+    label {
+      padding-left: 30px;
+      // position: relative;
+      cursor: pointer;
+    }
+
+    input {
+      left: 0;
+      top: 6px;
+      // position: absolute;
+      cursor: pointer;
+
+    }
+
+    &__btn {
+      margin-top: 20px;
+      max-width: 100px;
+      width: 100%;
+      background-color: aquamarine;
+      border-radius: 5px;
+    }
+
+    .jodit-react-container {
+      // position: fixed;
+      // height: 700px;
+    }
+
+    .jodit-workplace {
+      min-height: 300px !important;
+    }
+  }
+
+  .action-type {
+    position: relative;
+
+    input {
+      position: static;
+    }
+  }
+
+  .select-action {
+    width: 250px;
+  }
+
+  .add-category__btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .openmodal {
+    background-color: #faebd7;
+  }
+
 }

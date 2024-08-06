@@ -1,129 +1,221 @@
-import { useContext, useRef, useState } from "react";
+import { useState } from "react";
 import "./AddCategoryOther.scss";
-import Context from "../../Context";
 import { svgIconClose } from "../../icon";
 import { isObject, isArray } from "../../functions/functions";
-const AddCategory: React.FC = () => {
-  const {
-    URL_SERVER,
-    sluice,
-    dataMain,
-    setDataMain,
-    outDataServer,
-    setIsAddCategoryOther,
-    isModal,
-    setIsModal,
-  } = useContext(Context);
-  const [text, setText] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
-  const tempRef = useRef<any>([]);
+import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import { PASSWORD } from "../../const";
+import { observer } from "mobx-react-lite";
+import todoStore from "../../mobx/store";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
+import {
+  toggleUpdateListLink,
+  toggleUpdateDataMain,
+} from "../../redux/dataSlice";
+import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import MyInput from "../formComponents/MyInput/MyInput";
+
+const AddCategory: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isModal } = useSelector((state: RootState) => state.ui);
+
+  const [name, setName] = useState<string>("");
+  const [link, setLink] = useState<string>("");
   const [selectAction, setSelectAction] = useState<string>("");
   const [textCode, setTextCode] = useState<string>("");
+  const [article, setArticle] = useState("");
 
-  console.log(sluice);
+  let { dataMenu, key } = todoStore.sluice || {};
 
-  let { key } = sluice;
-  const isArr = isArray(sluice.dataMenu[key]);
-  const isObj = isObject(sluice.dataMenu[key]);
-  console.log(sluice.dataMenu);
+  const isArr = isArray(dataMenu[key]);
+  const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    tempRef.current.push(dataMain);
-    setDataMain((prev: any) => {
-      return { ...prev };
+    todoStore.updateMenu(todoStore.dataMain).then(() => {
+      dispatch(toggleUpdateDataMain()); //restart
     });
-    setTimeout(() => {
-      setDataMain(tempRef.current.pop());
-    });
-    // console.log(valueContext.dataMain);
-    outDataServer(URL_SERVER, "PUT", dataMain);
-    console.log(key);
+    handleCloseModal();
   };
 
   const handlerSetSelectAction = (select: string) => {
     setSelectAction(select);
-    if (select === "rename") setText(key);
+    if (select === "rename") setName(key);
   };
 
-  const renameMenu = (
+  const handleSetText = (value: string) => {
+    const regex = /^[a-zA-Z_0-9]*$/;
+    if (regex.test(value)) {
+      setName(value);
+    }
+  };
+
+  const handleRenameMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (textCode === "text code") {
-      sluice.dataMenu[text] = sluice.dataMenu[key];
-      delete sluice.dataMenu[key];
-      // valueContext.sluice = { dataMenu, key: text };
-      // key = text;
-      sluice.key = text;
-      // valueContext.sluice.dataMenu = dataMenu;
-      OtherAction();
-      setText(text);
+
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
     }
+
+    if (!name.length) {
+      dispatch(setError("Add name Link"));
+      return;
+    }
+
+    dataMenu[name] = dataMenu[key];
+    delete dataMenu[key];
+    key = name;
+    OtherAction();
+    setName(name);
   };
 
-  function deleteMenu(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  const handleDeleteMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
-    if (textCode === "text code") {
-      delete sluice.dataMenu[key];
-      if (Object.keys(sluice.dataMenu).length === 0) {
-        sluice.dataMenu = null;
-        console.log("delete null");
-      }
-      console.log(sluice.dataMenu);
-      OtherAction();
-      setIsAddCategoryOther(false);
-    }
-  }
 
-  function addSubMenu(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.preventDefault();
-    if (textCode === "text code") {
-      if (text.length > 2) {
-        if (sluice.dataMenu[key] === null) sluice.dataMenu[key] = {};
-        if (isObject(sluice.dataMenu[key])) sluice.dataMenu[key][text] = null;
-        console.log(sluice.dataMenu);
-        OtherAction();
-        setText("");
-      }
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
     }
-  }
+    console.log(dataMenu[key]);
+    console.log(dataMenu);
+    console.log(key);
+    delete dataMenu[key];
+    console.log(dataMenu);
 
-  function addMenu(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.preventDefault();
-    if (textCode === "text code") {
-      if (text.length > 2) {
-        sluice.dataMenu[text] = null;
-        // if (valueContext.sluice.dataMenu[key] === null) valueContext.sluice.dataMenu[key] = {}
-        // if (isObject(valueContext.sluice.dataMenu[key])) valueContext.sluice.dataMenu[key][text] = null
-        console.log(sluice.dataMenu);
-        OtherAction();
-        setText("");
-      }
+    if (Object.keys(dataMenu).length === 0) {
+      console.log("add null");
     }
-  }
 
-  function addLink(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    OtherAction();
+    dispatch(setAddCategoryOther(false));
+  };
+
+  const handleAddSubMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
-    if (textCode === "text code") {
-      const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-      if (text.length > 2 && urlPattern.test(url)) {
-        if (sluice.dataMenu[key] === null) sluice.dataMenu[key] = [];
-        if (isArray(sluice.dataMenu[key]))
-          sluice.dataMenu[key].push({
-            name: text,
-            link: url,
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
+    }
+
+    if (!name.length) {
+      dispatch(setError("Add name Link"));
+      return;
+    }
+    console.log(dataMenu);
+    if (dataMenu[key] === null) dataMenu[key] = {};
+    if (isObject(dataMenu[key])) dataMenu[key][name] = null;
+    OtherAction();
+    setName("");
+  };
+
+  const handleAddMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
+    }
+
+    if (!name.length) {
+      dispatch(setError("Add name Link"));
+      return;
+    }
+
+    dataMenu[name] = null;
+    OtherAction();
+    setName("");
+  };
+
+  const handleAddLink = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
+    }
+
+    if (!name.length) {
+      dispatch(setError("Add name Link"));
+      return;
+    }
+
+    if (!urlPattern.test(link)) {
+      dispatch(setError("Error synaxsys link"));
+      return;
+    }
+
+    todoStore
+      .addLink(link)
+      .then((resId) => {
+        if (dataMenu[key] === null) dataMenu[key] = [];
+        if (isArray(dataMenu[key]))
+          dataMenu[key].push({
+            name: name,
+            link: resId,
           });
-        console.log(sluice.dataMenu);
         OtherAction();
-        setText("");
-      }
+        setName("");
+        dispatch(toggleUpdateListLink());
+      })
+      .catch((error) => {
+        console.error(
+          "Error, failed to add link. Please try again later",
+          error
+        );
+        throw error;
+      });
+  };
+
+  const handleAddArticle = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    if (textCode !== PASSWORD) {
+      dispatch(setError("Error control code"));
+      return;
     }
-  }
+
+    if (!name.length) {
+      dispatch(setError("Add name Link"));
+      return;
+    }
+
+    todoStore
+      .addArticle(article)
+      .then((resId) => {
+        if (dataMenu[key] === null) dataMenu[key] = [];
+        if (isArray(dataMenu[key]))
+          dataMenu[key].push({
+            name: name,
+            article: resId,
+          });
+        OtherAction();
+        setName("");
+        dispatch(toggleUpdateListLink());
+      })
+      .catch((error) => {
+        console.error(
+          "Error, failed to add link. Please try again later",
+          error
+        );
+        throw error;
+      });
+  };
 
   const handleCloseModal = () => {
-    setIsModal(false);
-    setTimeout(() => setIsAddCategoryOther(false), 1000);
+    dispatch(setModal(false));
+    setTimeout(() => dispatch(setAddCategoryOther(false), 1000));
   };
 
   return (
@@ -132,14 +224,15 @@ const AddCategory: React.FC = () => {
         className={`add-category__wrapper modal-window__wrapper ${
           isModal ? "open" : ""
         }`}
+        style={{
+          maxWidth: selectAction === "add-article" ? "1200px" : "500px",
+        }}
       >
-        <input
-          className="add-category__text-code"
+        <MyInput
           value={textCode}
-          onChange={(e) => setTextCode(e.target.value)}
-          type="text"
+          type="password"
+          callbackFunction={setTextCode}
         />
-
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
@@ -147,6 +240,7 @@ const AddCategory: React.FC = () => {
         <form className="add-other-form">
           <label htmlFor="action-select">Select an action:</label>
           <select
+            className="form-select"
             name="action"
             id="action-select"
             onChange={(event) => handlerSetSelectAction(event.target.value)}
@@ -157,102 +251,129 @@ const AddCategory: React.FC = () => {
             {!isArr && <option value="add-sub-menu">Add sub menu</option>}
             <option value="add-menu">Add menu</option>
             {!isObj && <option value="add-link">Add link</option>}
+            {!isObj && <option value="add-article">Add Article</option>}
           </select>
-
-          {/* <button className='add-other__btn' onClick={() => handlerClosePopup()}>Add</button> */}
-
-          <div className="action">
-            {selectAction === "rename" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => renameMenu(event)}
-                >
-                  Rename menu
-                </button>
-              </div>
-            )}
-            {selectAction === "delete" && (
-              <div>
-                <p>Ви дійсно хочете видалити пункт меню {key}</p>
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => deleteMenu(event)}
-                >
-                  Delete menu
-                </button>
-                <button
-                  className="add-other__btn"
-                  onClick={() => setIsAddCategoryOther(false)}
-                >
-                  No
-                </button>
-              </div>
-            )}
-            {selectAction === "add-menu" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Add sub menu"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => addMenu(event)}
-                >
-                  Add menu
-                </button>
-              </div>
-            )}
-            {selectAction === "add-sub-menu" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Add sub menu"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => addSubMenu(event)}
-                >
-                  Add menu
-                </button>
-              </div>
-            )}
-            {selectAction === "add-link" && (
-              <div>
-                <input
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Add Name link"
-                  type="text"
-                />
-                <input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Add link"
-                  type="text"
-                />
-                <button
-                  className="add-other__btn"
-                  onClick={(event) => addLink(event)}
-                >
-                  Add New Link
-                </button>
-              </div>
-            )}
-          </div>
         </form>
+
+        <div className="action">
+          {selectAction === "rename" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                callbackFunction={handleSetText}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleRenameMenu(event)}
+              >
+                Rename menu
+              </button>
+            </form>
+          )}
+          {selectAction === "delete" && (
+            <form className="add-other-form ">
+              <div className="alert alert-danger" role="alert">
+                Are you sure you want to delete the menu item {key}
+              </div>
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleDeleteMenu(event)}
+              >
+                Delete menu
+              </button>
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={() => dispatch(setAddCategoryOther(false))}
+              >
+                No
+              </button>
+            </form>
+          )}
+          {selectAction === "add-menu" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add menu"
+                callbackFunction={handleSetText}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleAddMenu(event)}
+              >
+                Add menu
+              </button>
+            </form>
+          )}
+          {selectAction === "add-sub-menu" && (
+            <form className="add-other-form ">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add sub menu"
+                callbackFunction={handleSetText}
+              />
+
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleAddSubMenu(event)}
+              >
+                Add sub menu
+              </button>
+            </form>
+          )}
+          {selectAction === "add-link" && (
+            <form className="add-other-form ">
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add Name link"
+                callbackFunction={setName}
+              />
+              <MyInput
+                value={link}
+                type="text"
+                placeholder="Add link"
+                callbackFunction={setLink}
+              />
+
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleAddLink(event)}
+              >
+                Add New Link
+              </button>
+            </form>
+          )}
+          {selectAction === "add-article" && (
+            <form className="add-other-form ">
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add Name Article"
+                callbackFunction={setName}
+              />
+              <MyJoditEditor
+                placeholder={"Вставте свій текст"}
+                article={article}
+                setArticle={setArticle}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleAddArticle(event)}
+              >
+                Add New Article
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default AddCategory;
+export default observer(AddCategory);
