@@ -12,7 +12,6 @@ import {
 } from "../../../redux/uiSlice";
 import { setIdArticle } from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
-import { getDataGraphQLLink } from "../../../functions/requestHelpersGraphQL";
 
 import "./ListLinks.scss";
 
@@ -51,7 +50,7 @@ const ListLinks: React.FC = () => {
             let link: string = "";
 
             if (obj.link) {
-              const res = await getDataGraphQLLink(obj.link);
+              const res = await todoStore.getLink(obj.link);
               id = obj.link;
               link = res.link;
             } else if (obj.article) {

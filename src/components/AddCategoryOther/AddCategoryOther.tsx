@@ -6,11 +6,7 @@ import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import { PASSWORD } from "../../const";
 import { observer } from "mobx-react-lite";
 import todoStore from "../../mobx/store";
-import {
-  postDataGraphQLMenu,
-  addDataGraphQLLink,
-  addDataGraphQLArticle,
-} from "../../functions/requestHelpersGraphQL";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
 import {
@@ -36,7 +32,7 @@ const AddCategory: React.FC = () => {
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    postDataGraphQLMenu(todoStore.dataMain).then(() => {
+    todoStore.updateMenu(todoStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
     });
     handleCloseModal();
@@ -158,7 +154,8 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    addDataGraphQLLink(link)
+    todoStore
+      .addLink(link)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
         if (isArray(dataMenu[key]))
@@ -194,7 +191,8 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    addDataGraphQLArticle(article)
+    todoStore
+      .addArticle(article)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
         if (isArray(dataMenu[key]))
@@ -242,6 +240,7 @@ const AddCategory: React.FC = () => {
         <form className="add-other-form">
           <label htmlFor="action-select">Select an action:</label>
           <select
+            className="form-select"
             name="action"
             id="action-select"
             onChange={(event) => handlerSetSelectAction(event.target.value)}
@@ -266,7 +265,7 @@ const AddCategory: React.FC = () => {
                 callbackFunction={handleSetText}
               />
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleRenameMenu(event)}
               >
                 Rename menu
@@ -275,15 +274,17 @@ const AddCategory: React.FC = () => {
           )}
           {selectAction === "delete" && (
             <form className="add-other-form ">
-              <p>Ви дійсно хочете видалити пункт меню {key}</p>
+              <div className="alert alert-danger" role="alert">
+                Are you sure you want to delete the menu item {key}
+              </div>
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleDeleteMenu(event)}
               >
                 Delete menu
               </button>
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={() => dispatch(setAddCategoryOther(false))}
               >
                 No
@@ -300,7 +301,7 @@ const AddCategory: React.FC = () => {
                 callbackFunction={handleSetText}
               />
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleAddMenu(event)}
               >
                 Add menu
@@ -318,7 +319,7 @@ const AddCategory: React.FC = () => {
               />
 
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleAddSubMenu(event)}
               >
                 Add sub menu
@@ -341,7 +342,7 @@ const AddCategory: React.FC = () => {
               />
 
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleAddLink(event)}
               >
                 Add New Link
@@ -362,7 +363,7 @@ const AddCategory: React.FC = () => {
                 setArticle={setArticle}
               />
               <button
-                className="add-other__btn"
+                className="add-other__btn btn btn-secondary"
                 onClick={(event) => handleAddArticle(event)}
               >
                 Add New Article

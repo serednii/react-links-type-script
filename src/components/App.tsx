@@ -8,7 +8,6 @@ import { RootState } from "../redux/rootReducer"; // Убедитесь, что 
 import { observer } from "mobx-react-lite";
 import todoStore from "../mobx/store";
 import { setError } from "../redux/uiSlice";
-import { getDataGraphQLMenu } from "../functions/requestHelpersGraphQL";
 import "../App.css";
 import Errors from "./Errors/Errors";
 // import { useTransition } from "react-spring";
@@ -31,9 +30,8 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getDataGraphQLMenu();
+        const data = await todoStore.getMenu();
         console.log(data);
-        todoStore.setDataMain(data);
       } catch (error) {
         console.error("Error fetching menu data:", error);
         dispatch(setError("Error fetching menu data:"));

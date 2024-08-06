@@ -1,16 +1,5 @@
 import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
-import {
-  postDataGraphQLMenu,
-  getDataGraphQLLink,
-  addDataGraphQLLink,
-  updateDataGraphQLLink,
-  deleteDataGraphQLLink,
-  getDataGraphQLArticle,
-  addDataGraphQLArticle,
-  updateDataGraphQLArticle,
-  deleteDataGraphQLArticle,
-} from "../../functions/requestHelpersGraphQL";
 import { observer } from "mobx-react-lite";
 import todoStore from "../../mobx/store";
 import { svgIconClose } from "../../icon";
@@ -50,11 +39,11 @@ const ChangeLinks: React.FC = () => {
 
   const OtherAction = () => {
     todoStore.setDataMain({ ...todoStore.dataMain });
-    postDataGraphQLMenu(todoStore.dataMain);
+    todoStore.updateMenu(todoStore.dataMain);
     setName("");
     setLink("");
-    setSelectActionLink("");
     setArticle("");
+    setSelectActionLink("");
   };
 
   // const handleSetText = (value: string) => {
@@ -78,7 +67,8 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].link) {
       isTypeSelect.current = "link";
       selectId.current = dataMenu[key][+select].link;
-      getDataGraphQLLink(dataMenu[key][+select].link)
+      todoStore
+        .getLink(dataMenu[key][+select].link)
         .then((res) => {
           setLink(res.link);
         })
@@ -90,7 +80,8 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].article) {
       isTypeSelect.current = "article";
       selectId.current = dataMenu[key][+select].article;
-      getDataGraphQLArticle(dataMenu[key][+select].article)
+      todoStore
+        .getArticle(dataMenu[key][+select].article)
         .then((res) => {
           setArticle(res.article);
         })
@@ -122,7 +113,8 @@ const ChangeLinks: React.FC = () => {
       return;
     }
 
-    addDataGraphQLLink(link)
+    todoStore
+      .addLink(link)
       .then((resId) => {
         dataMenu[key].push({ name, link: resId });
         dispatch(toggleUpdateListLink());
@@ -152,12 +144,12 @@ const ChangeLinks: React.FC = () => {
       return;
     }
 
-    addDataGraphQLArticle(article)
+    todoStore
+      .addArticle(article)
       .then((resId) => {
         dataMenu[key].push({ name, article: resId });
         dispatch(toggleUpdateListLink());
         OtherAction();
-        setName("");
       })
       .catch((error) => {
         console.error(
@@ -190,7 +182,8 @@ const ChangeLinks: React.FC = () => {
         dispatch(setError("Error synaxsys url"));
         return;
       }
-      updateDataGraphQLLink(selectId.current, link)
+      todoStore
+        .updateLink(selectId.current, link)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
             name,
@@ -206,7 +199,8 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (isTypeSelect.current === "article") {
-      updateDataGraphQLArticle(selectId.current, article)
+      todoStore
+        .updateArticle(selectId.current, article)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
             name,
@@ -237,7 +231,8 @@ const ChangeLinks: React.FC = () => {
     const deletedLink = dataMenu[key].splice(+selectActionLink, 1);
 
     if (deletedLink[0].link) {
-      deleteDataGraphQLLink(deletedLink[0].link)
+      todoStore
+        .deleteLink(deletedLink[0].link)
         .then((res) => {
           dispatch(toggleUpdateListLink());
           dispatch(setInfo("Successful Deleted Link"));
@@ -248,7 +243,8 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (deletedLink[0].article) {
-      deleteDataGraphQLArticle(deletedLink[0].article)
+      todoStore
+        .deleteArticle(deletedLink[0].article)
         .then((res) => {
           dispatch(toggleUpdateListLink());
           dispatch(setInfo("Successful Deleted Article"));
@@ -352,7 +348,7 @@ const ChangeLinks: React.FC = () => {
                   placeholder="Add link"
                 />
                 <button
-                  className="add-other__btn"
+                  className="add-other__btn btn btn-secondary"
                   onClick={(e) => handleAddLink(e)}
                 >
                   Add New Link
@@ -375,9 +371,8 @@ const ChangeLinks: React.FC = () => {
                   article={article}
                   setArticle={setArticle}
                 />
-
                 <button
-                  className="add-other__btn"
+                  className="add-other__btn btn btn-secondary"
                   onClick={(event) => handleAddArticle(event)}
                 >
                   Add New Article
@@ -415,7 +410,7 @@ const ChangeLinks: React.FC = () => {
                 )}
                 <button
                   disabled={selectActionLink === ""}
-                  className="add-other__btn"
+                  className="add-other__btn btn btn-secondary"
                   onClick={handleSaveChang}
                 >
                   {isTypeSelect.current === "link" && "Change link"}
@@ -428,16 +423,16 @@ const ChangeLinks: React.FC = () => {
           {selectAction === "delete" && (
             <div className="action-type">
               <form className="add-other-form">
-                <p>
+                <div className="alert alert-danger" role="alert">
                   Are you sure you want to delete the menu item{" "}
                   {selectActionLink !== "" &&
                     dataMenu[key] &&
                     dataMenu[key].length > 0 &&
                     dataMenu[key][+selectActionLink]?.name}
-                </p>
+                </div>
                 <button
                   disabled={selectActionLink === ""}
-                  className="add-other__btn"
+                  className="add-other__btn btn btn-secondary"
                   onClick={handleDeleteLink}
                 >
                   Delete menu

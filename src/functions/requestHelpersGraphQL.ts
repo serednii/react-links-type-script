@@ -1,4 +1,4 @@
-const url = "http://localhost:3040/graphql/";
+import {URL} from '../const' 
 
 const formatObjectForGraphQL = (obj: any) => {
   if (typeof obj !== "object" || obj === null) {
@@ -20,7 +20,7 @@ const formatObjectForGraphQL = (obj: any) => {
 
 const makeRequest = async (query: string,) => {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,10 +41,6 @@ const makeRequest = async (query: string,) => {
     throw error;
   }
 };
-
-
-
-
 
 const queryGetMenu = `
 query getMenu {
@@ -149,9 +145,6 @@ const mutationAddArticle = (article: string) => {
 };
 
 const mutationUpdateArticle = (id: string, article: string) => {
-  console.log('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
-  console.log(id);
-  console.log(article);
   const queryGetArticle = `
   mutation getArticle {
     updateArticle(id: "${id}", article: "${article}") {

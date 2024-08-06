@@ -11,6 +11,7 @@ const Article: React.FC = () => {
   const { idArticle } = useSelector((state: RootState) => state.data);
   const [html, setHtml] = useState("");
   const [loadingArticle, setLoadingArticle] = useState(true);
+
   useEffect(() => {
     setLoadingArticle(true);
     getDataGraphQLArticle(idArticle)
@@ -24,9 +25,10 @@ const Article: React.FC = () => {
       })
       .finally(() => setLoadingArticle(false));
     console.log(idArticle);
-  }, [idArticle, dispatch]);
+  }, [idArticle]);
 
   console.log("HTML", html);
+
   if (loadingArticle) {
     return (
       <div className="article">
@@ -37,6 +39,7 @@ const Article: React.FC = () => {
       </div>
     );
   }
+
   return (
     <div className="article">
       <span dangerouslySetInnerHTML={{ __html: html }} />

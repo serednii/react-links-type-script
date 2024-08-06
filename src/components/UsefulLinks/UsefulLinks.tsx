@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import todoStore from "../../mobx/store";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { RootState } from "../../redux/rootReducer"; 
 
 import "./UsefulLinks.scss";
 type MenuFunctionType = (value: string) => void;
