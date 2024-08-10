@@ -43,8 +43,9 @@ class MakeRequest {
 class GraphQLQuery extends MakeRequest {
   private queryGetMenu = `
     query getMenu {
-      menu {
+      menus {
         menu
+        idUser
       }
     }
   `;
@@ -71,11 +72,11 @@ class GraphQLQuery extends MakeRequest {
     return `{${fields}}`;
   };
 
-  private mutationMenu = (menu: any = {}) => {
+  private mutationMenu = (idUser: string, menu: any = {}) => {
     const menuString: any = this.formatObjectForGraphQL(menu);
     const mutation = `
     mutation {
-      updateMenu(id: "669d548bebe914267a8679ed", menu: ${menuString}) {
+      updateMenu(idUser: "${idUser}", menu: ${menuString}) {
         menu
       }
     }
@@ -83,7 +84,33 @@ class GraphQLQuery extends MakeRequest {
     return mutation;
   };
 
-  private mutationGetLink = (id: string) => {
+  private mutationGetMenuById = (idUser: string) => {
+    const queryGetMenu = `
+    query menuByUserId {
+      menuByUserId(idUser: "${idUser}") {
+        id
+        idUser
+        menu
+      }
+    }
+    `;
+    return queryGetMenu;
+  };
+
+  private mutationCreateMenuById = (idUser: string) => {
+    const queryCreateMenu = `
+    query menuByUserId {
+      createMenu(idUser: "${idUser}") {
+        id
+        idUser
+        menu
+      }
+    }
+    `;
+    return queryCreateMenu;
+  };
+
+  private mutationGetLinkById = (id: string) => {
     const queryGetLink = `
     query getLink {
       link(id: "${id}") {
@@ -177,7 +204,7 @@ class GraphQLQuery extends MakeRequest {
     return queryGetArticle;
   };
 
-  getDataGraphQLMenu = async () => {
+  getDataGraphQLMenus = async () => {
     try {
       const data = await this.request(this.queryGetMenu);
       const menuData = data.data.menu[0].menu;
@@ -188,10 +215,38 @@ class GraphQLQuery extends MakeRequest {
     }
   };
 
-  updateDataGraphQLMenu = async (menu: object) => {
+  getDataGraphQLMenuByIdUser = async (idUser: string) => {
     try {
-      const mut = this.mutationMenu(menu);
-      const data = await this.request(mut);
+      const resMutation = this.mutationGetMenuById(idUser);
+      // console.log('resMutation', resMutation)
+      const data = await this.request(resMutation);
+      // console.log(data)
+      const menuData = data.data.menuByUserId[0].menu;
+      return menuData;
+    } catch (error) {
+      console.error("Error get Menu:", error);
+      throw error;
+    }
+  };  
+
+  createDataGraphQLMenuByIdUser = async (idUser: string) => {
+    try {
+      const resMutation = this.mutationCreateMenuById(idUser);
+      // console.log('resMutation', resMutation)
+      const data = await this.request(resMutation);
+      // console.log(data)
+      const menuData = data.data.menuByUserId[0].menu;
+      return menuData;
+    } catch (error) {
+      console.error("Error get Menu:", error);
+      throw error;
+    }
+  };  
+
+  updateDataGraphQLMenu = async (idUser: string, menu: object) => {
+    try {
+      const resMutation = this.mutationMenu(idUser, menu);
+      const data = await this.request(resMutation);
     } catch (error) {
       console.error("Error mutation Menu:", error);
       throw error;
@@ -200,8 +255,7 @@ class GraphQLQuery extends MakeRequest {
 
   getDataGraphQLLink = async (id: string) => {
     try {
-      const resMutation = this.mutationGetLink(id);
-
+      const resMutation = this.mutationGetLinkById(id);
       let result = await this.request(resMutation);
       result = result.data.link;
       return result;
