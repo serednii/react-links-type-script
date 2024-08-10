@@ -31,9 +31,10 @@ button:hover {
 }
 
 body {
-  background-image: url('./images/gd2.jpg');
-  // background-size: 100% 100%;
-  min-height: 100wh;
+  background-image: url('./images/gd5.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
   min-width: 350px;
 
 }
@@ -87,7 +88,10 @@ body {
     width: 250px;
   }
 
-  .add-other-form {
+  .add-other__action,
+  .add-other__links,
+  .change-links__action,
+  .change-links__links {
     // width: 40%;
     display: flex;
     flex-direction: column;

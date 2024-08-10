@@ -15,6 +15,7 @@ import {
 } from "../../redux/uiSlice";
 import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import authStore from "../../mobx/AuthStore";
 
 interface LinkData {
   name: string;
@@ -39,7 +40,7 @@ const ChangeLinks: React.FC = () => {
 
   const OtherAction = () => {
     todoStore.setDataMain({ ...todoStore.dataMain });
-    todoStore.updateMenu(todoStore.dataMain);
+    todoStore.updateMenu(authStore.user.id, todoStore.dataMain);
     setName("");
     setLink("");
     setArticle("");
@@ -286,7 +287,7 @@ const ChangeLinks: React.FC = () => {
           {svgIconClose}
         </button>
 
-        <form className="add-other-form">
+        <form className="change-links__action">
           <label className="form-label" htmlFor="action">
             Select an action:
           </label>
@@ -307,7 +308,7 @@ const ChangeLinks: React.FC = () => {
 
         {selectAction !== "add-link" && selectAction !== "add-article" && (
           <div>
-            <form className="add-other-form ">
+            <form className="change-links__links">
               <label className="form-label" htmlFor="action">
                 Select link:
               </label>
@@ -333,7 +334,7 @@ const ChangeLinks: React.FC = () => {
         <div className="action">
           {selectAction === "add-link" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -359,7 +360,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "add-article" && (
             <div>
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -383,7 +384,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "change" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -422,7 +423,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "delete" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <div className="alert alert-danger" role="alert">
                   Are you sure you want to delete the menu item{" "}
                   {selectActionLink !== "" &&

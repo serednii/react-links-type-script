@@ -99,7 +99,7 @@ class GraphQLQuery extends MakeRequest {
 
   private mutationCreateMenuById = (idUser: string) => {
     const queryCreateMenu = `
-    query menuByUserId {
+    mutation menuByUserId {
       createMenu(idUser: "${idUser}") {
         id
         idUser
@@ -207,7 +207,7 @@ class GraphQLQuery extends MakeRequest {
   getDataGraphQLMenus = async () => {
     try {
       const data = await this.request(this.queryGetMenu);
-      const menuData = data.data.menu[0].menu;
+      const menuData = data?.data?.menuByUserId[0]?.menu;
       return menuData;
     } catch (error) {
       console.error("Error get Menu:", error);
@@ -218,10 +218,10 @@ class GraphQLQuery extends MakeRequest {
   getDataGraphQLMenuByIdUser = async (idUser: string) => {
     try {
       const resMutation = this.mutationGetMenuById(idUser);
-      // console.log('resMutation', resMutation)
+      console.log('resMutation', resMutation)
       const data = await this.request(resMutation);
-      // console.log(data)
-      const menuData = data.data.menuByUserId[0].menu;
+      console.log(data)
+      const menuData = data?.data?.menuByUserId[0]?.menu;
       return menuData;
     } catch (error) {
       console.error("Error get Menu:", error);
@@ -232,10 +232,10 @@ class GraphQLQuery extends MakeRequest {
   createDataGraphQLMenuByIdUser = async (idUser: string) => {
     try {
       const resMutation = this.mutationCreateMenuById(idUser);
-      // console.log('resMutation', resMutation)
+      console.log('resMutation', resMutation)
       const data = await this.request(resMutation);
-      // console.log(data)
-      const menuData = data.data.menuByUserId[0].menu;
+      console.log(data)
+      const menuData = data?.createMenu?.menuByUserId[0]?.menu || {}
       return menuData;
     } catch (error) {
       console.error("Error get Menu:", error);

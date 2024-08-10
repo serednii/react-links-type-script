@@ -43,12 +43,12 @@ class DataStore {
   async createMenu(idUser: string) {
     console.log('**********', idUser)
     try {
-      const response = await graphQLQuery.getDataGraphQLMenuByIdUser(idUser);
+      const response = await graphQLQuery.createDataGraphQLMenuByIdUser(idUser);
       runInAction(() => {
         this.dataMain = response;
       });
     } catch (error) {
-      console.log(error);
+      console.log('mobx/store-69',error);
       throw error;
     }
   }

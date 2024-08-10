@@ -97,7 +97,7 @@ const ListLinks: React.FC = () => {
     };
 
     fetchLinks();
-  }, [dataMenu, key, updateListLink, isChangeLinks, dispatch]);
+  }, [dataMenu, key, updateListLink]);
 
   if (loadingList) {
     return (

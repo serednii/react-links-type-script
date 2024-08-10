@@ -15,6 +15,7 @@ import {
 } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
+import authStore from "../../mobx/AuthStore";
 
 const AddCategory: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const AddCategory: React.FC = () => {
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    todoStore.updateMenu(todoStore.dataMain).then(() => {
+    todoStore.updateMenu(authStore.user.id, todoStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
     });
     handleCloseModal();
@@ -237,7 +238,7 @@ const AddCategory: React.FC = () => {
           {svgIconClose}
         </button>
 
-        <form className="add-other-form">
+        <form className="add-other__action">
           <label htmlFor="action-select">Select an action:</label>
           <select
             className="form-select"
@@ -257,7 +258,7 @@ const AddCategory: React.FC = () => {
 
         <div className="action">
           {selectAction === "rename" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -273,7 +274,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "delete" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <div className="alert alert-danger" role="alert">
                 Are you sure you want to delete the menu item {key}
               </div>
@@ -292,7 +293,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-menu" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -309,7 +310,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-sub-menu" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -327,7 +328,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-link" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <MyInput
                 value={name}
                 type="text"
@@ -350,7 +351,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-article" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <MyInput
                 value={name}
                 type="text"

@@ -7,6 +7,7 @@ import App from "./components/App";
 import { BrowserRouter as Router } from "react-router-dom"; // Додайте цей імпорт
 import { Provider } from "react-redux";
 import store from "./redux/store";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

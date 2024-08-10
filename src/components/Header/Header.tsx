@@ -1,3 +1,4 @@
+import AuthUser from "../../AuthUser/components/AuthUser/AuthUser";
 import ButtonsAdd from "./ButtonsAdd/ButtonsAdd";
 import "./Header.scss";
 
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
       <div className="row ">
         <div className="col-12">
           <ButtonsAdd></ButtonsAdd>
+          <AuthUser></AuthUser>
         </div>
       </div>
     </header>
