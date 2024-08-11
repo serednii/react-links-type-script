@@ -13,13 +13,11 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <Router>
-      {" "}
-      {/* Обгорніть ваш додаток в Router */}
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>
+  <Router>
+    {" "}
+    {/* Обгорніть ваш додаток в Router */}
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>
 );

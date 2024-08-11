@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./AddCategoryOther.scss";
 import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../functions/functions";
+import { isObject, isArray } from "../../controller/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import { PASSWORD } from "../../const";
 import { observer } from "mobx-react-lite";
@@ -15,7 +15,7 @@ import {
 } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
-import authStore from "../../mobx/AuthStore";
+import authStore from "../../mobx/AuthStoreFile";
 
 const AddCategory: React.FC = () => {
   const dispatch = useDispatch();

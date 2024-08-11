@@ -1,5 +1,5 @@
 import { makeAutoObservable, action, runInAction } from "mobx";
-import graphQLQuery from '../functions/requestGraphQLClass';
+import graphQLQuery from '../controller/graphql-Controller';
 
 class DataStore {
   dataMain: any;

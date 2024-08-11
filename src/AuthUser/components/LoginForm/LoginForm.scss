@@ -1,4 +1,11 @@
 .login-form {
-    background-color: aliceblue;
-    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+
+    &__inner {
+        background-color: aliceblue;
+        padding: 10px;
+        max-width: 600px;
+        width: 100%;
+    }
 }

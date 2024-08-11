@@ -6,10 +6,9 @@ import { IUser } from "../AuthUser/models/IUser";
 import { AuthResponse } from "../AuthUser/models/response/authResponse";
 import { API_URL } from "../AuthUser/http";
 import AuthService from "../AuthUser/services/AuthServices"; // Додайте цей імпорт
-import todoStore from "../mobx/store";
+import todoStore from "./store";
 import  store  from '../redux/store'; // Імпортуйте ваш store
 import { setError } from '../redux/uiSlice'; // Імпортуйте екшн для помилок
-
 
 class AuthStore {
   user: IUser = {} as IUser;
@@ -60,9 +59,9 @@ class AuthStore {
     }
   }
 
-  async registration(email: string, password: string) {
+  async registration(email: string, password: string, userName: string, lastUserName: string) {
     try {
-      const response = await AuthService.registration(email, password);
+      const response = await AuthService.registration(email, password, userName, lastUserName);
       console.log('response auth store', response)
       localStorage.setItem("token", response?.data?.accessToken);
       const idUser = response?.data?.user?.id
@@ -76,6 +75,20 @@ class AuthStore {
       store.dispatch(setError(error.response?.data?.message || "Error registration"));
     }
   }
+
+  async updateUser(user: IUser) {
+
+    try {
+      const response = await AuthService.updateUser(user);
+      localStorage.setItem("token", response.data.accessToken);
+      this.setAuth(true);
+      this.setUser(response.data.user);
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      console.log(error.response?.data?.message);
+    }
+  }
+
 
   async logout() {
     try {

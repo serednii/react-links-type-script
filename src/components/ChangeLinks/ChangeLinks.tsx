@@ -15,7 +15,7 @@ import {
 } from "../../redux/uiSlice";
 import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
-import authStore from "../../mobx/AuthStore";
+import authStore from "../../mobx/AuthStoreFile";
 
 interface LinkData {
   name: string;

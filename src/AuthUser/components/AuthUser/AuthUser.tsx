@@ -1,4 +1,4 @@
-import authStore from "../../../mobx/AuthStore";
+import authStore from "../../../mobx/AuthStoreFile";
 
 const AuthUser = () => {
   return (
@@ -15,10 +15,6 @@ const AuthUser = () => {
       </h3>
       <button onClick={() => authStore.logout()}>Вийти</button>
       {/* <button onClick={authStore.getUsers}>Получить пользователей</button> */}
-
-      {authStore.users.map((user) => {
-        return <div key={user.email}>{user.email}</div>;
-      })}
     </div>
   );
 };
