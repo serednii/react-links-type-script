@@ -5,14 +5,29 @@ import Table from "react-bootstrap/Table";
 import authStore from "../mobx/AuthStoreFile";
 import UserService from "../AuthUser/services/UserService";
 import { useEffect, FormEvent } from "react";
-import "./AdminPanel.scss";
 import { observer } from "mobx-react-lite";
 import InputChecked from "./InputChecked";
 import SelectRole from "./SelectRole";
-import { IUser } from "../AuthUser/models/IUser";
+
+import "./AdminPanel.scss";
+import InputText from "./InputText";
 
 const AdminPanel: React.FC = () => {
   console.log("users", authStore.users);
+  const isAdmin = authStore?.user?.roles?.includes("admin");
+  const isUser = authStore?.user?.roles?.includes("user");
+  const idUser = authStore?.user?.id;
+
+  console.log("++++++++++++++++++++++++++++++++");
+  console.log("userName", authStore.user.userName);
+  console.log("lastUserName", authStore.user.lastUserName);
+  console.log("isBlocked", authStore.user.isBlocked);
+  console.log("isAddedContent", authStore.user.isAddedContent);
+  console.log("users", authStore.user.roles);
+  console.log("user email", authStore.user.email);
+  console.log("user id", authStore.user.id);
+  console.log("user isActivated", authStore.user.isActivated);
+  console.log("++++++++++++++++++++++++++++++++");
 
   const handelSaveChange = (event: FormEvent) => {
     event.preventDefault();
@@ -30,18 +45,7 @@ const AdminPanel: React.FC = () => {
         console.log("user id", user._id);
         console.log("user isActivated", user.isActivated);
         console.log("++++++++++++++++++++++++++++++++");
-        // const newUser = {
-        //   userName: user.userName,
-        //   lastUserName: user.lastUserName,
-        //   email: user.email,
-        //   id: user._id,
-        //   roles: user.roles,
-        //   isAddedContent: user.isAddedContent,
-        //   isBlocked: user.isBlocked,
-        //   isActivated: user.isActivated,
-        // };
         user.id = user._id;
-        // authStore.updateUser(newUser as IUser);
         authStore.updateUser(user);
       }
     });
@@ -52,6 +56,7 @@ const AdminPanel: React.FC = () => {
     async function getUsers() {
       try {
         const response = await UserService.fetchUsers();
+        console.log(response.data);
         authStore.setUsers(response.data);
       } catch (e) {
         console.log(e);
@@ -63,7 +68,7 @@ const AdminPanel: React.FC = () => {
   if (authStore.users.length > 0) {
     return (
       <div
-        className="modal show "
+        className="modal show"
         style={{ display: "block", position: "initial" }}
       >
         <Modal
@@ -83,35 +88,60 @@ const AdminPanel: React.FC = () => {
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>Email</th>
-                  <th>roles</th>
-                  <th>isAddedContent</th>
-                  <th>isBlocked</th>
-                  <th>isActivated</th>
+                  {!isUser && <th>roles</th>}
+                  {!isUser && <th>isAddedContent</th>}
+                  {!isUser && <th>isBlocked</th>}
+                  {!isUser && <th>isActivated</th>}
                 </tr>
               </thead>
+
               <tbody>
                 {authStore.users.map((user, id) => {
-                  console.log("55555555555555555555555555555555555");
-                  return (
-                    <tr key={user._id}>
-                      <td>{id}</td>
-                      <td>{user.userName}</td>
-                      <td>{user.lastUserName}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <SelectRole user={user} />
-                      </td>
-                      <td>
-                        <InputChecked user={user} nameAction="isAddedContent" />
-                      </td>
-                      <td>
-                        <InputChecked user={user} nameAction="isBlocked" />
-                      </td>
-                      <td>
-                        <InputChecked user={user} nameAction="isActivated" />
-                      </td>
-                    </tr>
-                  );
+                  console.log(user._id);
+                  console.log(idUser);
+
+                  if (isAdmin || user._id === idUser) {
+                    return (
+                      <tr key={user._id}>
+                        <td>{id + 1}</td>
+                        <td>
+                          <InputText user={user} nameAction="userName" />
+                        </td>
+                        <td>
+                          <InputText user={user} nameAction="lastUserName" />
+                        </td>
+                        <td>
+                          <InputText user={user} nameAction="email" />
+                        </td>
+                        {!isUser && (
+                          <td>
+                            <SelectRole user={user} />
+                          </td>
+                        )}
+                        {!isUser && (
+                          <td>
+                            <InputChecked
+                              user={user}
+                              nameAction="isAddedContent"
+                            />
+                          </td>
+                        )}
+                        {!isUser && (
+                          <td>
+                            <InputChecked user={user} nameAction="isBlocked" />
+                          </td>
+                        )}
+                        {!isUser && (
+                          <td>
+                            <InputChecked
+                              user={user}
+                              nameAction="isActivated"
+                            />
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  }
                 })}
               </tbody>
             </Table>

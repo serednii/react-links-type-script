@@ -8,7 +8,7 @@ class AdminController {
 
 openAdminPanel(openAdmin: boolean){
     const isAdmin = authStore.user.roles.includes("admin")
-    isAdmin && adminStore.setOpenAdmin(openAdmin)
+     adminStore.setOpenAdmin(openAdmin)
 }
 
 }

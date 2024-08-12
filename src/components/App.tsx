@@ -48,8 +48,8 @@ const App: React.FC = () => {
     const fetchData = async () => {
       console.log(authStore.user.id);
       try {
-        const data = await todoStore.getMenu(authStore.user.id);
-        console.log(data);
+        await todoStore.getMenu(authStore.user.id);
+        console.log(todoStore.dataMain);
       } catch (error) {
         // console.error("Error fetching menu data:", error);
         dispatch(setError("Error fetching menu data:"));
@@ -87,7 +87,7 @@ const App: React.FC = () => {
       </main>
       {error && <Errors />}
       {info && <InfoModal />}
-      {adminStore.openAdmin && isAdmin && <AdminPanel />}
+      {adminStore.openAdmin && <AdminPanel />}
     </div>
   );
 };

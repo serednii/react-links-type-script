@@ -36,6 +36,8 @@ class AuthStore {
   }
   
   async getUsers() { // Виправлено метод
+    console.log('getUsers')
+    
     try {
       const response = await UserService.fetchUsers();
       this.users = response?.data;
@@ -47,6 +49,7 @@ class AuthStore {
   }
 
   async login(email: string, password: string) {
+    console.log('login')
     try {
       const response = await AuthService.login(email, password);
       localStorage.setItem("token", response?.data?.accessToken);
@@ -60,6 +63,8 @@ class AuthStore {
   }
 
   async registration(email: string, password: string, userName: string, lastUserName: string) {
+    console.log('registration')
+
     try {
       const response = await AuthService.registration(email, password, userName, lastUserName);
       console.log('response auth store', response)
@@ -77,12 +82,10 @@ class AuthStore {
   }
 
   async updateUser(user: IUser) {
+    console.log('updateUser')
 
     try {
       const response = await AuthService.updateUser(user);
-      localStorage.setItem("token", response.data.accessToken);
-      this.setAuth(true);
-      this.setUser(response.data.user);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
@@ -91,6 +94,8 @@ class AuthStore {
 
 
   async logout() {
+    console.log('logout')
+
     try {
       await AuthService.logout();
       localStorage.removeItem("token");
@@ -104,6 +109,8 @@ class AuthStore {
   }
 
   async checkAuth() {
+    console.log('checkAuth')
+
     this.setLoading(true);
     try {
       const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
