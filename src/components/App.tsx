@@ -9,13 +9,14 @@ import { observer } from "mobx-react-lite";
 import todoStore from "../mobx/store";
 import authStore from "../mobx/AuthStoreFile";
 import { setError } from "../redux/uiSlice";
-import LoginForm from "../AuthUser/components/LoginForm/LoginForm";
+import LoginForm from "../AuthUser/components/AuthForms/LoginForm/LoginForm";
 
 import "../App.css";
 import Errors from "./Errors/Errors";
 import InfoModal from "./InfoModal/InfoModal";
 import AdminPanel from "../AdminPanel/AdminPanel";
 import adminStore from "../mobx/adminStore";
+import AuthForms from "../AuthUser/components/AuthForms/AuthForms";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -62,15 +63,15 @@ const App: React.FC = () => {
   if (authStore.isLoading) {
     return <div>Downloading...</div>;
   }
+  console.log("authStore.isAuth", authStore.isAuth);
 
   if (!authStore.isAuth) {
     if (authStore.users.length > 0) authStore.setUsers([]);
     return (
       <div>
-        <LoginForm />
+        <AuthForms />
         {error && <Errors />}
         {info && <InfoModal />}
-        {/* <button onClick={authStore.getUsers}>Получить пользователей</button> */}
       </div>
     );
   }

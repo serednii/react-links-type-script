@@ -3,7 +3,8 @@ import { AiFillPlusCircle, AiOutlineClose, AiFillEdit } from "react-icons/ai";
 import { FaPencil } from "react-icons/fa6";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { TbArrowBigLeftFilled } from "react-icons/tb";
-import { RiAdminFill } from "react-icons/ri";
+import { RiAdminFill, RiDeleteBin6Line } from "react-icons/ri";
+
 
 const iconSize = "24"; // Розмір іконки (за потреби)
 const iconColor = "black"; // Колір іконки (за потреби)
@@ -45,3 +46,10 @@ export const svgAdmin = (
     <RiAdminFill />
   </IconContext.Provider>
 );
+
+export const svgDeleted = (
+  <IconContext.Provider value={{ size: "24", color: iconColor }}>
+    <RiDeleteBin6Line />
+  </IconContext.Provider>
+);
+

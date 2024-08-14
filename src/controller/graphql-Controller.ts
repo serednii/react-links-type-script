@@ -84,6 +84,17 @@ class GraphQLQuery extends MakeRequest {
     return mutation;
   };
 
+  private mutationDeleteMenu = (idUser: string) => {
+    const mutation = `
+    mutation {
+      deleteMenu(idUser: "${idUser}") {
+        id
+      }
+    }
+  `;
+    return mutation;
+  };
+
   private mutationGetMenuById = (idUser: string) => {
     const queryGetMenu = `
     query menuByUserId {
@@ -252,6 +263,17 @@ class GraphQLQuery extends MakeRequest {
       throw error;
     }
   };
+
+  deleteDataGraphQLMenu = async (idUser: string) => {
+    try {
+      const resMutation = this.mutationDeleteMenu(idUser);
+      const data = await this.request(resMutation);
+    } catch (error) {
+      console.error("Error mutation Menu:", error);
+      throw error;
+    }
+  };
+
 
   getDataGraphQLLink = async (id: string) => {
     try {

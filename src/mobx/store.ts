@@ -63,6 +63,16 @@ class DataStore {
     }
   }
 
+  async deleteMenu(idUser: string) {
+    try {
+      const response = await graphQLQuery.deleteDataGraphQLMenu(idUser);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async getLink(id: string) {
     try {
       const response = await graphQLQuery.getDataGraphQLLink(id);

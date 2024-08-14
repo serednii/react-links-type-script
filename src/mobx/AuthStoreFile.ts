@@ -64,13 +64,12 @@ class AuthStore {
 
   async registration(email: string, password: string, userName: string, lastUserName: string) {
     console.log('registration')
-
     try {
       const response = await AuthService.registration(email, password, userName, lastUserName);
-      console.log('response auth store', response)
+      // console.log('response auth store', response)
       localStorage.setItem("token", response?.data?.accessToken);
       const idUser = response?.data?.user?.id
-      console.log(idUser)
+      // console.log(idUser)
       await todoStore.createMenu(idUser)
       this.setAuth(true);
       this.setUser(response?.data?.user);
@@ -83,9 +82,34 @@ class AuthStore {
 
   async updateUser(user: IUser) {
     console.log('updateUser')
+    try {
+      const response = await UserService.updateUser(user);
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  async createUser(email: string, password: string, userName: string, lastUserName: string) {
+    console.log('updateUser')
+    try {
+      const response = await UserService.createUser(email, password, userName, lastUserName);
+      // console.log('response auth store', response)
+      const idUser = response?.data?.user?._id
+      // console.log(idUser)
+      await todoStore.createMenu(idUser)
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      console.log(error.response?.data?.message);
+    }
+  }
+
+
+  async deleteUser(id: string) {
+    console.log('deleteUser', id)
 
     try {
-      const response = await AuthService.updateUser(user);
+      const response = await UserService.deleteUser(id);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);

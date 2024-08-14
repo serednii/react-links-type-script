@@ -9,4 +9,5 @@ export interface IUser {
     isAddedContent:boolean;
     isBlocked:boolean;
     isMutation: boolean;
+    password: string;
 }
