@@ -2,7 +2,7 @@
   "name": "react-links-type-script",
   "version": "0.1.0",
   "private": true,
-  "homepage": "",
+  "homepage": "./links",
   "homepage11": "https://github.com/SeredniaAnastasia/react-links-type-script",
   "dependencies": {
     "@react-spring/web": "^9.7.4",
