@@ -4,7 +4,7 @@ import { FaPencil } from "react-icons/fa6";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { TbArrowBigLeftFilled } from "react-icons/tb";
 import { RiAdminFill, RiDeleteBin6Line } from "react-icons/ri";
-
+import { MdLogout } from "react-icons/md";
 
 const iconSize = "24"; // Розмір іконки (за потреби)
 const iconColor = "black"; // Колір іконки (за потреби)
@@ -53,3 +53,8 @@ export const svgDeleted = (
   </IconContext.Provider>
 );
 
+export const svgLogOut = (
+  <IconContext.Provider value={{ size: "24", color: iconColor }}>
+    <MdLogout />
+  </IconContext.Provider>
+);

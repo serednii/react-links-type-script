@@ -6,9 +6,10 @@ import { observer } from "mobx-react-lite";
 import todoStore from "../../mobx/store";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/rootReducer"; 
+import { RootState } from "../../redux/rootReducer";
 
 import "./UsefulLinks.scss";
+import ButtonsAdd from "../Header/ButtonsAdd/ButtonsAdd";
 type MenuFunctionType = (value: string) => void;
 
 type ActiveMenuType = {
@@ -58,6 +59,7 @@ function UsefulLinks() {
     <section className="useFull_links flex-grow-1 d-flex flex-column rounded-4">
       <main className="main">
         <div ref={menuRef} className="menu-wrapper">
+          <ButtonsAdd></ButtonsAdd>
           <MenuLinks
             key={"MenuLinks"}
             dataMenu={todoStore.dataMain}

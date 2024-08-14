@@ -1,0 +1,13 @@
+.auth-user {
+    position: absolute;
+    right: 0;
+
+    &__info {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    &__verify {
+        color: red;
+    }
+}

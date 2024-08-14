@@ -1,20 +1,29 @@
+import adminController from "../../../controller/admin-Controller";
+import { svgAdmin, svgLogOut } from "../../../icon";
+
 import authStore from "../../../mobx/AuthStoreFile";
+import "./auth_user.scss";
 
 const AuthUser = () => {
   return (
-    <div>
-      <h3>
-        {authStore.isAuth
-          ? `Користувач авторизований ${authStore.user.email}`
-          : "АВТОРИЗУЙТЕСЯ!!!"}
-      </h3>
-      <h3>
-        {authStore.user.isActivated
-          ? `Аккаунт підтверджений по почті ${authStore.user.email}`
-          : "ПІДТВЕРДІТЬ АККАУНТ!!!"}
-      </h3>
-      <button onClick={() => authStore.logout()}>Вийти</button>
-      {/* <button onClick={authStore.getUsers}>Получить пользователей</button> */}
+    <div className="auth-user">
+      <div className="auth-user__info">
+        <h4 className="mb-0">
+          {"Hello " +
+            authStore.user.lastUserName +
+            " " +
+            authStore.user.userName}
+        </h4>
+
+        <button onClick={() => adminController.openAdminPanel(true)}>
+          {svgAdmin}
+        </button>
+
+        <button onClick={() => authStore.logout()}>{svgLogOut}</button>
+      </div>
+      {!authStore.user.isActivated && (
+        <h5 className="auth-user__verify">VERIFY ACCOUNT BY MAIL!!!</h5>
+      )}
     </div>
   );
 };

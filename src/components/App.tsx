@@ -67,13 +67,13 @@ const App: React.FC = () => {
 
   if (!authStore.isAuth) {
     if (authStore.users.length > 0) authStore.setUsers([]);
-    return (
-      <div>
-        <AuthForms />
-        {error && <Errors />}
-        {info && <InfoModal />}
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <AuthForms />
+    //     {error && <Errors />}
+    //     {info && <InfoModal />}
+    //   </div>
+    // );
   }
 
   return (
@@ -82,7 +82,7 @@ const App: React.FC = () => {
         {/* {isLoading && <h1>Loading...</h1>} */}
         {/* {!authStore.isAuth && <LoginForm />} */}
         <Header />
-        <UsefulLinks />
+        {authStore.isAuth && <UsefulLinks />}
         {isAddCategoryOther && <AddCategoryOther />}
         {isChangeLinks && <ChangeLinks />}
       </main>
