@@ -62,11 +62,11 @@ const ListLinks: React.FC = () => {
 
             return (
               <li key={id} className="list-group-item  rounded-3 mb-2">
-                {isChangeLinks && (
+                {/* {isChangeLinks && (
                   <span className="link-plus" onClick={() => plusOther()}>
                     {svgIconChange}
                   </span>
-                )}
+                )} */}
 
                 {obj.link && (
                   <a
