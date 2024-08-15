@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import Form from "react-bootstrap/Form";
 import { IUser } from "../AuthUser/models/IUser";
-import authStore from "../mobx/AuthStoreFile";
+import authStore from "../mobx/AuthStore";
 
 interface IInputChecked {
   user: IUser;

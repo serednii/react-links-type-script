@@ -274,7 +274,6 @@ class GraphQLQuery extends MakeRequest {
     }
   };
 
-
   getDataGraphQLLink = async (id: string) => {
     try {
       const resMutation = this.mutationGetLinkById(id);

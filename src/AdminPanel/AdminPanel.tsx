@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
 import adminStore from "../mobx/adminStore";
-import authStore from "../mobx/AuthStoreFile";
+import authStore from "../mobx/AuthStore";
 import DataStore from "../mobx/store";
 
 import InputChecked from "./InputChecked";

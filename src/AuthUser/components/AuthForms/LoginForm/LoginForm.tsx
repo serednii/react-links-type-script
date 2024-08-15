@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { observer } from "mobx-react-lite";
-import authStore from "../../../../mobx/AuthStoreFile";
+import authStore from "../../../../mobx/AuthStore";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useDispatch } from "react-redux";

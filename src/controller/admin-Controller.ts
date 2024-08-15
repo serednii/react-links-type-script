@@ -1,6 +1,6 @@
 
 import adminStore from "../mobx/adminStore";
-import authStore from "../mobx/AuthStoreFile";
+import authStore from "../mobx/AuthStore";
 
 class AdminController {
 

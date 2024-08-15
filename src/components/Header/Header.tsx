@@ -1,6 +1,6 @@
 import AuthUser from "../../AuthUser/components/AuthUser/AuthUser";
 import ButtonsAdd from "./ButtonsAdd/ButtonsAdd";
-import authStore from "../../mobx/AuthStoreFile";
+import authStore from "../../mobx/AuthStore";
 import AuthForms from "../../AuthUser/components/AuthForms/AuthForms";
 import usefulLinksImg from "../../images/5326787.png";
 import usefulLinksTitle from "../../images/Useful+Links.png";

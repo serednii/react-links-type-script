@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
 import { observer } from "mobx-react-lite";
 import todoStore from "../mobx/store";
-import authStore from "../mobx/AuthStoreFile";
+import authStore from "../mobx/AuthStore";
 import { setError } from "../redux/uiSlice";
 
 import "../App.css";

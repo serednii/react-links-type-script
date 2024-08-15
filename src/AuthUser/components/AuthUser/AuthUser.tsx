@@ -1,7 +1,7 @@
 import adminController from "../../../controller/admin-Controller";
 import { svgAdmin, svgLogOut } from "../../../icon";
 
-import authStore from "../../../mobx/AuthStoreFile";
+import authStore from "../../../mobx/AuthStore";
 import "./auth_user.scss";
 
 const AuthUser = () => {
