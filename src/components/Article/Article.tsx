@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDataGraphQLArticle } from "../../functions/requestHelpersGraphQL";
+import { getDataGraphQLArticle } from "../../controller/requestHelpersGraphQL";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../../redux/uiSlice";
 

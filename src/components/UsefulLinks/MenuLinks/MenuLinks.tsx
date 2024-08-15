@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { isObject, isArray } from "../../../functions/functions";
+import { isObject, isArray } from "../../../controller/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../../mobx/store";
+import todoStore from "../../../mobx/dataStore/DataStore";
 import { useSelector, useDispatch } from "react-redux";
 import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный

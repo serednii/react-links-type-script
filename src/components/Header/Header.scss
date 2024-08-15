@@ -2,12 +2,29 @@
     // display: flex;
     // justify-content: space-around;
     // // text-align: center;
-    // background-color: bisque;
+    background-color: rgba(23, 89, 103, 0.7);
     // font-size: 2.5rem;
     // line-height: 5rem;
     // font-weight: 700;
     // margin-bottom: 20px;
     // padding: 10px 0;
+    min-height: 120px;
 
-    // &__title {}
+    &__top {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+    }
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin-right: 50px;
+}
+
+.title {
+    // width: 50px;
+    height: 50px;
 }

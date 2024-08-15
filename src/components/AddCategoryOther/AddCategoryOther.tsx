@@ -1,11 +1,14 @@
 import { useState } from "react";
 import "./AddCategoryOther.scss";
 import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../functions/functions";
+import { isObject, isArray } from "../../controller/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import { PASSWORD } from "../../const";
+// import { PASSWORD } from "../../const";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../mobx/store";
+import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../mobx/dataStore/DataStore";
+import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
@@ -15,6 +18,7 @@ import {
 } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
+import authStore from "../../mobx/AuthStore";
 
 const AddCategory: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,16 +27,16 @@ const AddCategory: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
   const [selectAction, setSelectAction] = useState<string>("");
-  const [textCode, setTextCode] = useState<string>("");
+  // const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
 
-  let { dataMenu, key } = todoStore.sluice || {};
+  let { dataMenu, key } = dataStore.sluice || {};
 
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    todoStore.updateMenu(todoStore.dataMain).then(() => {
+    menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
     });
     handleCloseModal();
@@ -55,10 +59,10 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -77,10 +81,10 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
     console.log(dataMenu[key]);
     console.log(dataMenu);
     console.log(key);
@@ -99,10 +103,10 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -119,10 +123,10 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -139,10 +143,10 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -154,7 +158,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    todoStore
+    linkStore
       .addLink(link)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
@@ -181,17 +185,17 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
     }
 
-    todoStore
+    articleStore
       .addArticle(article)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
@@ -228,16 +232,16 @@ const AddCategory: React.FC = () => {
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
         }}
       >
-        <MyInput
+        {/* <MyInput
           value={textCode}
           type="password"
           callbackFunction={setTextCode}
-        />
+        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
 
-        <form className="add-other-form">
+        <form className="add-other__action">
           <label htmlFor="action-select">Select an action:</label>
           <select
             className="form-select"
@@ -257,7 +261,7 @@ const AddCategory: React.FC = () => {
 
         <div className="action">
           {selectAction === "rename" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -273,7 +277,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "delete" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <div className="alert alert-danger" role="alert">
                 Are you sure you want to delete the menu item {key}
               </div>
@@ -292,7 +296,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-menu" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -309,7 +313,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-sub-menu" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <p>a-zA-Z_</p>
               <MyInput
                 value={name}
@@ -327,7 +331,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-link" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <MyInput
                 value={name}
                 type="text"
@@ -350,7 +354,7 @@ const AddCategory: React.FC = () => {
             </form>
           )}
           {selectAction === "add-article" && (
-            <form className="add-other-form ">
+            <form className="add-other__links">
               <MyInput
                 value={name}
                 type="text"

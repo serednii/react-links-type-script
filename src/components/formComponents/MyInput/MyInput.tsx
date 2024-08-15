@@ -6,6 +6,8 @@ interface IInput {
   placeholder?: string;
   disabled?: boolean;
   callbackFunction: (event: string) => void;
+  className?: string; // Опціональний клас
+  [key: string]: any; // Для інших параметрів
 }
 
 const MyInput: React.FC<IInput> = ({
@@ -14,15 +16,18 @@ const MyInput: React.FC<IInput> = ({
   placeholder,
   disabled,
   callbackFunction,
+  className,
+  ...rest // Решта параметрів
 }) => {
   return (
     <input
-      className="add-category__text-code form-control"
+      className={`form-control ${className ? className : ""}`}
       value={value}
       onChange={(event) => callbackFunction(event.target.value)}
       type={type}
       placeholder={placeholder}
       disabled={disabled}
+      {...rest} // Розподіляємо інші параметри
     />
   );
 };

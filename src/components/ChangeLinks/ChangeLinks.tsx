@@ -1,11 +1,16 @@
 import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../mobx/store";
+
+import dataStore from "../../mobx/dataStore/DataStore";
+import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
+import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
+
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
-import { PASSWORD } from "../../const";
+// import { PASSWORD } from "../../const";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -15,6 +20,7 @@ import {
 } from "../../redux/uiSlice";
 import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import authStore from "../../mobx/AuthStore";
 
 interface LinkData {
   name: string;
@@ -25,21 +31,21 @@ const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
 
-  const { dataMenu, key } = todoStore.listLinkData;
-  console.log("listLinkData", todoStore.listLinkData);
+  const { dataMenu, key } = dataStore.listLinkData;
+  console.log("listLinkData", dataStore.listLinkData);
 
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
-  const [textCode, setTextCode] = useState("");
+  // const [textCode, setTextCode] = useState("");
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
-    todoStore.setDataMain({ ...todoStore.dataMain });
-    todoStore.updateMenu(todoStore.dataMain);
+    dataStore.setDataMain({ ...dataStore.dataMain });
+    menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
     setName("");
     setLink("");
     setArticle("");
@@ -67,7 +73,7 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].link) {
       isTypeSelect.current = "link";
       selectId.current = dataMenu[key][+select].link;
-      todoStore
+      linkStore
         .getLink(dataMenu[key][+select].link)
         .then((res) => {
           setLink(res.link);
@@ -80,7 +86,7 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].article) {
       isTypeSelect.current = "article";
       selectId.current = dataMenu[key][+select].article;
-      todoStore
+      articleStore
         .getArticle(dataMenu[key][+select].article)
         .then((res) => {
           setArticle(res.article);
@@ -98,10 +104,10 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -113,7 +119,7 @@ const ChangeLinks: React.FC = () => {
       return;
     }
 
-    todoStore
+    linkStore
       .addLink(link)
       .then((resId) => {
         dataMenu[key].push({ name, link: resId });
@@ -134,17 +140,17 @@ const ChangeLinks: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
     }
 
-    todoStore
+    articleStore
       .addArticle(article)
       .then((resId) => {
         dataMenu[key].push({ name, article: resId });
@@ -167,10 +173,10 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -182,7 +188,7 @@ const ChangeLinks: React.FC = () => {
         dispatch(setError("Error synaxsys url"));
         return;
       }
-      todoStore
+      linkStore
         .updateLink(selectId.current, link)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
@@ -199,7 +205,7 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (isTypeSelect.current === "article") {
-      todoStore
+      articleStore
         .updateArticle(selectId.current, article)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
@@ -223,15 +229,15 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     const deletedLink = dataMenu[key].splice(+selectActionLink, 1);
 
     if (deletedLink[0].link) {
-      todoStore
+      linkStore
         .deleteLink(deletedLink[0].link)
         .then((res) => {
           dispatch(toggleUpdateListLink());
@@ -243,7 +249,7 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (deletedLink[0].article) {
-      todoStore
+      articleStore
         .deleteArticle(deletedLink[0].article)
         .then((res) => {
           dispatch(toggleUpdateListLink());
@@ -277,16 +283,16 @@ const ChangeLinks: React.FC = () => {
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
         }}
       >
-        <MyInput
+        {/* <MyInput
           value={textCode}
           type="password"
           callbackFunction={setTextCode}
-        />
+        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
 
-        <form className="add-other-form">
+        <form className="change-links__action">
           <label className="form-label" htmlFor="action">
             Select an action:
           </label>
@@ -307,7 +313,7 @@ const ChangeLinks: React.FC = () => {
 
         {selectAction !== "add-link" && selectAction !== "add-article" && (
           <div>
-            <form className="add-other-form ">
+            <form className="change-links__links">
               <label className="form-label" htmlFor="action">
                 Select link:
               </label>
@@ -333,7 +339,7 @@ const ChangeLinks: React.FC = () => {
         <div className="action">
           {selectAction === "add-link" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -359,7 +365,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "add-article" && (
             <div>
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -383,7 +389,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "change" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <MyInput
                   value={name}
                   type="text"
@@ -422,7 +428,7 @@ const ChangeLinks: React.FC = () => {
 
           {selectAction === "delete" && (
             <div className="action-type">
-              <form className="add-other-form">
+              <form className="change-links__links">
                 <div className="alert alert-danger" role="alert">
                   Are you sure you want to delete the menu item{" "}
                   {selectActionLink !== "" &&

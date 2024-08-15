@@ -3,6 +3,8 @@ import { AiFillPlusCircle, AiOutlineClose, AiFillEdit } from "react-icons/ai";
 import { FaPencil } from "react-icons/fa6";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { TbArrowBigLeftFilled } from "react-icons/tb";
+import { RiAdminFill, RiDeleteBin6Line } from "react-icons/ri";
+import { MdLogout } from "react-icons/md";
 
 const iconSize = "24"; // Розмір іконки (за потреби)
 const iconColor = "black"; // Колір іконки (за потреби)
@@ -36,5 +38,23 @@ export const svgIconPencil = (
 export const svgIconBackHome = (
   <IconContext.Provider value={{ size: "24", color: iconColor }}>
     <TbArrowBigLeftFilled />
+  </IconContext.Provider>
+);
+
+export const svgAdmin = (
+  <IconContext.Provider value={{ size: "24", color: iconColor }}>
+    <RiAdminFill />
+  </IconContext.Provider>
+);
+
+export const svgDeleted = (
+  <IconContext.Provider value={{ size: "24", color: iconColor }}>
+    <RiDeleteBin6Line />
+  </IconContext.Provider>
+);
+
+export const svgLogOut = (
+  <IconContext.Provider value={{ size: "24", color: iconColor }}>
+    <MdLogout />
   </IconContext.Provider>
 );
