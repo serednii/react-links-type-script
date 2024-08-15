@@ -6,7 +6,9 @@ import ChangeLinks from "./ChangeLinks/ChangeLinks";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
 import { observer } from "mobx-react-lite";
-import todoStore from "../mobx/store";
+import menuStore from "../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../mobx/dataStore/DataStore";
+
 import authStore from "../mobx/AuthStore";
 import { setError } from "../redux/uiSlice";
 
@@ -47,8 +49,8 @@ const App: React.FC = () => {
     const fetchData = async () => {
       console.log(authStore.user.id);
       try {
-        await todoStore.getMenu(authStore.user.id);
-        console.log(todoStore.dataMain);
+        await menuStore.getMenu(authStore.user.id);
+        console.log(dataStore.dataMain);
       } catch (error) {
         // console.error("Error fetching menu data:", error);
         dispatch(setError("Error fetching menu data:"));

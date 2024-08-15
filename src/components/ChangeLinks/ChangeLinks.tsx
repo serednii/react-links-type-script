@@ -1,11 +1,16 @@
 import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../mobx/store";
+
+import dataStore from "../../mobx/dataStore/DataStore";
+import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
+import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
+
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
-import { PASSWORD } from "../../const";
+// import { PASSWORD } from "../../const";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -26,8 +31,8 @@ const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
 
-  const { dataMenu, key } = todoStore.listLinkData;
-  console.log("listLinkData", todoStore.listLinkData);
+  const { dataMenu, key } = dataStore.listLinkData;
+  console.log("listLinkData", dataStore.listLinkData);
 
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
@@ -39,8 +44,8 @@ const ChangeLinks: React.FC = () => {
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
-    todoStore.setDataMain({ ...todoStore.dataMain });
-    todoStore.updateMenu(authStore.user.id, todoStore.dataMain);
+    dataStore.setDataMain({ ...dataStore.dataMain });
+    menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
     setName("");
     setLink("");
     setArticle("");
@@ -68,7 +73,7 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].link) {
       isTypeSelect.current = "link";
       selectId.current = dataMenu[key][+select].link;
-      todoStore
+      linkStore
         .getLink(dataMenu[key][+select].link)
         .then((res) => {
           setLink(res.link);
@@ -81,7 +86,7 @@ const ChangeLinks: React.FC = () => {
     if (dataMenu[key][+select].article) {
       isTypeSelect.current = "article";
       selectId.current = dataMenu[key][+select].article;
-      todoStore
+      articleStore
         .getArticle(dataMenu[key][+select].article)
         .then((res) => {
           setArticle(res.article);
@@ -114,7 +119,7 @@ const ChangeLinks: React.FC = () => {
       return;
     }
 
-    todoStore
+    linkStore
       .addLink(link)
       .then((resId) => {
         dataMenu[key].push({ name, link: resId });
@@ -145,7 +150,7 @@ const ChangeLinks: React.FC = () => {
       return;
     }
 
-    todoStore
+    articleStore
       .addArticle(article)
       .then((resId) => {
         dataMenu[key].push({ name, article: resId });
@@ -183,7 +188,7 @@ const ChangeLinks: React.FC = () => {
         dispatch(setError("Error synaxsys url"));
         return;
       }
-      todoStore
+      linkStore
         .updateLink(selectId.current, link)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
@@ -200,7 +205,7 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (isTypeSelect.current === "article") {
-      todoStore
+      articleStore
         .updateArticle(selectId.current, article)
         .then((res) => {
           dataMenu[key][+selectActionLink] = {
@@ -232,7 +237,7 @@ const ChangeLinks: React.FC = () => {
     const deletedLink = dataMenu[key].splice(+selectActionLink, 1);
 
     if (deletedLink[0].link) {
-      todoStore
+      linkStore
         .deleteLink(deletedLink[0].link)
         .then((res) => {
           dispatch(toggleUpdateListLink());
@@ -244,7 +249,7 @@ const ChangeLinks: React.FC = () => {
     }
 
     if (deletedLink[0].article) {
-      todoStore
+      articleStore
         .deleteArticle(deletedLink[0].article)
         .then((res) => {
           dispatch(toggleUpdateListLink());

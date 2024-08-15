@@ -3,7 +3,7 @@ import MenuLinks from "./MenuLinks/MenuLinks";
 import { useEffect, useRef, useCallback } from "react";
 import Article from "../Article/Article";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../mobx/store";
+import dataStore from "../../mobx/dataStore/DataStore";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/rootReducer";
@@ -62,7 +62,7 @@ function UsefulLinks() {
           <ButtonsAdd></ButtonsAdd>
           <MenuLinks
             key={"MenuLinks"}
-            dataMenu={todoStore.dataMain}
+            dataMenu={dataStore.dataMain}
             firstMenu={true}
             level={0}
             activesMenu={activesMenu.current}

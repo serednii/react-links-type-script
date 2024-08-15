@@ -5,7 +5,10 @@ import { isObject, isArray } from "../../controller/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 // import { PASSWORD } from "../../const";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../mobx/store";
+import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../mobx/dataStore/DataStore";
+import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
@@ -27,13 +30,13 @@ const AddCategory: React.FC = () => {
   // const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
 
-  let { dataMenu, key } = todoStore.sluice || {};
+  let { dataMenu, key } = dataStore.sluice || {};
 
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
 
   const OtherAction = () => {
-    todoStore.updateMenu(authStore.user.id, todoStore.dataMain).then(() => {
+    menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
     });
     handleCloseModal();
@@ -155,7 +158,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    todoStore
+    linkStore
       .addLink(link)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];
@@ -192,7 +195,7 @@ const AddCategory: React.FC = () => {
       return;
     }
 
-    todoStore
+    articleStore
       .addArticle(article)
       .then((resId) => {
         if (dataMenu[key] === null) dataMenu[key] = [];

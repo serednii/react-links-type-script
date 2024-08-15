@@ -6,7 +6,7 @@ import { IUser } from "../AuthUser/models/IUser";
 import { AuthResponse } from "../AuthUser/models/response/authResponse";
 import { API_URL } from "../AuthUser/http";
 import AuthService from "../AuthUser/services/AuthServices"; // Додайте цей імпорт
-import todoStore from "./store";
+import menuStore from "./asyncDataStore/AsyncMenuStore";
 import  store  from '../redux/store'; // Імпортуйте ваш store
 import { setError } from '../redux/uiSlice'; // Імпортуйте екшн для помилок
 
@@ -70,7 +70,7 @@ class AuthStore {
       localStorage.setItem("token", response?.data?.accessToken);
       const idUser = response?.data?.user?.id
       // console.log(idUser)
-      await todoStore.createMenu(idUser)
+      await menuStore.createMenu(idUser)
       this.setAuth(true);
       this.setUser(response?.data?.user);
     } catch (e) {
@@ -97,7 +97,7 @@ class AuthStore {
       // console.log('response auth store', response)
       const idUser = response?.data?.user?._id
       // console.log(idUser)
-      await todoStore.createMenu(idUser)
+      await menuStore.createMenu(idUser)
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);

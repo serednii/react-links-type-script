@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../../mobx/store";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import dataStore from "../../../mobx/dataStore/DataStore";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -25,7 +27,7 @@ const ListLinks: React.FC = () => {
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
   const { updateListLink } = useSelector((state: RootState) => state.data);
 
-  const { dataMenu, key } = todoStore?.listLinkData || {};
+  const { dataMenu, key } = dataStore?.listLinkData || {};
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(true);
 
@@ -50,7 +52,7 @@ const ListLinks: React.FC = () => {
             let link: string = "";
 
             if (obj.link) {
-              const res = await todoStore.getLink(obj.link);
+              const res = await linkStore.getLink(obj.link);
               id = obj.link;
               link = res.link;
             } else if (obj.article) {

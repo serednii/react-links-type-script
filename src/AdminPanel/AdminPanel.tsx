@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 
 import adminStore from "../mobx/adminStore";
 import authStore from "../mobx/AuthStore";
-import DataStore from "../mobx/store";
+import menuStore from "../mobx/asyncDataStore/AsyncMenuStore";
 
 import InputChecked from "./InputChecked";
 import SelectRole from "./SelectRole";
@@ -164,7 +164,7 @@ const AdminPanel: React.FC = () => {
       try {
         await authStore.deleteUser(id);
         await authStore.getUsers();
-        await DataStore.deleteMenu(id);
+        await menuStore.deleteMenu(id);
       } catch (e) {
         console.error(`Error deleting user with ID ${id}:`, e);
       }
