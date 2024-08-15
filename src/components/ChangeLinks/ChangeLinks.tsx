@@ -15,7 +15,7 @@ import {
 } from "../../redux/uiSlice";
 import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
-import authStore from "../../mobx/AuthStoreFile";
+import authStore from "../../mobx/AuthStore";
 
 interface LinkData {
   name: string;
@@ -33,7 +33,7 @@ const ChangeLinks: React.FC = () => {
   const [selectActionLink, setSelectActionLink] = useState("");
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
-  const [textCode, setTextCode] = useState("");
+  // const [textCode, setTextCode] = useState("");
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
@@ -99,10 +99,10 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -135,10 +135,10 @@ const ChangeLinks: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -168,10 +168,10 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -224,10 +224,10 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    if (textCode !== PASSWORD) {
-      dispatch(setError("Error control code"));
-      return;
-    }
+    // if (textCode !== PASSWORD) {
+    //   dispatch(setError("Error control code"));
+    //   return;
+    // }
 
     const deletedLink = dataMenu[key].splice(+selectActionLink, 1);
 
@@ -278,11 +278,11 @@ const ChangeLinks: React.FC = () => {
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
         }}
       >
-        <MyInput
+        {/* <MyInput
           value={textCode}
           type="password"
           callbackFunction={setTextCode}
-        />
+        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>
