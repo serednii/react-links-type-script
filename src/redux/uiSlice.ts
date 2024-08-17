@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UIState {
     isLoading: boolean;//
+    isLoadingMenu: boolean;
     isButtonPlus: boolean;//
     isChangeLinks: boolean;//
     isAddCategoryOther: boolean;//
@@ -14,6 +15,7 @@ export interface UIState {
 
 const initialState: UIState = {
     isLoading: false,
+    isLoadingMenu: false,
     isButtonPlus: false,
     isChangeLinks: false,
     isAddCategoryOther: false,
@@ -29,6 +31,9 @@ const uiSlice = createSlice({
     reducers: {
         setLoading(state, action: PayloadAction<boolean>) {//
             state.isLoading = action.payload;
+        },
+        setLoadingMenu(state, action: PayloadAction<boolean>){
+            state.isLoadingMenu = action.payload
         },
         setButtonPlus(state, action: PayloadAction<boolean>) {//
             state.isButtonPlus = action.payload;
@@ -56,6 +61,7 @@ const uiSlice = createSlice({
 
 export const {
     setLoading,
+    setLoadingMenu,
     setButtonPlus,
     setChangeLinks,
     setAddCategoryOther,
