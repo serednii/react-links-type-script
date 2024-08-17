@@ -4,12 +4,13 @@ import { useEffect, useRef, useCallback } from "react";
 import Article from "../Article/Article";
 import { observer } from "mobx-react-lite";
 import dataStore from "../../mobx/dataStore/DataStore";
-
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/rootReducer";
-
-import "./UsefulLinks.scss";
 import ButtonsAdd from "../Header/ButtonsAdd/ButtonsAdd";
+import { setButtonPlus, setChangeLinks } from "../../redux/uiSlice";
+import { svgIoSettings } from "../../icon";
+import "./UsefulLinks.scss";
+
 type MenuFunctionType = (value: string) => void;
 
 type ActiveMenuType = {
@@ -22,7 +23,13 @@ function UsefulLinks() {
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
   const { idArticle } = useSelector((state: RootState) => state.data);
+  const dispatch = useDispatch();
+  const { isButtonPlus } = useSelector((state: RootState) => state.ui);
 
+  function handlerOpenPopup(): void {
+    dispatch(setButtonPlus(!isButtonPlus));
+    dispatch(setChangeLinks(false));
+  }
   const clearClickMenu = useCallback(() => {
     activesMenu.current.forEach((e) => e.setIsOpenCloseSubMenu(""));
     activesMenu.current.splice(0);
@@ -59,7 +66,9 @@ function UsefulLinks() {
     <section className="useFull_links flex-grow-1 d-flex flex-column rounded-4">
       <main className="main">
         <div ref={menuRef} className="menu-wrapper">
-          <ButtonsAdd></ButtonsAdd>
+          {/* <ButtonsAdd></ButtonsAdd> */}
+          <button onClick={handlerOpenPopup}>{svgIoSettings}</button>
+
           <MenuLinks
             key={"MenuLinks"}
             dataMenu={dataStore.dataMain}
