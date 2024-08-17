@@ -1,9 +1,8 @@
 import { useState } from "react";
 import "./AddCategoryOther.scss";
 import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../controller/functions";
+import { isObject, isArray } from "../../otherFunction/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-// import { PASSWORD } from "../../const";
 import { observer } from "mobx-react-lite";
 import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
 import dataStore from "../../mobx/dataStore/DataStore";
@@ -27,7 +26,6 @@ const AddCategory: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
   const [selectAction, setSelectAction] = useState<string>("");
-  // const [textCode, setTextCode] = useState<string>("");
   const [article, setArticle] = useState("");
 
   let { dataMenu, key } = dataStore.sluice || {};
@@ -59,11 +57,6 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -81,10 +74,6 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
     console.log(dataMenu[key]);
     console.log(dataMenu);
     console.log(key);
@@ -103,11 +92,6 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -123,10 +107,6 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -143,10 +123,6 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -185,11 +161,6 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -219,7 +190,7 @@ const AddCategory: React.FC = () => {
 
   const handleCloseModal = () => {
     dispatch(setModal(false));
-    setTimeout(() => dispatch(setAddCategoryOther(false), 1000));
+    dispatch(setAddCategoryOther(false));
   };
 
   return (
@@ -232,11 +203,6 @@ const AddCategory: React.FC = () => {
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
         }}
       >
-        {/* <MyInput
-          value={textCode}
-          type="password"
-          callbackFunction={setTextCode}
-        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>

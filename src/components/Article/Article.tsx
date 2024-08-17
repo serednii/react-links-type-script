@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { getDataGraphQLArticle } from "../../controller/requestHelpersGraphQL";
+import graphQLArticleController from "../../controller/graphQL/graphql-ArticleController";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../../redux/uiSlice";
-
+import { svgIconClose } from "../../icon";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { setIdArticle } from "../../redux/dataSlice";
 
 import "./article.scss";
+
 const Article: React.FC = () => {
   const dispatch = useDispatch();
   const { idArticle } = useSelector((state: RootState) => state.data);
@@ -14,7 +16,8 @@ const Article: React.FC = () => {
 
   useEffect(() => {
     setLoadingArticle(true);
-    getDataGraphQLArticle(idArticle)
+    graphQLArticleController
+      .getDataArticle(idArticle)
       .then((res) => {
         console.log(res);
         setHtml(res.article);
@@ -26,8 +29,6 @@ const Article: React.FC = () => {
       .finally(() => setLoadingArticle(false));
     console.log(idArticle);
   }, [idArticle]);
-
-  console.log("HTML", html);
 
   if (loadingArticle) {
     return (
@@ -42,6 +43,12 @@ const Article: React.FC = () => {
 
   return (
     <div className="article">
+      <div className="article__close">
+        <button onClick={() => dispatch(setIdArticle(""))}>
+          {" "}
+          {svgIconClose}
+        </button>
+      </div>
       <span dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
