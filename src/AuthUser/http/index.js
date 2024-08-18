@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// export const API_URL = 'http://localhost:7000/api';
-export const API_URL = 'https://jwtserver-production.up.railway.app/api';
+export const API_URL = 'http://localhost:7000/api';
+// export const API_URL = 'https://jwtserver-production.up.railway.app/api';
 
 const $api = axios.create({
     withCredentials: true,

@@ -52,8 +52,10 @@ const App: React.FC = () => {
         await menuStore.getMenu(authStore.user.id);
         console.log(dataStore.dataMain);
       } catch (error) {
-        // console.error("Error fetching menu data:", error);
-        dispatch(setError("Error fetching menu data:"));
+        console.error("Error fetching menu data:", error);
+        dispatch(
+          setError("Sorry! We encountered an error, please try again later.")
+        );
       }
     };
 

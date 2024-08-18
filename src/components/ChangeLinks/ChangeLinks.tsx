@@ -1,7 +1,6 @@
 import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-
 import dataStore from "../../mobx/dataStore/DataStore";
 import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
 import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
@@ -10,7 +9,6 @@ import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
-// import { PASSWORD } from "../../const";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -32,24 +30,21 @@ const ChangeLinks: React.FC = () => {
   const { isModal } = useSelector((state: RootState) => state.ui);
 
   const { dataMenu, key } = dataStore.listLinkData;
-  console.log("listLinkData", dataStore.listLinkData);
-
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
-  // const [textCode, setTextCode] = useState("");
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
-    dataStore.setDataMain({ ...dataStore.dataMain });
     menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
     setName("");
     setLink("");
     setArticle("");
     setSelectActionLink("");
+    handleCloseModal();
   };
 
   // const handleSetText = (value: string) => {
@@ -104,11 +99,6 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -140,11 +130,6 @@ const ChangeLinks: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -173,10 +158,6 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
     if (!name.length) {
       dispatch(setError("Add name Link"));
       return;
@@ -229,11 +210,6 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
 
-    // if (textCode !== PASSWORD) {
-    //   dispatch(setError("Error control code"));
-    //   return;
-    // }
-
     const deletedLink = dataMenu[key].splice(+selectActionLink, 1);
 
     if (deletedLink[0].link) {
@@ -260,17 +236,20 @@ const ChangeLinks: React.FC = () => {
         });
     }
     console.log(dataMenu);
-    console.log(dataMenu[key]);
+    console.log(key);
+    console.log(dataMenu[key].length);
 
     if (dataMenu[key].length === 0) {
+      console.log("***********delete");
       dataMenu[key] = null;
     }
+
     OtherAction();
   };
 
   const handleCloseModal = () => {
     dispatch(setModal(false));
-    setTimeout(() => dispatch(setChangeLinks(false), 1000));
+    dispatch(setChangeLinks(false));
   };
 
   return (
@@ -283,11 +262,6 @@ const ChangeLinks: React.FC = () => {
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
         }}
       >
-        {/* <MyInput
-          value={textCode}
-          type="password"
-          callbackFunction={setTextCode}
-        /> */}
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
         </button>

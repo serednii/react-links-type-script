@@ -29,9 +29,7 @@ const ListLinks: React.FC = () => {
 
   const { dataMenu, key } = dataStore?.listLinkData || {};
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
-  const [loadingList, setLoadingList] = useState(true);
-
-  function plusOther() {}
+  const [loadingList, setLoadingList] = useState(false);
 
   function handlerChangeLink() {
     dispatch(setModal(true));
@@ -42,59 +40,71 @@ const ListLinks: React.FC = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
+      console.log(dataMenu);
+      console.log(key);
       if (dataMenu && key && dataMenu[key]) {
         setLoadingList(true);
-        const elements = await Promise.all(
-          dataMenu[key].map(async (obj: any) => {
-            let resLink: ILink | null = null;
-            console.log("obj ", obj);
-            let id: string = "";
-            let link: string = "";
+        try {
+          const elements = await Promise.all(
+            dataMenu[key].map(async (obj: any) => {
+              let resLink: ILink | null = null;
+              console.log("obj ", obj);
+              let id: string = "";
+              let link: string = "";
 
-            if (obj.link) {
-              const res = await linkStore.getLink(obj.link);
-              id = obj.link;
-              link = res.link;
-            } else if (obj.article) {
-              id = obj.article;
-            }
+              if (obj.link) {
+                const res = await linkStore.getLink(obj.link);
+                id = obj.link;
+                link = res.link;
+              } else if (obj.article) {
+                id = obj.article;
+              }
 
-            console.log("resLink ------ ", resLink);
-            console.log("ListLinks.js id", id);
+              console.log("resLink ------ ", resLink);
+              console.log("ListLinks.js id", id);
 
-            return (
-              <li key={id} className="list-group-item  rounded-3 mb-2">
-                {/* {isChangeLinks && (
-                  <span className="link-plus" onClick={() => plusOther()}>
-                    {svgIconChange}
-                  </span>
-                )} */}
+              return (
+                <>
+                  {obj.link && (
+                    <li
+                      key={id}
+                      className="list-group-item color-link rounded-3 mb-2"
+                    >
+                      <a
+                        onClick={() => dispatch(setIdArticle(""))}
+                        className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                        target="_blank"
+                        href={link}
+                        rel="noopener noreferrer"
+                      >
+                        {obj.name}
+                      </a>
+                    </li>
+                  )}
 
-                {obj.link && (
-                  <a
-                    onClick={() => dispatch(setIdArticle(""))}
-                    className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    target="_blank"
-                    href={link}
-                    rel="noopener noreferrer"
-                  >
-                    {obj.name}
-                  </a>
-                )}
-                {obj.article ? (
-                  <button onClick={() => dispatch(setIdArticle(id))}>
-                    {obj.name}
-                  </button>
-                ) : null}
-              </li>
-            );
-          })
-        );
-        setDataArrayElements(elements);
+                  {obj.article ? (
+                    <li
+                      key={id}
+                      className="list-group-item color-article rounded-3 mb-2"
+                    >
+                      <button onClick={() => dispatch(setIdArticle(id))}>
+                        {obj.name}
+                      </button>
+                    </li>
+                  ) : null}
+                </>
+              );
+            })
+          );
+          setDataArrayElements(elements);
+        } catch (e) {
+        } finally {
+          setLoadingList(false);
+        }
         setLoadingList(false);
       } else {
         setDataArrayElements(<p>No data available</p>);
-        setLoadingList(false);
+        // setLoadingList(false);
       }
     };
 

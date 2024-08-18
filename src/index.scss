@@ -39,12 +39,6 @@ body {
 
 }
 
-
-
-
-
-
-
 .modal-window {
   position: fixed;
   top: 0;
@@ -56,7 +50,7 @@ body {
 
   &__wrapper {
     position: absolute;
-    padding: 10px;
+    // padding: 10px;
     transition-duration: 1s;
     transition-behavior: allow-discrete;
     display: none;
@@ -84,23 +78,19 @@ body {
     }
   }
 
-  .add-category__text-code {
-    width: 250px;
-  }
 
   .add-other__action,
   .add-other__links,
   .change-links__action,
   .change-links__links {
-    // width: 40%;
     display: flex;
     flex-direction: column;
     padding: 5px;
     gap: 10px;
+    margin: auto 13px;
 
     label {
       padding-left: 30px;
-      // position: relative;
       cursor: pointer;
     }
 
@@ -128,6 +118,12 @@ body {
     .jodit-workplace {
       min-height: 300px !important;
     }
+  }
+
+  .change-links__action,
+  .add-other__action,
+  .action .form-control {
+    width: 250px;
   }
 
   .action-type {
