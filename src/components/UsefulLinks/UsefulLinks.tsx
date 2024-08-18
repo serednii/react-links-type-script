@@ -35,6 +35,7 @@ function UsefulLinks() {
     activesMenu.current.splice(0);
   }, []);
 
+  //закриваємо вложені меню
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -71,7 +72,8 @@ function UsefulLinks() {
 
           <MenuLinks
             key={"MenuLinks"}
-            dataMenu={dataStore.dataMain}
+            arrayKeys={[]}
+            dataMenu={[dataStore.dataMain]}
             firstMenu={true}
             level={0}
             activesMenu={activesMenu.current}

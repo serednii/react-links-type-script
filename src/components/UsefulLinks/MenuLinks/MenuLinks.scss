@@ -1,6 +1,5 @@
 .submenu-links {
     position: relative;
-    background-color: cadetblue;
     width: 100%;
     cursor: pointer;
     border: 1px solid black;
@@ -66,6 +65,14 @@
         z-index: 5;
     }
 
+}
+
+.submenu-links.color-object {
+    background-color: rgb(112, 136, 217);
+}
+
+.submenu-links.color-array {
+    background-color: cadetblue;
 }
 
 .submenu-links:first-child {

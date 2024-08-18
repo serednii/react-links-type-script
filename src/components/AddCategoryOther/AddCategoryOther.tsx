@@ -28,11 +28,14 @@ const AddCategory: React.FC = () => {
   const [selectAction, setSelectAction] = useState<string>("");
   const [article, setArticle] = useState("");
 
-  let { dataMenu, key } = dataStore.sluice || {};
+  let { dataMenu, prevDataMenu, key, arrayKeys } = dataStore.sluice || {};
 
+  dataMenu = dataMenu[0];
+  const prevKey = arrayKeys && arrayKeys[0];
+  console.log(prevDataMenu);
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
-
+  console.log(prevKey);
   const OtherAction = () => {
     menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
@@ -74,14 +77,13 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
 
-    console.log(dataMenu[key]);
-    console.log(dataMenu);
-    console.log(key);
+    console.log(prevKey);
     delete dataMenu[key];
-    console.log(dataMenu);
+    console.log(prevDataMenu);
 
-    if (Object.keys(dataMenu).length === 0) {
+    if (prevDataMenu && Object.keys(prevDataMenu[prevKey]).length === 0) {
       console.log("add null");
+      prevDataMenu[prevKey] = null;
     }
 
     OtherAction();

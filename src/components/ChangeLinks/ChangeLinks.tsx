@@ -1,7 +1,6 @@
 import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-
 import dataStore from "../../mobx/dataStore/DataStore";
 import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
 import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
@@ -31,8 +30,6 @@ const ChangeLinks: React.FC = () => {
   const { isModal } = useSelector((state: RootState) => state.ui);
 
   const { dataMenu, key } = dataStore.listLinkData;
-  console.log("listLinkData", dataStore.listLinkData);
-
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
   const [name, setName] = useState<string>("");
@@ -42,7 +39,6 @@ const ChangeLinks: React.FC = () => {
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
-    dataStore.setDataMain({ ...dataStore.dataMain });
     menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
     setName("");
     setLink("");
@@ -102,7 +98,6 @@ const ChangeLinks: React.FC = () => {
   ) => {
     e.preventDefault();
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-
 
     if (!name.length) {
       dispatch(setError("Add name Link"));
@@ -241,11 +236,14 @@ const ChangeLinks: React.FC = () => {
         });
     }
     console.log(dataMenu);
-    console.log(dataMenu[key]);
+    console.log(key);
+    console.log(dataMenu[key].length);
 
     if (dataMenu[key].length === 0) {
+      console.log("***********delete");
       dataMenu[key] = null;
     }
+
     OtherAction();
   };
 

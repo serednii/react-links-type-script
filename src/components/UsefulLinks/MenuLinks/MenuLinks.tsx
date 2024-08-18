@@ -16,7 +16,8 @@ type ActiveMenuType = {
 };
 
 interface IMenuLinksProps {
-  dataMenu: Record<string, any>;
+  dataMenu: Record<string, any>[];
+  arrayKeys: string[];
   firstMenu: boolean;
   level: number;
   activesMenu: ActiveMenuType[];
@@ -24,33 +25,36 @@ interface IMenuLinksProps {
 
 interface IMenuLinks {
   dataMenu: Record<string, any>;
+  prevDataMenu?: Record<string, any>;
+  arrayKeys?: string[];
   key: string;
 }
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
-  dataMenu = {},
+  dataMenu = [],
   firstMenu,
   level = 0,
   activesMenu,
+  arrayKeys,
 }) => {
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
+  console.log("dataMenu", dataMenu);
 
-  const handlePrintLinks = useCallback(
-    (obj: IMenuLinks): void => {
-      const findIndex = activesMenu.findIndex((e) => e.level === level);
-      const slice = activesMenu.slice(findIndex);
+  //Друкуємо ссилки
+  const handlePrintLinks = (obj: IMenuLinks): void => {
+    const findIndex = activesMenu.findIndex((e) => e.level === level);
+    const slice = activesMenu.slice(findIndex);
 
-      if (findIndex >= 0) {
-        activesMenu.splice(findIndex);
-        slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-      }
-      console.log("activesMenu", activesMenu);
-      todoStore.setListLinkData(obj);
-    },
-    [activesMenu, level]
-  );
+    if (findIndex >= 0) {
+      activesMenu.splice(findIndex);
+      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+    }
+
+    console.log("activesMenu", activesMenu);
+    todoStore.setListLinkData(obj);
+  };
 
   const plusOther = useCallback(
     (data: IMenuLinks): void => {
@@ -96,58 +100,76 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
   );
 
   const menuItems = () => {
-    if (!dataMenu) return null;
+    if (!dataMenu[0]) return null;
 
-    return Object.keys(dataMenu).map((key: string) => (
-      <li
-        key={key}
-        className={`submenu-links ${
-          isOpenCloseSubMenu === key && "open-click"
-        }`}
-      >
-        {isButtonPlus && (
-          <span
-            className="svg-plus"
-            onClick={() => plusOther({ dataMenu, key })}
-          >
-            {svgIconPencil}
-          </span>
-        )}
+    return Object.keys(dataMenu[0]).map((key: string) => {
+      return (
+        <li
+          key={key}
+          className={`submenu-links 
+          ${isObject(dataMenu[0][key]) && "color-object"} 
+          ${isArray(dataMenu[0][key]) && "color-array"}
+          ${isOpenCloseSubMenu === key && "open-click"}`}
+        >
+          {isButtonPlus && (
+            <span
+              className="svg-plus"
+              onClick={() =>
+                plusOther({
+                  dataMenu,
+                  prevDataMenu: dataMenu && dataMenu[1],
+                  key,
+                  arrayKeys,
+                })
+              }
+            >
+              {svgIconPencil}
+            </span>
+          )}
 
-        {isArray(dataMenu[key]) && (
-          <button
-            className="submenu-links__menu"
-            onClick={() => handlePrintLinks({ dataMenu, key })}
-          >
-            {key}
-          </button>
-        )}
-
-        {isObject(dataMenu[key]) && (
-          <>
+          {isArray(dataMenu[0][key]) && (
             <button
               className="submenu-links__menu"
-              onClick={() => handleSetIsOpenCloseSubMenu(key)}
+              onClick={() =>
+                handlePrintLinks({
+                  dataMenu: dataMenu[0],
+                  key,
+                  arrayKeys,
+                })
+              }
             >
               {key}
-              <span className="svg-arrow-right">{svgIconArrowRight}</span>
             </button>
+          )}
 
-            <MenuLinks
-              key={key}
-              dataMenu={dataMenu[key]}
-              firstMenu={false}
-              level={level + 1}
-              activesMenu={activesMenu}
-            />
-          </>
-        )}
+          {isObject(dataMenu[0][key]) && (
+            <>
+              <button
+                className="submenu-links__menu"
+                onClick={() => handleSetIsOpenCloseSubMenu(key)}
+              >
+                {key}
+                <span className="svg-arrow-right">{svgIconArrowRight}</span>
+              </button>
 
-        {dataMenu[key] === null && (
-          <span className="submenu-links__null">{key}</span>
-        )}
-      </li>
-    ));
+              <MenuLinks
+                key={key}
+                //передаємо в масив список послідовних лінків, добавляємо в початок масиву
+                dataMenu={[dataMenu[0][key], ...dataMenu]}
+                firstMenu={false}
+                level={level + 1}
+                activesMenu={activesMenu}
+                arrayKeys={[key, ...arrayKeys]}
+              />
+            </>
+          )}
+
+          {dataMenu[0][key] === null && (
+            <span className="submenu-links__null">{key}</span>
+          )}
+        </li>
+      );
+    });
   };
 
   return (

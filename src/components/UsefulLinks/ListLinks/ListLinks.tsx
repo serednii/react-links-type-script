@@ -31,8 +31,6 @@ const ListLinks: React.FC = () => {
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(true);
 
-  function plusOther() {}
-
   function handlerChangeLink() {
     dispatch(setModal(true));
     dispatch(setChangeLinks(!isChangeLinks));
@@ -63,30 +61,35 @@ const ListLinks: React.FC = () => {
             console.log("ListLinks.js id", id);
 
             return (
-              <li key={id} className="list-group-item  rounded-3 mb-2">
-                {/* {isChangeLinks && (
-                  <span className="link-plus" onClick={() => plusOther()}>
-                    {svgIconChange}
-                  </span>
-                )} */}
-
+              <>
                 {obj.link && (
-                  <a
-                    onClick={() => dispatch(setIdArticle(""))}
-                    className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    target="_blank"
-                    href={link}
-                    rel="noopener noreferrer"
+                  <li
+                    key={id}
+                    className="list-group-item color-link rounded-3 mb-2"
                   >
-                    {obj.name}
-                  </a>
+                    <a
+                      onClick={() => dispatch(setIdArticle(""))}
+                      className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                      target="_blank"
+                      href={link}
+                      rel="noopener noreferrer"
+                    >
+                      {obj.name}
+                    </a>
+                  </li>
                 )}
+
                 {obj.article ? (
-                  <button onClick={() => dispatch(setIdArticle(id))}>
-                    {obj.name}
-                  </button>
+                  <li
+                    key={id}
+                    className="list-group-item color-article rounded-3 mb-2"
+                  >
+                    <button onClick={() => dispatch(setIdArticle(id))}>
+                      {obj.name}
+                    </button>
+                  </li>
                 ) : null}
-              </li>
+              </>
             );
           })
         );

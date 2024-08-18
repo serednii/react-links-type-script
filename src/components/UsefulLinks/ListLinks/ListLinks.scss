@@ -13,10 +13,24 @@ a {
     border-radius: 20px;
     margin-bottom: 20px;
 
-    .list-group-item {
-        background-color: #cbcbcc;
+    .list-group-item.color-link {
+
+        background-color: rgb(112, 136, 217);
 
         a {
+            color: black !important;
+        }
+
+        a:hover {
+            color: rgb(89, 20, 20) !important;
+        }
+    }
+
+    .list-group-item.color-article {
+
+        background-color: cadetblue;
+
+        button {
             color: black !important;
         }
 
