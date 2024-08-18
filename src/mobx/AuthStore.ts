@@ -119,7 +119,6 @@ class AuthStore {
 
   async logout() {
     console.log('logout')
-
     try {
       await AuthService.logout();
       localStorage.removeItem("token");
@@ -143,7 +142,7 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error?.response?.data?.message || "Error checkAuth"));
+      // store.dispatch(setError(error?.response?.data?.message || "Error checkAuth"));
     } finally {
       this.setLoading(false);
     }

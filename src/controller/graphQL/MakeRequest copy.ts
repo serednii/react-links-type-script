@@ -25,45 +25,35 @@ class MakeRequest {
     }
   }
 
-  async refreshToken() {
-    const refreshResponse = await fetch(`${API_URL}/refresh`, { credentials: 'include' });
-    if (refreshResponse.ok) {
-      const { accessToken } = await refreshResponse.json();
-      localStorage.setItem('token', accessToken);
-      this.setAuthToken(); // Оновлюємо токен в заголовку
-      return true;
-    } else {
-      localStorage.removeItem("token");
-      authStore.setAuth(false);
-      authStore.setUser({} as IUser);
-      return false;
-    }
-  }
-
+  
   request = async (query: string) => {
     this.data.body = JSON.stringify({ query });
 
     try {
       this.isLoading = true;
-      this.setAuthToken(); // Додаємо токен перед запитом
-
       let response = await fetch(this.url, { ...this.data });
-
+      console.log(response)
       // Якщо отримали 401, пробуємо оновити токен
       if (response.status === 401) {
-        const isTokenRefreshed = await this.refreshToken();
-        if (isTokenRefreshed) {
+        const refreshResponse = await fetch(`${API_URL}/refresh`, { credentials: 'include' });
+        if (refreshResponse.ok) {
+          const { accessToken } = await refreshResponse.json();
+          localStorage.setItem('token', accessToken);
+
+          // Оновлюємо заголовок з новим токеном
+          this.data.headers.Authorization = `Bearer ${accessToken}`;
+
           // Повторний запит з оновленим токеном
           response = await fetch(this.url, { ...this.data });
-          
+           console.log(response)
           if (response.status === 401) {
             localStorage.removeItem("token");
             authStore.setAuth(false)
             authStore.setUser({} as IUser);
-            throw new Error("Unauthorized: Unable to refresh token");
           }
+          // return response
         } else {
-          throw new Error("Unauthorized: Refresh token failed");
+          throw new Error("Unauthorized: Unable to refresh token");
         }
       }
 
@@ -82,6 +72,35 @@ class MakeRequest {
       this.isLoading = false;
     }
   };
+
+  // request = async (query: string) => {
+  //   this.data.body = JSON.stringify({ query });
+    
+  //   // Додаємо Bearer токен перед запитом
+  //   this.setAuthToken();
+
+  //   try {
+  //     this.isLoading = true;
+  //     const response = await fetch(this.url, { ...this.data });
+
+  //     if (response.status === 401) {
+  //       console.log('401')
+  //       throw new Error("Unauthorized: Please check your credentials");
+  //     }
+      
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
+  //     const result = await response.json();
+  //     return result;
+  //   } catch (error) {
+  //     console.error("Fetch error:", error);
+  //     throw error;
+  //   } finally {
+  //     this.isLoading = false;
+  //   }
+  // };
 
   isLoadingStatus() {
     return this.isLoading;
