@@ -9,6 +9,7 @@ import AuthService from "../AuthUser/services/AuthServices"; // Додайте �
 import menuStore from "./asyncDataStore/AsyncMenuStore";
 import  store  from '../redux/store'; // Імпортуйте ваш store
 import { setError } from '../redux/uiSlice'; // Імпортуйте екшн для помилок
+import dataStore from "./dataStore/DataStore";
 
 class AuthStore {
   user: IUser = {} as IUser;
@@ -90,6 +91,21 @@ class AuthStore {
     }
   }
 
+  async logout() {
+    console.log('logout')
+    try {
+      await AuthService.logout();
+      localStorage.removeItem("token");
+      this.setAuth(false);
+      this.setUser({} as IUser);
+      dataStore.clearStore()
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      console.log(error?.response?.data?.message);
+      store.dispatch(setError(error?.response?.data?.message || "Error logout"));
+    }
+  }
+
   async createUser(email: string, password: string, userName: string, lastUserName: string) {
     console.log('updateUser')
     try {
@@ -117,19 +133,7 @@ class AuthStore {
   }
 
 
-  async logout() {
-    console.log('logout')
-    try {
-      await AuthService.logout();
-      localStorage.removeItem("token");
-      this.setAuth(false);
-      this.setUser({} as IUser);
-    } catch (e) {
-      const error = e as AxiosError<{ message: string }>;
-      console.log(error?.response?.data?.message);
-      store.dispatch(setError(error?.response?.data?.message || "Error logout"));
-    }
-  }
+
 
   async checkAuth() {
     console.log('checkAuth')
