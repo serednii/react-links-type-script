@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../../mobx/dataStore/DataStore";
+import dataStore from "../../../mobx/dataStore/DataStore";
 import { useSelector, useDispatch } from "react-redux";
 import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
@@ -53,16 +53,16 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
     }
 
     console.log("activesMenu", activesMenu);
-    todoStore.setListLinkData(obj);
+    dataStore.setListLinkData(obj);
   };
 
   const plusOther = useCallback(
     (data: IMenuLinks): void => {
       dispatch(setModal(true));
       dispatch(setAddCategoryOther(true));
-      todoStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
+      dataStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
     },
-    [dispatch, todoStore.setSluice]
+    [dispatch, dataStore.setSluice]
   );
 
   useEffect(() => {
