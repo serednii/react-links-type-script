@@ -9,9 +9,11 @@ const InfoModal = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       dispatch(setInfo(""));
     }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
