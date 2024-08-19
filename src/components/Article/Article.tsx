@@ -7,6 +7,7 @@ import { RootState } from "../../redux/rootReducer"; // Убедитесь, чт
 import { setIdArticle } from "../../redux/dataSlice";
 
 import "./article.scss";
+import MySpinner from "../MySpinner/MySpinner";
 
 const Article: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,10 +46,7 @@ const Article: React.FC = () => {
   if (loadingArticle) {
     return (
       <div className="article">
-        <h1>Loading...</h1>
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+        <MySpinner />;
       </div>
     );
   }

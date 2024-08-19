@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { svgIconChange } from "../../../icon";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
@@ -16,6 +15,7 @@ import { setIdArticle } from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer";
 
 import "./ListLinks.scss";
+import MySpinner from "../../MySpinner/MySpinner";
 
 interface ILink {
   id: string;
@@ -119,34 +119,36 @@ const ListLinks: React.FC = () => {
     };
   }, [key, updateListLink]);
 
-  if (loadingList) {
-    return (
-      <div className="list_links">
-        <h1>Loading...</h1>
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // if (loadingList) {
+  //   return (
+  //     <div className="article">
+  //       <MySpinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="list-links">
-      <div className="list-links__header">
-        {dataArrayElements && dataArrayElements.length > 0 && (
-          <>
-            <Breadcrumbs />
-            <Button
-              className="btn btn-primary me-md-2 mb-3 btn-lg"
-              onClick={handlerChangeLink}
-            >
-              Change links
-            </Button>
-          </>
-        )}
-      </div>
+      {loadingList && <MySpinner />}
+      {!loadingList && (
+        <>
+          <div className="list-links__header">
+            {dataArrayElements && dataArrayElements.length > 0 && (
+              <>
+                <Breadcrumbs />
+                <Button
+                  className="btn btn-primary me-md-2 mb-3 btn-lg"
+                  onClick={handlerChangeLink}
+                >
+                  Change links
+                </Button>
+              </>
+            )}
+          </div>
 
-      <ul className="list-group list-group-flush">{dataArrayElements}</ul>
+          <ul className="list-group list-group-flush">{dataArrayElements}</ul>
+        </>
+      )}
     </div>
   );
 };

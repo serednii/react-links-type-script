@@ -24,19 +24,7 @@ const App: React.FC = () => {
     useSelector((state: RootState) => state.ui);
   const { updateDataMain } = useSelector((state: RootState) => state.data);
 
-  // console.log("++++++++++++++++++++++++++++++++");
-  // console.log("userName", authStore.user.userName);
-  // console.log("lastUserName", authStore.user.lastUserName);
-  // console.log("isBlocked", authStore.user.isBlocked);
-  // console.log("isAddedContent", authStore.user.isAddedContent);
-  // console.log("users", authStore.user.roles);
-  // console.log("user email", authStore.user.email);
-  // console.log("user id", authStore.user.id);
-  // console.log("user isActivated", authStore.user.isActivated);
-
-  // console.log("isAuth", authStore.isAuth);
-  // console.log("isLoading", authStore.isLoading);
-  // console.log("++++++++++++++++++++++++++++++++");
+  console.log("+++++++++++++++APP RENDER+++++++++++++++++");
 
   const isAdmin = authStore?.user?.roles?.includes("admin");
   useEffect(() => {
@@ -62,27 +50,15 @@ const App: React.FC = () => {
     authStore?.user?.id && fetchData();
   }, [updateDataMain, authStore.user.id]);
 
-  if (authStore.isLoading) {
-    return <div>Downloading...</div>;
-  }
-  console.log("authStore.isAuth", authStore.isAuth);
-
-  if (!authStore.isAuth) {
-    if (authStore.users.length > 0) authStore.setUsers([]);
-    // return (
-    //   <div>
-    //     <AuthForms />
-    //     {error && <Errors />}
-    //     {info && <InfoModal />}
-    //   </div>
-    // );
-  }
+  // if (authStore.isLoading) {
+  //   return <div>Downloading...</div>;
+  // }
 
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
-        {/* {isLoading && <h1>Loading...</h1>} */}
         <Header />
+        {isLoading && <h1>Loading...</h1>}
         {authStore.isAuth && <UsefulLinks />}
         {isAddCategoryOther && <AddCategoryOther />}
         {isChangeLinks && <ChangeLinks />}
