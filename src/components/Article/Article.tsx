@@ -15,19 +15,31 @@ const Article: React.FC = () => {
   const [loadingArticle, setLoadingArticle] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     setLoadingArticle(true);
     graphQLArticleController
       .getDataArticle(idArticle)
       .then((res) => {
         console.log(res);
-        setHtml(res.article);
+        if (!signal.aborted) {
+          setHtml(res.article);
+        }
       })
       .catch((error) => {
         console.error("Error download Article", error);
         dispatch(setError("Error download Article"));
       })
-      .finally(() => setLoadingArticle(false));
+      .finally(() => {
+        if (!signal.aborted) {
+          setLoadingArticle(false);
+        }
+      });
     console.log(idArticle);
+    return () => {
+      controller.abort();
+    };
   }, [idArticle]);
 
   if (loadingArticle) {
