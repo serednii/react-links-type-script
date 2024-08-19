@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
 import dataStore from "../../../mobx/dataStore/DataStore";
-
+import Breadcrumbs from "../../Breadkrumbs/Breadcrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModal,
@@ -13,7 +13,7 @@ import {
   setButtonPlus,
 } from "../../../redux/uiSlice";
 import { setIdArticle } from "../../../redux/dataSlice";
-import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { RootState } from "../../../redux/rootReducer";
 
 import "./ListLinks.scss";
 
@@ -27,7 +27,8 @@ const ListLinks: React.FC = () => {
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
   const { updateListLink } = useSelector((state: RootState) => state.data);
 
-  const { dataMenu, key } = dataStore?.listLinkData || {};
+  const { dataMenu, key, arrayKeys } = dataStore?.listLinkData || {};
+  dataStore.setBreadcrumbs([...(arrayKeys || []), key]);
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(false);
 
@@ -39,16 +40,16 @@ const ListLinks: React.FC = () => {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchLinks = async () => {
-      console.log(dataMenu);
-      console.log(key);
       if (dataMenu && key && dataMenu[key]) {
         setLoadingList(true);
         try {
           const elements = await Promise.all(
             dataMenu[key].map(async (obj: any) => {
               let resLink: ILink | null = null;
-              console.log("obj ", obj);
               let id: string = "";
               let link: string = "";
 
@@ -59,9 +60,6 @@ const ListLinks: React.FC = () => {
               } else if (obj.article) {
                 id = obj.article;
               }
-
-              console.log("resLink ------ ", resLink);
-              console.log("ListLinks.js id", id);
 
               return (
                 <>
@@ -82,7 +80,7 @@ const ListLinks: React.FC = () => {
                     </li>
                   )}
 
-                  {obj.article ? (
+                  {obj.article && (
                     <li
                       key={id}
                       className="list-group-item color-article rounded-3 mb-2"
@@ -91,25 +89,35 @@ const ListLinks: React.FC = () => {
                         {obj.name}
                       </button>
                     </li>
-                  ) : null}
+                  )}
                 </>
               );
             })
           );
-          setDataArrayElements(elements);
+
+          if (!signal.aborted) {
+            setDataArrayElements(elements);
+          }
         } catch (e) {
+          if (!signal.aborted) {
+            console.error("Error fetching links:", e);
+          }
         } finally {
-          setLoadingList(false);
+          if (!signal.aborted) {
+            setLoadingList(false);
+          }
         }
-        setLoadingList(false);
       } else {
         setDataArrayElements(<p>No data available</p>);
-        // setLoadingList(false);
       }
     };
 
     fetchLinks();
-  }, [dataMenu, key, updateListLink]);
+
+    return () => {
+      controller.abort(); // Скасування запиту при розмонтуванні компонента
+    };
+  }, [key, updateListLink]);
 
   if (loadingList) {
     return (
@@ -123,15 +131,18 @@ const ListLinks: React.FC = () => {
   }
 
   return (
-    <div className="list_links">
-      <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+    <div className="list-links">
+      <div className="list-links__header">
         {dataArrayElements && dataArrayElements.length > 0 && (
-          <Button
-            className="btn btn-primary me-md-2 mb-3 btn-lg"
-            onClick={handlerChangeLink}
-          >
-            Change links
-          </Button>
+          <>
+            <Breadcrumbs />
+            <Button
+              className="btn btn-primary me-md-2 mb-3 btn-lg"
+              onClick={handlerChangeLink}
+            >
+              Change links
+            </Button>
+          </>
         )}
       </div>
 
@@ -139,4 +150,5 @@ const ListLinks: React.FC = () => {
     </div>
   );
 };
+
 export default observer(ListLinks);
