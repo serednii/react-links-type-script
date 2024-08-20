@@ -11,6 +11,8 @@ const InputText: React.FC<IInputChecked> = ({ user, nameAction }) => {
   const [state, setState] = useState<string>(
     (user[nameAction] as string) || ""
   );
+  console.log("InputText");
+
   let nameType = "";
   let nameLabel = "";
   switch (nameAction as string) {
@@ -40,9 +42,9 @@ const InputText: React.FC<IInputChecked> = ({ user, nameAction }) => {
 
   const handleChange = (value: string) => {
     setState(value);
-    console.log(value);
+    // console.log(value);
     user.isMutation = true;
-    console.log("user.isMutation", user.isMutation);
+    // console.log("user.isMutation", user.isMutation);
     switch (nameAction as string) {
       case "userName":
         user.userName = value;

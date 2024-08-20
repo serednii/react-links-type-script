@@ -9,6 +9,7 @@ import "./AuthForms.scss";
 
 const AuthForms: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>(undefined);
+  console.log("AuthForms");
 
   const handleTabSelect = (key: string | null) => {
     // Якщо користувач клікнув на активну вкладку, то згортаємо її

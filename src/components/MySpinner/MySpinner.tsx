@@ -1,4 +1,5 @@
 const MySpinner: React.FC = () => {
+  console.log("MySpinner");
   return (
     <>
       <h1>Loading...</h1>

@@ -5,6 +5,7 @@ import authStore from "../../../mobx/AuthStore";
 import "./auth_user.scss";
 
 const AuthUser = () => {
+  console.log("AuthUser");
   return (
     <div className="auth-user">
       <div className="auth-user__info">

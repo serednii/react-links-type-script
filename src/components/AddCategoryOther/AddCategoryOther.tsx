@@ -22,20 +22,19 @@ import authStore from "../../mobx/AuthStore";
 const AddCategory: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
-
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
   const [selectAction, setSelectAction] = useState<string>("");
   const [article, setArticle] = useState("");
 
   let { dataMenu, prevDataMenu, key, arrayKeys } = dataStore.sluice || {};
-
   dataMenu = dataMenu[0];
   const prevKey = arrayKeys && arrayKeys[0];
-  console.log(prevDataMenu);
+  // console.log(prevDataMenu);
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
-  console.log(prevKey);
+  console.log('AddCategory');
+
   const OtherAction = () => {
     menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
       dispatch(toggleUpdateDataMain()); //restart
@@ -98,7 +97,7 @@ const AddCategory: React.FC = () => {
       dispatch(setError("Add name Link"));
       return;
     }
-    console.log(dataMenu);
+    // console.log(dataMenu);
     if (dataMenu[key] === null) dataMenu[key] = {};
     if (isObject(dataMenu[key])) dataMenu[key][name] = null;
     OtherAction();

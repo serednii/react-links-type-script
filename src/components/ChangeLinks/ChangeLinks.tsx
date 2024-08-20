@@ -28,7 +28,6 @@ interface LinkData {
 const ChangeLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isModal } = useSelector((state: RootState) => state.ui);
-
   const { dataMenu, key } = dataStore.listLinkData;
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
@@ -37,6 +36,8 @@ const ChangeLinks: React.FC = () => {
   const [article, setArticle] = useState("");
   const isTypeSelect = useRef<string | null>(null);
   const selectId = useRef<string>("");
+
+  console.log("ChangeLinks");
 
   const OtherAction = () => {
     menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
@@ -235,12 +236,12 @@ const ChangeLinks: React.FC = () => {
           dispatch(setError("Error Deleted Link"));
         });
     }
-    console.log(dataMenu);
-    console.log(key);
-    console.log(dataMenu[key].length);
+    // console.log(dataMenu);
+    // console.log(key);
+    // console.log(dataMenu[key].length);
 
     if (dataMenu[key].length === 0) {
-      console.log("***********delete");
+      // console.log("***********delete");
       dataMenu[key] = null;
     }
 

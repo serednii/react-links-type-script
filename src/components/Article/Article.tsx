@@ -14,6 +14,7 @@ const Article: React.FC = () => {
   const { idArticle } = useSelector((state: RootState) => state.data);
   const [html, setHtml] = useState("");
   const [loadingArticle, setLoadingArticle] = useState(true);
+  console.log("Article");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -23,7 +24,7 @@ const Article: React.FC = () => {
     graphQLArticleController
       .getDataArticle(idArticle)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (!signal.aborted) {
           setHtml(res.article);
         }
@@ -37,7 +38,7 @@ const Article: React.FC = () => {
           setLoadingArticle(false);
         }
       });
-    console.log(idArticle);
+    // console.log(idArticle);
     return () => {
       controller.abort();
     };

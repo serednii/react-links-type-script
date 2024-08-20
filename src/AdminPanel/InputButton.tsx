@@ -8,9 +8,11 @@ interface IInputChecked {
 }
 
 const InputButton: React.FC<IInputChecked> = ({ user, nameAction }) => {
+
   const [state, setState] = useState<string>(
     (user[nameAction] as string) || ""
   );
+  console.log('InputButton')
   
   let nameType = "";
   let nameLabel = "";

@@ -7,14 +7,6 @@ import { useDispatch } from "react-redux";
 import { setError } from "../../../../redux/uiSlice";
 import "./SignInForm.scss";
 
-const testUsers = [
-  {
-    email: "serednii@gmail.com",
-    password: "mdcvsww8097",
-    userName: "mykola",
-    lastUserName: "serednii",
-  },
-];
 const SignInForm: React.FC = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
@@ -22,7 +14,7 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [lastUserName, setLastUserName] = useState<string>("");
-
+  console.log("SignInForm");
   const handleSignIn = (event: FormEvent) => {
     event.preventDefault();
 

@@ -94,6 +94,8 @@ const AdminPanel: React.FC = () => {
   const isUser = authStore?.user?.roles?.includes("user");
   const idUser = authStore?.user?.id;
 
+  console.log('AdminPanel')
+
   const generateUsers = async () => {
     for (const { email, password, userName, lastUserName } of testUsers) {
       try {
@@ -120,11 +122,8 @@ const AdminPanel: React.FC = () => {
       }
     };
 
-    // if (tempUpdateUser.current !== updateUser) {
     getUsers();
-    // }
 
-    // tempUpdateUser.current = updateUser;
   }, []);
 
   const handelSaveChange = async (event: FormEvent) => {

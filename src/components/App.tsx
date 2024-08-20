@@ -24,9 +24,10 @@ const App: React.FC = () => {
     useSelector((state: RootState) => state.ui);
   const { updateDataMain } = useSelector((state: RootState) => state.data);
 
-  console.log("+++++++++++++++APP RENDER+++++++++++++++++");
+  console.log("APP RENDER");
 
   const isAdmin = authStore?.user?.roles?.includes("admin");
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       authStore.checkAuth();
@@ -35,10 +36,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(authStore.user.id);
+      // console.log(authStore.user.id);
       try {
         await menuStore.getMenu(authStore.user.id);
-        console.log(dataStore.dataMain);
+        // console.log(dataStore.dataMain);
       } catch (error) {
         console.error("Error fetching menu data:", error);
         dispatch(

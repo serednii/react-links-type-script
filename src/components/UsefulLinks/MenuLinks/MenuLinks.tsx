@@ -6,29 +6,8 @@ import dataStore from "../../../mobx/dataStore/DataStore";
 import { useSelector, useDispatch } from "react-redux";
 import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
 import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { IMenuLinks, IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
-
-type MenuFunctionType = (value: string) => void;
-type ActiveMenuType = {
-  setIsOpenCloseSubMenu: MenuFunctionType;
-  isOpenCloseSubMenu: string;
-  level: number;
-};
-
-interface IMenuLinksProps {
-  dataMenu: Record<string, any>[];
-  arrayKeys: string[];
-  firstMenu: boolean;
-  level: number;
-  activesMenu: ActiveMenuType[];
-}
-
-interface IMenuLinks {
-  dataMenu: Record<string, any>;
-  prevDataMenu?: Record<string, any>;
-  arrayKeys?: string[];
-  key: string;
-}
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
   dataMenu = [],
@@ -40,7 +19,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
-  console.log("dataMenu", dataMenu);
+  console.log("MenuLinks");
 
   //Друкуємо ссилки
   const handlePrintLinks = (obj: IMenuLinks): void => {
@@ -52,18 +31,24 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
       slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
     }
 
-    console.log("activesMenu", activesMenu);
+    // console.log("activesMenu", activesMenu);
     dataStore.setListLinkData(obj);
   };
 
-  const plusOther = useCallback(
-    (data: IMenuLinks): void => {
-      dispatch(setModal(true));
-      dispatch(setAddCategoryOther(true));
-      dataStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
-    },
-    [dispatch, dataStore.setSluice]
-  );
+  // const plusOther = useCallback(
+  //   (data: IMenuLinks): void => {
+  //     dispatch(setModal(true));
+  //     dispatch(setAddCategoryOther(true));
+  //     dataStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
+  //   },
+  //   [dispatch, dataStore.setSluice]
+  // );
+
+  const plusOther = (data: IMenuLinks): void => {
+    dispatch(setModal(true));
+    dispatch(setAddCategoryOther(true));
+    dataStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
+  };
 
   useEffect(() => {
     if (isOpenCloseSubMenu) {
@@ -75,29 +60,24 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
     }
   }, [isOpenCloseSubMenu, activesMenu, level]);
 
-  const handleSetIsOpenCloseSubMenu = useCallback(
-    (key: string) => {
-      const findIndex = activesMenu.findIndex((e) => e.level === level);
-      const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
-      const slice = activesMenu.slice(findIndex);
+  const handleSetIsOpenCloseSubMenu = (key: string) => {
+    const findIndex = activesMenu.findIndex((e) => e.level === level);
+    const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
+    const slice = activesMenu.slice(findIndex);
 
-      if (findIndex >= 0) {
-        activesMenu.splice(findIndex);
-        slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-      }
+    if (findIndex >= 0) {
+      activesMenu.splice(findIndex);
+      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
+    }
 
-      if (findIndex !== level) {
-        setIsOpenCloseSubMenu((prev) =>
-          prev ? (prev === key ? "" : key) : key
-        );
-      }
+    if (findIndex !== level) {
+      setIsOpenCloseSubMenu((prev) => (prev ? (prev === key ? "" : key) : key));
+    }
 
-      if (findIndex === level && menuLevel !== key) {
-        setIsOpenCloseSubMenu(key);
-      }
-    },
-    [activesMenu, level]
-  );
+    if (findIndex === level && menuLevel !== key) {
+      setIsOpenCloseSubMenu(key);
+    }
+  };
 
   const menuItems = () => {
     if (!dataMenu[0]) return null;

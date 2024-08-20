@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  console.log("LoginForm");
   const handleLogin = (event: FormEvent) => {
     event.preventDefault();
     authStore.login(email, password);

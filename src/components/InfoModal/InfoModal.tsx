@@ -7,7 +7,7 @@ import "./InfoModal.scss";
 const InfoModal = () => {
   const { info } = useSelector((state: RootState) => state.ui);
   const dispatch = useDispatch();
-
+  console.log("InfoModal.");
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(setInfo(""));

@@ -12,7 +12,7 @@ const SelectRole: React.FC<ISelectRole> = ({ user }) => {
   // Конвертуємо user.role в масив, якщо це не масив
   const initialRoles = Array.isArray(user.roles) ? user.roles : [user.roles];
   const [selectedRoles, setSelectedRoles] = useState<string[]>(initialRoles);
-  console.log(selectedRoles);
+  console.log("SelectRole");
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     user.isMutation = true;

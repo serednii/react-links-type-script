@@ -26,12 +26,12 @@ const ListLinks: React.FC = () => {
   const dispatch = useDispatch();
   const { isChangeLinks } = useSelector((state: RootState) => state.ui);
   const { updateListLink } = useSelector((state: RootState) => state.data);
-
   const { dataMenu, key, arrayKeys } = dataStore?.listLinkData || {};
   dataStore.setBreadcrumbs([...(arrayKeys || []), key]);
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
   const [loadingList, setLoadingList] = useState(false);
 
+  console.log("ListLinks");
   function handlerChangeLink() {
     dispatch(setModal(true));
     dispatch(setChangeLinks(!isChangeLinks));
