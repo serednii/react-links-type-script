@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
@@ -62,12 +62,9 @@ const ListLinks: React.FC = () => {
               }
 
               return (
-                <>
+                <React.Fragment key={id}>
                   {obj.link && (
-                    <li
-                      key={id}
-                      className="list-group-item color-link rounded-3 mb-2"
-                    >
+                    <li className="list-group-item color-link rounded-3 mb-2">
                       <a
                         onClick={() => dispatch(setIdArticle(""))}
                         className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
@@ -90,7 +87,7 @@ const ListLinks: React.FC = () => {
                       </button>
                     </li>
                   )}
-                </>
+                </React.Fragment>
               );
             })
           );
@@ -145,7 +142,6 @@ const ListLinks: React.FC = () => {
               </>
             )}
           </div>
-
           <ul className="list-group list-group-flush">{dataArrayElements}</ul>
         </>
       )}
