@@ -4,7 +4,7 @@ import axios from 'axios';
 import UserService from "../AuthUser/services/UserService";
 import { IUser } from "../AuthUser/models/IUser";
 import { AuthResponse } from "../AuthUser/models/response/authResponse";
-import { API_URL } from "../AuthUser/http";
+import { URL_AUTH } from "../const";
 import AuthService from "../AuthUser/services/AuthServices"; // Додайте цей імпорт
 import menuStore from "./asyncDataStore/AsyncMenuStore";
 import  store  from '../redux/store'; // Імпортуйте ваш store
@@ -140,7 +140,7 @@ class AuthStore {
 
     this.setLoading(true);
     try {
-      const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
+      const response = await axios.get<AuthResponse>(`${URL_AUTH}/refresh`, { withCredentials: true });
       this.setAuth(true);
       this.setUser(response?.data?.user);
     } catch (e) {

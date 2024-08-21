@@ -1,6 +1,6 @@
-import { API_URL } from '../../AuthUser/http';
+
 import { IUser } from '../../AuthUser/models/IUser';
-import { URL } from '../../const';
+import { URL_GRAPHQL, URL_AUTH } from '../../const';
 import authStore from '../../mobx/AuthStore';
 
 class MakeRequest {
@@ -9,7 +9,7 @@ class MakeRequest {
   url: string;
 
   constructor() {
-    this.url = URL;
+    this.url = URL_GRAPHQL;
     this.data = {
       method: "POST",
       headers: {
@@ -26,7 +26,7 @@ class MakeRequest {
   }
 
   async refreshToken() {
-    const refreshResponse = await fetch(`${API_URL}/refresh`, { credentials: 'include' });
+    const refreshResponse = await fetch(`${URL_AUTH}/refresh`, { credentials: 'include' });
     if (refreshResponse.ok) {
       const { accessToken } = await refreshResponse.json();
       localStorage.setItem('token', accessToken);

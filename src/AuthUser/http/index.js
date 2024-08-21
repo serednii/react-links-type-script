@@ -1,11 +1,11 @@
 import axios from "axios";
-import { BASE_URL } from "../../const.js";
-// export const API_URL = 'http://localhost:7000/api';
-export const API_URL = BASE_URL + '/api';
+import { URL_AUTH } from "../../const.js";
+
+
 
 const $api = axios.create({
     withCredentials: true,
-    baseURL: API_URL
+    baseURL: URL_AUTH
 });
 
 $api.interceptors.request.use((config) => {
@@ -23,7 +23,7 @@ $api.interceptors.response.use((response) => {
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-            const response = await axios.get(`${API_URL}/refresh`, { withCredentials: true });
+            const response = await axios.get(`${URL_AUTH}/refresh`, { withCredentials: true });
             localStorage.setItem('token', response.data.accessToken);
             return $api.request(originalRequest);
         } catch (e) {
