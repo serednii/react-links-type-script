@@ -1,22 +1,22 @@
 import { useEffect } from "react";
-import Header from "./Header/Header";
-import UsefulLinks from "./UsefulLinks/UsefulLinks";
-import AddCategoryOther from "./AddCategoryOther/AddCategoryOther";
-import ChangeLinks from "./ChangeLinks/ChangeLinks";
+import Header from "./components/Header/Header";
+import UsefulLinks from "./components/UsefulLinks/UsefulLinks";
+import AddCategoryOther from "./components/AddCategoryOther/AddCategoryOther";
+import ChangeLinks from "./components/ChangeLinks/ChangeLinks";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../redux/rootReducer"; // Убедитесь, что путь правильный
+import { RootState } from "./redux/rootReducer"; // Убедитесь, что путь правильный
 import { observer } from "mobx-react-lite";
-import menuStore from "../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../mobx/dataStore/DataStore";
+import menuStore from "./mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "./mobx/dataStore/DataStore";
 
-import authStore from "../mobx/AuthStore";
-import { setError } from "../redux/uiSlice";
+import authStore from "./mobx/AuthStore";
+import { setError } from "./redux/uiSlice";
 
-import "../App.css";
-import Errors from "./Errors/Errors";
-import InfoModal from "./InfoModal/InfoModal";
-import AdminPanel from "../AdminPanel/AdminPanel";
-import adminStore from "../mobx/adminStore";
+import "./App.css";
+import Errors from "./components/Errors/Errors";
+import InfoModal from "./components/InfoModal/InfoModal";
+import AdminPanel from "./AdminPanel/AdminPanel";
+import adminStore from "./mobx/adminStore";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();

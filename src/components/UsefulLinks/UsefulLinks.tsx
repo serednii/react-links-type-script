@@ -81,4 +81,4 @@ const UsefulLinks: React.FC = () => {
   );
 };
 
-export default React.memo(observer(UsefulLinks));
+export default observer(UsefulLinks);
