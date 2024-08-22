@@ -37,16 +37,17 @@ const SignInForm: React.FC = () => {
     <div className="login-form">
       <div className="login-form__inner">
         <Form className="login-form__registration">
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>UserName</Form.Label>
             <Form.Control
               type="text"
               placeholder="input user name"
+              autoComplete="current-name"
               onChange={(e) => setUserName(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formBasicLastName">
             <Form.Label>Last User Name</Form.Label>
             <Form.Control
               type="text"
@@ -60,6 +61,7 @@ const SignInForm: React.FC = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
+              autoComplete="current-email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Text className="text-muted">
@@ -72,6 +74,7 @@ const SignInForm: React.FC = () => {
             <Form.Control
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
