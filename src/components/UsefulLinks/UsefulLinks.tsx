@@ -9,14 +9,15 @@ import { RootState } from "../../redux/rootReducer";
 import { setButtonPlus, setChangeLinks } from "../../redux/uiSlice";
 import { svgIoSettings } from "../../icon";
 import "./UsefulLinks.scss";
+import { ActiveMenuType } from "./MenuLinks/type";
 
-type MenuFunctionType = (value: string) => void;
+// type MenuFunctionType = (value: string) => void;
 
-type ActiveMenuType = {
-  setIsOpenCloseSubMenu: MenuFunctionType;
-  isOpenCloseSubMenu: string;
-  level: number;
-};
+// type ActiveMenuType = {
+//   setIsOpenCloseSubMenu: MenuFunctionType;
+//   isOpenCloseSubMenu: string;
+//   level: number;
+// };
 
 const UsefulLinks: React.FC = () => {
   const activesMenu = useRef<ActiveMenuType[]>([]);
