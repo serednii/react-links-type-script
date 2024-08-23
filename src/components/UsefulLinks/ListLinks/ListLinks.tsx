@@ -11,7 +11,7 @@ import {
   setChangeLinks,
   setButtonPlus,
 } from "../../../redux/uiSlice";
-import { setIdArticle } from "../../../redux/dataSlice";
+// import { setIdArticle } from "../../../redux/dataSlice";
 import { RootState } from "../../../redux/rootReducer";
 
 import "./ListLinks.scss";
@@ -38,6 +38,14 @@ const ListLinks: React.FC = () => {
     dispatch(setAddCategoryOther(false));
     dispatch(setButtonPlus(false));
   }
+
+  const handleSetIdIArticle = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    event.preventDefault();
+    dataStore.setIdArticle(id);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -66,7 +74,7 @@ const ListLinks: React.FC = () => {
                   {obj.link && (
                     <li className="list-group-item color-link rounded-3 mb-2">
                       <a
-                        onClick={() => dispatch(setIdArticle(""))}
+                        onClick={() => dataStore.setIdArticle("")}
                         className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                         target="_blank"
                         href={link}
@@ -82,7 +90,10 @@ const ListLinks: React.FC = () => {
                       key={id}
                       className="list-group-item color-article rounded-3 mb-2"
                     >
-                      <button onClick={() => dispatch(setIdArticle(id))}>
+                      <button
+                        // onClick={(event) => handleSetIdIArticle(event, id)}
+                        onClick={() => dataStore.setIdArticle(id)}
+                      >
                         {obj.name}
                       </button>
                     </li>

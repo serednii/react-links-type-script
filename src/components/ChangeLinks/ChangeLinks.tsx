@@ -1,4 +1,3 @@
-import "./ChangeLinks.scss";
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import dataStore from "../../mobx/dataStore/DataStore";
@@ -19,6 +18,7 @@ import {
 import { toggleUpdateListLink } from "../../redux/dataSlice";
 import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import authStore from "../../mobx/AuthStore";
+import "./ChangeLinks.scss";
 
 interface LinkData {
   name: string;
@@ -47,14 +47,6 @@ const ChangeLinks: React.FC = () => {
     setSelectActionLink("");
     handleCloseModal();
   };
-
-  // const handleSetText = (value: string) => {
-  //   // value = value.trim().replaceAll(" ", "_");
-  //   const regex = /^[a-zA-Z_0-9]*$/;
-  //   if (regex.test(value)) {
-  //     setName(value);
-  //   }
-  // };
 
   const handlerSetSelectAction = (select: string) => {
     if (select === "Empty") {

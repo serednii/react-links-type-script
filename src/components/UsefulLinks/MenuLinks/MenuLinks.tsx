@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
@@ -10,12 +10,25 @@ import { IMenuLinks, IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
-  dataMenu = [],
+  dataMenu,
   firstMenu,
   level = 0,
   activesMenu,
   arrayKeys,
 }) => {
+  firstMenu && (dataMenu = [dataMenu]);
+  const dataMenuRef = useRef(dataMenu);
+  const firstMenuRef = useRef(firstMenu);
+  const levelRef = useRef(level);
+  const activesMenuRef = useRef(activesMenu);
+  const arrayKeysRef = useRef(arrayKeys);
+
+  console.log(dataMenuRef.current === dataMenu);
+  console.log(firstMenuRef.current === firstMenu);
+  console.log(levelRef.current === level);
+  console.log(activesMenuRef.current === activesMenu);
+  console.log(arrayKeysRef.current === arrayKeys);
+
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");

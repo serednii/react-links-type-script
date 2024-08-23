@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface DataState {
 
-    idArticle: string;//
+    // idArticle: string;//
     updateListLink: boolean;//
     updateDataMain: boolean;//
 }
 
 const initialState: DataState = {
 
-    idArticle: '',//
+    // idArticle: '',//
     updateListLink: false,
     updateDataMain: false,
 };
@@ -18,9 +18,9 @@ const dataSlice = createSlice({
     name: 'data',
     initialState,
     reducers: {
-        setIdArticle(state, action: PayloadAction<string>) {
-            state.idArticle = action.payload;
-        },
+        // setIdArticle(state, action: PayloadAction<string>) {
+        //     state.idArticle = action.payload;
+        // },
         toggleUpdateListLink(state) {//
             state.updateListLink = !state.updateListLink;
         },
@@ -31,7 +31,7 @@ const dataSlice = createSlice({
 });
 
 export const {
-    setIdArticle,
+    // setIdArticle,
     toggleUpdateListLink,
     toggleUpdateDataMain,
 } = dataSlice.actions;

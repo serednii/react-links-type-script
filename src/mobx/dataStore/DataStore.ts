@@ -5,6 +5,7 @@ class DataStore {
   listLinkData: any;
   sluice: any;
   breadcrumbs: string[];
+  idArticle: string;
 
   constructor() {
 
@@ -13,10 +14,11 @@ class DataStore {
       setListLinkData: action,
       setSluice: action,
       setBreadcrumbs: action,
+      setIdArticle: action
     });
 
     this.breadcrumbs = [];
-
+    this.idArticle = ""
   }
 
   setDataMain(dataMain: any) {
@@ -34,12 +36,16 @@ class DataStore {
   setBreadcrumbs(breadcrumbs: string[]){
     this.breadcrumbs = breadcrumbs;
   }
+  setIdArticle(idArticle: string){
+    this.idArticle = idArticle;
+  }
 
   clearStore(){
     this.dataMain ={}
     this.listLinkData = {}
     this.sluice = []
     this.breadcrumbs = []
+    
   }
 
 }

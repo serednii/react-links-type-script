@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
-import Article from "../Article/Article";
+import Article from "../ArticleWrapper/Article/Article";
 import { observer } from "mobx-react-lite";
 import dataStore from "../../mobx/dataStore/DataStore";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import { setButtonPlus, setChangeLinks } from "../../redux/uiSlice";
 import { svgIoSettings } from "../../icon";
 import "./UsefulLinks.scss";
 import { ActiveMenuType } from "./MenuLinks/type";
+import ArticleWrapper from "../ArticleWrapper/ArticleWrapper";
 
 // type MenuFunctionType = (value: string) => void;
 
@@ -22,11 +23,12 @@ import { ActiveMenuType } from "./MenuLinks/type";
 const UsefulLinks: React.FC = () => {
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { idArticle } = useSelector((state: RootState) => state.data);
+  // const { idArticle } = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
   const { isButtonPlus } = useSelector((state: RootState) => state.ui);
 
   console.log("UsefulLinks");
+  const arrayKeysStart = useRef([]);
 
   function handlerOpenPopup(): void {
     dispatch(setButtonPlus(!isButtonPlus));
@@ -67,8 +69,8 @@ const UsefulLinks: React.FC = () => {
 
           <MenuLinks
             key={"MenuLinks"}
-            arrayKeys={[]}
-            dataMenu={[dataStore.dataMain]}
+            arrayKeys={arrayKeysStart.current}
+            dataMenu={dataStore.dataMain}
             firstMenu={true}
             level={0}
             activesMenu={activesMenu.current}
@@ -76,7 +78,10 @@ const UsefulLinks: React.FC = () => {
         </div>
 
         <ListLinks />
-        {idArticle && <Article />}
+        {dataStore.idArticle && <Article />}
+        {/* <ArticleWrapper>
+          <Article />
+        </ArticleWrapper> */}
       </main>
     </section>
   );

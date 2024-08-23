@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
-import graphQLArticleController from "../../controller/graphQL/graphql-ArticleController";
-import { useSelector, useDispatch } from "react-redux";
-import { setError } from "../../redux/uiSlice";
-import { svgIconClose } from "../../icon";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
-import { setIdArticle } from "../../redux/dataSlice";
-
+import graphQLArticleController from "../../../controller/graphQL/graphql-ArticleController";
+import { useDispatch } from "react-redux";
+import { setError } from "../../../redux/uiSlice";
+import { svgIconClose } from "../../../icon";
+import dataStore from "../../../mobx/dataStore/DataStore";
+import MySpinner from "../../MySpinner/MySpinner";
+import { observer } from "mobx-react-lite";
 import "./article.scss";
-import MySpinner from "../MySpinner/MySpinner";
 
 const Article: React.FC = () => {
   const dispatch = useDispatch();
-  const { idArticle } = useSelector((state: RootState) => state.data);
   const [html, setHtml] = useState("");
   const [loadingArticle, setLoadingArticle] = useState(true);
   console.log("Article");
-
+  console.log(dataStore.idArticle);
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
     setLoadingArticle(true);
     graphQLArticleController
-      .getDataArticle(idArticle)
+      .getDataArticle(dataStore.idArticle)
       .then((res) => {
         // console.log(res);
         if (!signal.aborted) {
@@ -42,7 +40,7 @@ const Article: React.FC = () => {
     return () => {
       controller.abort();
     };
-  }, [idArticle]);
+  }, [dataStore.idArticle]);
 
   if (loadingArticle) {
     return (
@@ -55,7 +53,7 @@ const Article: React.FC = () => {
   return (
     <div className="article">
       <div className="article__close">
-        <button onClick={() => dispatch(setIdArticle(""))}>
+        <button onClick={() => dataStore.setIdArticle("")}>
           {" "}
           {svgIconClose}
         </button>
@@ -64,4 +62,4 @@ const Article: React.FC = () => {
     </div>
   );
 };
-export default Article;
+export default observer(Article);
