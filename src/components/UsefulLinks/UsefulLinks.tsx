@@ -7,54 +7,32 @@ import logicStore from "../../mobx/LogicStore";
 import { svgIoSettings } from "../../icon";
 import "./UsefulLinks.scss";
 import { ActiveMenuType } from "./MenuLinks/type";
-// import ArticleWrapper from "../ArticleWrapper/ArticleWrapper";
 import dataStore from "../../mobx/DataStore";
-
-// type MenuFunctionType = (value: string) => void;
-
-// type ActiveMenuType = {
-//   setIsOpenCloseSubMenu: MenuFunctionType;
-//   isOpenCloseSubMenu: string;
-//   level: number;
-// };
+import {
+  handlerOpenPopup,
+  clearClickMenu,
+  handleClickOutside,
+  handleEscapePress,
+} from "./usefulLinksUtils"; // Importing the utility functions
 
 const UsefulLinks: React.FC = () => {
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
-  // const { idArticle } = useSelector((state: RootState) => state.data);
-
-  console.log("UsefulLinks");
   const arrayKeysStart = useRef([]);
 
-  function handlerOpenPopup(): void {
-    logicStore.setButtonPlus(!logicStore.isButtonPlus);
-    logicStore.setChangeLinks(false);
-  }
-
-  const clearClickMenu = () => {
-    activesMenu.current.forEach((e) => e.setIsOpenCloseSubMenu(""));
-    activesMenu.current.splice(0);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      clearClickMenu();
-    }
-  };
-
-  const handleEscapePress = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      clearClickMenu();
-    }
-  };
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscapePress);
+    const handleClickOutsideEvent = (event: MouseEvent) =>
+      handleClickOutside(event, menuRef, activesMenu.current);
+    const handleEscapePressEvent = (event: KeyboardEvent) =>
+      handleEscapePress(event, activesMenu.current);
+
+    document.addEventListener("mousedown", handleClickOutsideEvent);
+    document.addEventListener("keydown", handleEscapePressEvent);
+
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapePress);
+      document.removeEventListener("mousedown", handleClickOutsideEvent);
+      document.removeEventListener("keydown", handleEscapePressEvent);
     };
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -75,9 +53,6 @@ const UsefulLinks: React.FC = () => {
 
         <ListLinks />
         {logicStore.idArticle && <Article />}
-        {/* <ArticleWrapper>
-          <Article />
-        </ArticleWrapper> */}
       </main>
     </section>
   );
