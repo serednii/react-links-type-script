@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction  } from "mobx";
 import axios from 'axios';
 import UserService from "../AuthUser/services/UserService";
 import { IUser } from "../AuthUser/models/IUser";
@@ -31,6 +31,7 @@ class AuthStore {
   setLoading(bool: boolean) {
     this.isLoading = bool;
   }
+  
   setUsers(users: IUser[]){
     this.users = users
   }
@@ -40,7 +41,9 @@ class AuthStore {
     
     try {
       const response = await UserService.fetchUsers();
-      this.users = response?.data;
+      runInAction(() => {
+        this.users = response?.data;
+      });
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
