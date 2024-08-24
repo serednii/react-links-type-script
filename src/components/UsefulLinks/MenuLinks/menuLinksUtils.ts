@@ -12,6 +12,7 @@ export const handlePrintLinks = (
   activesMenu: ActiveMenuType[],
   level: number
 ): void => {
+
   const findIndex = activesMenu.findIndex((e) => e.level === level);
   const slice = activesMenu.slice(findIndex);
 
@@ -38,8 +39,8 @@ export const handleSetIsOpenCloseSubMenu = (
   setIsOpenCloseSubMenu: React.Dispatch<React.SetStateAction<string>>
 ) => {
   const findIndex = activesMenu.findIndex((e) => e.level === level);
-  const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
   const slice = activesMenu.slice(findIndex);
+  const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
 
   if (findIndex >= 0) {
     activesMenu.splice(findIndex);
@@ -53,4 +54,5 @@ export const handleSetIsOpenCloseSubMenu = (
   if (findIndex === level && menuLevel !== key) {
     setIsOpenCloseSubMenu(key);
   }
+
 };
