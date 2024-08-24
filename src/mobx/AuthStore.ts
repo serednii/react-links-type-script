@@ -7,9 +7,8 @@ import { AuthResponse } from "../AuthUser/models/response/authResponse";
 import { URL_AUTH } from "../const";
 import AuthService from "../AuthUser/services/AuthServices"; // Додайте цей імпорт
 import menuStore from "./asyncDataStore/AsyncMenuStore";
-import  store  from '../redux/store'; // Імпортуйте ваш store
-import { setError } from '../redux/uiSlice'; // Імпортуйте екшн для помилок
-import dataStore from "./dataStore/DataStore";
+import dataStore from "./DataStore";
+import logicStore from "./LogicStore";
 
 class AuthStore {
   user: IUser = {} as IUser;
@@ -45,7 +44,7 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error getUsers"));
+      logicStore.setError(error.response?.data?.message || "Error getUsers");
     }
   }
 
@@ -59,7 +58,7 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error login"));
+      logicStore.setError(error.response?.data?.message || "Error login");
     }
   }
 
@@ -77,14 +76,14 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error registration"));
+      logicStore.setError(error.response?.data?.message || "Error registration");
     }
   }
 
   async updateUser(user: IUser) {
     console.log('updateUser')
     try {
-      const response = await UserService.updateUser(user);
+      await UserService.updateUser(user);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
@@ -102,7 +101,7 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error?.response?.data?.message || "Error logout"));
+      logicStore.setError(error?.response?.data?.message || "Error logout");
     }
   }
 
@@ -125,7 +124,7 @@ class AuthStore {
     console.log('deleteUser', id)
 
     try {
-      const response = await UserService.deleteUser(id);
+      await UserService.deleteUser(id);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);

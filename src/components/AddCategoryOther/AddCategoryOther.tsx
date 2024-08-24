@@ -5,39 +5,34 @@ import { isObject, isArray } from "../../otherFunction/functions";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import { observer } from "mobx-react-lite";
 import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../mobx/dataStore/DataStore";
+import dataStore from "../../mobx/DataStore";
 import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
 import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
-
-import { useSelector, useDispatch } from "react-redux";
-import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
-import {
-  toggleUpdateListLink,
-  toggleUpdateDataMain,
-} from "../../redux/dataSlice";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
 import MyInput from "../formComponents/MyInput/MyInput";
 import authStore from "../../mobx/AuthStore";
+import logicStore from "../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isModal } = useSelector((state: RootState) => state.ui);
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
   const [selectAction, setSelectAction] = useState<string>("");
   const [article, setArticle] = useState("");
 
-  let { dataMenu, prevDataMenu, key, arrayKeys } = dataStore.sluice || {};
+  let { dataMenu, prevDataMenu, key, arrayKeys } = dataStore?.sluice || {};
+  if (!dataMenu || !key || !arrayKeys) {
+    return <></>;
+  }
+
   dataMenu = dataMenu[0];
-  const prevKey = arrayKeys && arrayKeys[0];
-  // console.log(prevDataMenu);
+  const prevKey = arrayKeys[0];
+
   const isArr = isArray(dataMenu[key]);
   const isObj = isObject(dataMenu[key]);
-  console.log('AddCategory');
+  console.log("AddCategory");
 
   const OtherAction = () => {
-    menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
-      dispatch(toggleUpdateDataMain()); //restart
+    menuStore.updateMenu(authStore?.user?.id, dataStore?.dataMain).then(() => {
+      logicStore.toggleUpdateDataMain(); //restart
     });
     handleCloseModal();
   };
@@ -60,7 +55,7 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
@@ -75,18 +70,14 @@ const AddCategory: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-
-    console.log(prevKey);
     delete dataMenu[key];
-    console.log(prevDataMenu);
-
     if (prevDataMenu && Object.keys(prevDataMenu[prevKey]).length === 0) {
       console.log("add null");
       prevDataMenu[prevKey] = null;
     }
 
     OtherAction();
-    dispatch(setAddCategoryOther(false));
+    logicStore.setAddCategoryOther(false);
   };
 
   const handleAddSubMenu = (
@@ -94,7 +85,7 @@ const AddCategory: React.FC = () => {
   ) => {
     event.preventDefault();
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
     // console.log(dataMenu);
@@ -110,7 +101,7 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
@@ -126,12 +117,12 @@ const AddCategory: React.FC = () => {
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
     if (!urlPattern.test(link)) {
-      dispatch(setError("Error synaxsys link"));
+      logicStore.setError("Error synaxsys link");
       return;
     }
 
@@ -146,7 +137,7 @@ const AddCategory: React.FC = () => {
           });
         OtherAction();
         setName("");
-        dispatch(toggleUpdateListLink());
+        logicStore.toggleUpdateListLink();
       })
       .catch((error) => {
         console.error(
@@ -163,7 +154,7 @@ const AddCategory: React.FC = () => {
     event.preventDefault();
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
@@ -178,7 +169,7 @@ const AddCategory: React.FC = () => {
           });
         OtherAction();
         setName("");
-        dispatch(toggleUpdateListLink());
+        logicStore.toggleUpdateListLink();
       })
       .catch((error) => {
         console.error(
@@ -190,15 +181,15 @@ const AddCategory: React.FC = () => {
   };
 
   const handleCloseModal = () => {
-    dispatch(setModal(false));
-    dispatch(setAddCategoryOther(false));
+    logicStore.setModal(false);
+    logicStore.setAddCategoryOther(false);
   };
 
   return (
     <div className="add-category modal-window">
       <div
         className={`add-category__wrapper modal-window__wrapper ${
-          isModal ? "open" : ""
+          logicStore.isModal ? "open" : ""
         }`}
         style={{
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
@@ -256,7 +247,7 @@ const AddCategory: React.FC = () => {
               </button>
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={() => dispatch(setAddCategoryOther(false))}
+                onClick={() => logicStore.setAddCategoryOther(false)}
               >
                 No
               </button>

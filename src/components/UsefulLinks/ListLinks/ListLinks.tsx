@@ -2,20 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
-import dataStore from "../../../mobx/dataStore/DataStore";
+import dataStore from "../../../mobx/DataStore";
 import Breadcrumbs from "../../Breadkrumbs/Breadcrumbs";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setModal,
-  setAddCategoryOther,
-  setChangeLinks,
-  setButtonPlus,
-} from "../../../redux/uiSlice";
-// import { setIdArticle } from "../../../redux/dataSlice";
-import { RootState } from "../../../redux/rootReducer";
 
 import "./ListLinks.scss";
 import MySpinner from "../../MySpinner/MySpinner";
+import logicStore from "../../../mobx/LogicStore";
 
 interface ILink {
   id: string;
@@ -23,9 +15,6 @@ interface ILink {
 }
 
 const ListLinks: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isChangeLinks } = useSelector((state: RootState) => state.ui);
-  const { updateListLink } = useSelector((state: RootState) => state.data);
   const { dataMenu, key, arrayKeys } = dataStore?.listLinkData || {};
   dataStore.setBreadcrumbs([...(arrayKeys || []), key]);
   const [dataArrayElements, setDataArrayElements] = useState<any>([]);
@@ -33,19 +22,11 @@ const ListLinks: React.FC = () => {
 
   console.log("ListLinks");
   function handlerChangeLink() {
-    dispatch(setModal(true));
-    dispatch(setChangeLinks(!isChangeLinks));
-    dispatch(setAddCategoryOther(false));
-    dispatch(setButtonPlus(false));
+    logicStore.setModal(true);
+    logicStore.toggleChangeLinks();
+    logicStore.setAddCategoryOther(false);
+    logicStore.setButtonPlus(false);
   }
-
-  const handleSetIdIArticle = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    event.preventDefault();
-    dataStore.setIdArticle(id);
-  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -74,7 +55,7 @@ const ListLinks: React.FC = () => {
                   {obj.link && (
                     <li className="list-group-item color-link rounded-3 mb-2">
                       <a
-                        onClick={() => dataStore.setIdArticle("")}
+                        onClick={() => logicStore.setIdArticle("")}
                         className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                         target="_blank"
                         href={link}
@@ -90,10 +71,7 @@ const ListLinks: React.FC = () => {
                       key={id}
                       className="list-group-item color-article rounded-3 mb-2"
                     >
-                      <button
-                        // onClick={(event) => handleSetIdIArticle(event, id)}
-                        onClick={() => dataStore.setIdArticle(id)}
-                      >
+                      <button onClick={() => logicStore.setIdArticle(id)}>
                         {obj.name}
                       </button>
                     </li>
@@ -125,7 +103,7 @@ const ListLinks: React.FC = () => {
     return () => {
       controller.abort(); // Скасування запиту при розмонтуванні компонента
     };
-  }, [key, updateListLink]);
+  }, [key, logicStore.updateListLink]);
 
   // if (loadingList) {
   //   return (

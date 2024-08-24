@@ -3,12 +3,10 @@ import { observer } from "mobx-react-lite";
 import authStore from "../../../../mobx/AuthStore";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useDispatch } from "react-redux";
-import { setError } from "../../../../redux/uiSlice";
 import "./SignInForm.scss";
+import logicStore from "../../../../mobx/LogicStore";
 
 const SignInForm: React.FC = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -19,15 +17,15 @@ const SignInForm: React.FC = () => {
     event.preventDefault();
 
     if (userName.length < 3 || lastUserName.length < 3) {
-      dispatch(setError("The text must have at least 3 characters"));
+      logicStore.setError("The text must have at least 3 characters");
     } else if (!email) {
-      dispatch(setError("Email is required"));
+      logicStore.setError("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      dispatch(setError("Email address is invalid"));
+      logicStore.setError("Email address is invalid");
     } else if (!password) {
-      dispatch(setError("Password is required"));
+      logicStore.setError("Password is required");
     } else if (password.length < 6) {
-      dispatch(setError("Password must be at least 6 characters"));
+      logicStore.setError("Password must be at least 6 characters");
     } else {
       authStore.registration(email, password, userName, lastUserName);
     }

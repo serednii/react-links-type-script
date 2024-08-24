@@ -1,16 +1,12 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setInfo } from "../../redux/uiSlice";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import logicStore from "../../mobx/LogicStore";
 import "./InfoModal.scss";
 
 const InfoModal = () => {
-  const { info } = useSelector((state: RootState) => state.ui);
-  const dispatch = useDispatch();
   console.log("InfoModal.");
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch(setInfo(""));
+      logicStore.setInfo("");
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -52,12 +48,12 @@ const InfoModal = () => {
     //   </div>
     // </div>
 
-    <div id="myModal" className={`modal fade ${info ? "show" : ""}`}>
+    <div id="myModal" className={`modal fade ${logicStore.info ? "show" : ""}`}>
       <div className="modal-dialog modal-confirm">
         <div className="modal-content">
           <div className="modal-body text-center">
             <h4>Successful!</h4>
-            <p>{info}</p>
+            <p>{logicStore.info}</p>
           </div>
         </div>
       </div>

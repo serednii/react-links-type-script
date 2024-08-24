@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
 import graphQLArticleController from "../../../controller/graphQL/graphql-ArticleController";
-import { useDispatch } from "react-redux";
-import { setError } from "../../../redux/uiSlice";
 import { svgIconClose } from "../../../icon";
-import dataStore from "../../../mobx/dataStore/DataStore";
+import logicStore from "../../../mobx/LogicStore";
 import MySpinner from "../../MySpinner/MySpinner";
 import { observer } from "mobx-react-lite";
 import "./article.scss";
 
 const Article: React.FC = () => {
-  const dispatch = useDispatch();
   const [html, setHtml] = useState("");
   const [loadingArticle, setLoadingArticle] = useState(true);
   console.log("Article");
-  console.log(dataStore.idArticle);
+  console.log(logicStore.idArticle);
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
     setLoadingArticle(true);
     graphQLArticleController
-      .getDataArticle(dataStore.idArticle)
+      .getDataArticle(logicStore.idArticle)
       .then((res) => {
         // console.log(res);
         if (!signal.aborted) {
@@ -29,7 +26,7 @@ const Article: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error download Article", error);
-        dispatch(setError("Error download Article"));
+        logicStore.setError("Error download Article");
       })
       .finally(() => {
         if (!signal.aborted) {
@@ -40,7 +37,7 @@ const Article: React.FC = () => {
     return () => {
       controller.abort();
     };
-  }, [dataStore.idArticle]);
+  }, [logicStore.idArticle]);
 
   if (loadingArticle) {
     return (
@@ -53,7 +50,7 @@ const Article: React.FC = () => {
   return (
     <div className="article">
       <div className="article__close">
-        <button onClick={() => dataStore.setIdArticle("")}>
+        <button onClick={() => logicStore.setIdArticle("")}>
           {" "}
           {svgIconClose}
         </button>

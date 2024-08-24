@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../mobx/dataStore/DataStore";
+import dataStore from "../../mobx/DataStore";
 import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
 import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
 import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
@@ -8,17 +8,10 @@ import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setModal,
-  setChangeLinks,
-  setError,
-  setInfo,
-} from "../../redux/uiSlice";
-import { toggleUpdateListLink } from "../../redux/dataSlice";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+
 import authStore from "../../mobx/AuthStore";
 import "./ChangeLinks.scss";
+import logicStore from "../../mobx/LogicStore";
 
 interface LinkData {
   name: string;
@@ -26,8 +19,6 @@ interface LinkData {
 }
 
 const ChangeLinks: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isModal } = useSelector((state: RootState) => state.ui);
   const { dataMenu, key } = dataStore.listLinkData;
   const [selectAction, setSelectAction] = useState("add-link");
   const [selectActionLink, setSelectActionLink] = useState("");
@@ -45,7 +36,7 @@ const ChangeLinks: React.FC = () => {
     setLink("");
     setArticle("");
     setSelectActionLink("");
-    handleCloseModal();
+    handleCloseModal(null);
   };
 
   const handlerSetSelectAction = (select: string) => {
@@ -67,7 +58,7 @@ const ChangeLinks: React.FC = () => {
           setLink(res.link);
         })
         .catch(() => {
-          dispatch(setError("Error get Link"));
+          logicStore.setError("Error get Link");
         });
     }
 
@@ -80,7 +71,7 @@ const ChangeLinks: React.FC = () => {
           setArticle(res.article);
         })
         .catch(() => {
-          dispatch(setError("Error get Article"));
+          logicStore.setError("Error get Article");
         });
     }
     setName(dataMenu[key][+select].name);
@@ -93,12 +84,12 @@ const ChangeLinks: React.FC = () => {
     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
     if (!urlPattern.test(link)) {
-      dispatch(setError("Error synaxsys url"));
+      logicStore.setError("Error synaxsys url");
       return;
     }
 
@@ -106,7 +97,7 @@ const ChangeLinks: React.FC = () => {
       .addLink(link)
       .then((resId) => {
         dataMenu[key].push({ name, link: resId });
-        dispatch(toggleUpdateListLink());
+        logicStore.toggleUpdateListLink();
         OtherAction();
       })
       .catch((error) => {
@@ -114,7 +105,9 @@ const ChangeLinks: React.FC = () => {
           "Error, failed to add link. Please try again later",
           error
         );
-        dispatch(setError("Error, failed to add link. Please try again later"));
+        logicStore.setError(
+          "Error, failed to add link. Please try again later"
+        );
       });
   };
 
@@ -124,7 +117,7 @@ const ChangeLinks: React.FC = () => {
     event.preventDefault();
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
@@ -132,7 +125,7 @@ const ChangeLinks: React.FC = () => {
       .addArticle(article)
       .then((resId) => {
         dataMenu[key].push({ name, article: resId });
-        dispatch(toggleUpdateListLink());
+        logicStore.toggleUpdateListLink();
         OtherAction();
       })
       .catch((error) => {
@@ -140,8 +133,8 @@ const ChangeLinks: React.FC = () => {
           "Error, failed to add link. Please try again later",
           error
         );
-        dispatch(
-          setError("Error, failed to add Article. Please try again later")
+        logicStore.setError(
+          "Error, failed to add Article. Please try again later"
         );
       });
   };
@@ -152,14 +145,14 @@ const ChangeLinks: React.FC = () => {
     e.preventDefault();
 
     if (!name.length) {
-      dispatch(setError("Add name Link"));
+      logicStore.setError("Add name Link");
       return;
     }
 
     if (isTypeSelect.current === "link") {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
       if (!urlPattern.test(link)) {
-        dispatch(setError("Error synaxsys url"));
+        logicStore.setError("Error synaxsys url");
         return;
       }
       linkStore
@@ -169,12 +162,12 @@ const ChangeLinks: React.FC = () => {
             name,
             link: selectId.current,
           };
-          dispatch(toggleUpdateListLink());
-          dispatch(setInfo("Update link"));
+          logicStore.toggleUpdateListLink();
+          logicStore.setInfo("Update link");
         })
         .catch((error) => {
           console.error("Error, update link Please try again later", error);
-          dispatch(setError("Error  update link. Please try again later"));
+          logicStore.setError("Error  update link. Please try again later");
         });
     }
 
@@ -186,12 +179,12 @@ const ChangeLinks: React.FC = () => {
             name,
             article: selectId.current,
           };
-          dispatch(toggleUpdateListLink());
-          dispatch(setInfo("Update Article"));
+          logicStore.toggleUpdateListLink();
+          logicStore.setInfo("Update Article");
         })
         .catch((error) => {
           console.error("Error, update article. Please try again later", error);
-          dispatch(setError("Error, update Article. Please try again later"));
+          logicStore.setError("Error, update Article. Please try again later");
         });
     }
 
@@ -209,11 +202,11 @@ const ChangeLinks: React.FC = () => {
       linkStore
         .deleteLink(deletedLink[0].link)
         .then((res) => {
-          dispatch(toggleUpdateListLink());
-          dispatch(setInfo("Successful Deleted Link"));
+          logicStore.toggleUpdateListLink();
+          logicStore.setInfo("Successful Deleted Link");
         })
         .catch((error) => {
-          dispatch(setError("Error Deleted Link"));
+          logicStore.setError("Error Deleted Link");
         });
     }
 
@@ -221,11 +214,11 @@ const ChangeLinks: React.FC = () => {
       articleStore
         .deleteArticle(deletedLink[0].article)
         .then((res) => {
-          dispatch(toggleUpdateListLink());
-          dispatch(setInfo("Successful Deleted Article"));
+          logicStore.toggleUpdateListLink();
+          logicStore.setInfo("Successful Deleted Article");
         })
         .catch((error) => {
-          dispatch(setError("Error Deleted Link"));
+          logicStore.setError("Error Deleted Link");
         });
     }
     // console.log(dataMenu);
@@ -240,16 +233,26 @@ const ChangeLinks: React.FC = () => {
     OtherAction();
   };
 
-  const handleCloseModal = () => {
-    dispatch(setModal(false));
-    dispatch(setChangeLinks(false));
+  const handleCloseModal = (
+    event: React.MouseEvent<HTMLButtonElement> | null
+  ) => {
+    event?.preventDefault();
+    logicStore.setModal(false);
+    logicStore.setChangeLinks(false);
   };
 
   return (
+    // <h1>djfgnfdjgn;sdfkjgngkljsdgf</h1>
+    // <button
+    //   className="add-category__btn-close"
+    //   onClick={(event) => handleCloseModal(event)}
+    // >
+    //   {svgIconClose}
+    // </button>
     <div className="change-links modal-window">
       <div
         className={`change-links__wrapper modal-window__wrapper ${
-          isModal ? "open" : ""
+          logicStore.isModal ? "open" : ""
         }`}
         style={{
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",

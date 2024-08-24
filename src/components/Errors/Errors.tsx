@@ -1,23 +1,19 @@
-import { useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setError } from "../../redux/uiSlice";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { useRef } from "react";
+import logicStore from "../../mobx/LogicStore";
 import "./errors.scss";
 const Errors = () => {
-  const { error } = useSelector((state: RootState) => state.ui);
-  const dispatch = useDispatch();
   const modalParent = useRef(null);
   const modalContent = useRef(null);
 
   console.log("Errors Component", modalParent);
   const handleClose = () => {
-    dispatch(setError(""));
+    logicStore.setError("");
   };
 
   return (
     <div
       id="myModal"
-      className={`modal fade ${error ? "show" : ""}`}
+      className={`modal fade ${logicStore.error ? "show" : ""}`}
       ref={modalParent}
     >
       <div className="modal-dialog modal-confirm">
@@ -38,7 +34,7 @@ const Errors = () => {
           </div>
           <div className="modal-body text-center">
             <h4>Ooops!</h4>
-            <p>{error}</p>
+            <p>{logicStore.error}</p>
             <button
               className="btn btn-success"
               data-dismiss="modal"

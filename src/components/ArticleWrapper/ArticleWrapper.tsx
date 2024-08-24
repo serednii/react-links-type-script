@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { ReactElement } from "react";
-import dataStore from "../../mobx/dataStore/DataStore";
+import logicStore from "../../mobx/LogicStore";
 import "./ArticleWrapper.scss";
 
 const ArticleWrapper = ({ children }: { children: ReactElement }) => {
   return (
-    <div className="article-wrapper">{dataStore.idArticle && children}</div>
+    <div className="article-wrapper">{logicStore.idArticle && children}</div>
   );
 };
 

@@ -1,16 +1,14 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import ListLinks from "./ListLinks/ListLinks";
 import MenuLinks from "./MenuLinks/MenuLinks";
 import Article from "../ArticleWrapper/Article/Article";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../mobx/dataStore/DataStore";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../redux/rootReducer";
-import { setButtonPlus, setChangeLinks } from "../../redux/uiSlice";
+import logicStore from "../../mobx/LogicStore";
 import { svgIoSettings } from "../../icon";
 import "./UsefulLinks.scss";
 import { ActiveMenuType } from "./MenuLinks/type";
-import ArticleWrapper from "../ArticleWrapper/ArticleWrapper";
+// import ArticleWrapper from "../ArticleWrapper/ArticleWrapper";
+import dataStore from "../../mobx/DataStore";
 
 // type MenuFunctionType = (value: string) => void;
 
@@ -24,15 +22,13 @@ const UsefulLinks: React.FC = () => {
   const activesMenu = useRef<ActiveMenuType[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
   // const { idArticle } = useSelector((state: RootState) => state.data);
-  const dispatch = useDispatch();
-  const { isButtonPlus } = useSelector((state: RootState) => state.ui);
 
   console.log("UsefulLinks");
   const arrayKeysStart = useRef([]);
 
   function handlerOpenPopup(): void {
-    dispatch(setButtonPlus(!isButtonPlus));
-    dispatch(setChangeLinks(false));
+    logicStore.setButtonPlus(!logicStore.isButtonPlus);
+    logicStore.setChangeLinks(false);
   }
 
   const clearClickMenu = () => {
@@ -51,7 +47,6 @@ const UsefulLinks: React.FC = () => {
       clearClickMenu();
     }
   };
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleEscapePress);
@@ -59,6 +54,7 @@ const UsefulLinks: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscapePress);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -78,7 +74,7 @@ const UsefulLinks: React.FC = () => {
         </div>
 
         <ListLinks />
-        {dataStore.idArticle && <Article />}
+        {logicStore.idArticle && <Article />}
         {/* <ArticleWrapper>
           <Article />
         </ArticleWrapper> */}

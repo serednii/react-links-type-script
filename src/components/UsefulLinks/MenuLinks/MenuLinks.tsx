@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../../mobx/dataStore/DataStore";
-import { useSelector, useDispatch } from "react-redux";
-import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
-import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import dataStore from "../../../mobx/DataStore";
 import { IMenuLinks, IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
+import logicStore from "../../../mobx/LogicStore";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
   dataMenu,
@@ -17,20 +15,18 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
   arrayKeys,
 }) => {
   firstMenu && (dataMenu = [dataMenu]);
-  const dataMenuRef = useRef(dataMenu);
-  const firstMenuRef = useRef(firstMenu);
-  const levelRef = useRef(level);
-  const activesMenuRef = useRef(activesMenu);
-  const arrayKeysRef = useRef(arrayKeys);
+  // const dataMenuRef = useRef(dataMenu);
+  // const firstMenuRef = useRef(firstMenu);
+  // const levelRef = useRef(level);
+  // const activesMenuRef = useRef(activesMenu);
+  // const arrayKeysRef = useRef(arrayKeys);
 
-  console.log(dataMenuRef.current === dataMenu);
-  console.log(firstMenuRef.current === firstMenu);
-  console.log(levelRef.current === level);
-  console.log(activesMenuRef.current === activesMenu);
-  console.log(arrayKeysRef.current === arrayKeys);
+  // console.log(dataMenuRef.current === dataMenu);
+  // console.log(firstMenuRef.current === firstMenu);
+  // console.log(levelRef.current === level);
+  // console.log(activesMenuRef.current === activesMenu);
+  // console.log(arrayKeysRef.current === arrayKeys);
 
-  const dispatch = useDispatch();
-  const { isButtonPlus } = useSelector((state: RootState) => state.ui);
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
   console.log("MenuLinks");
 
@@ -57,9 +53,9 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
   //   [dispatch, dataStore.setSluice]
   // );
 
-  const plusOther = (data: IMenuLinks): void => {
-    dispatch(setModal(true));
-    dispatch(setAddCategoryOther(true));
+  const handleOpenSettingMenu = (data: IMenuLinks): void => {
+    logicStore.setModal(true);
+    logicStore.setAddCategoryOther(true);
     dataStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
   };
 
@@ -104,11 +100,11 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
           ${isArray(dataMenu[0][key]) && "color-array"}
           ${isOpenCloseSubMenu === key && "open-click"}`}
         >
-          {isButtonPlus && (
+          {logicStore.isButtonPlus && (
             <span
               className="svg-plus"
               onClick={() =>
-                plusOther({
+                handleOpenSettingMenu({
                   dataMenu,
                   prevDataMenu: dataMenu && dataMenu[1],
                   key,

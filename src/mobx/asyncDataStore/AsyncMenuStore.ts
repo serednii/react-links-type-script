@@ -1,6 +1,6 @@
 import { makeAutoObservable, action, runInAction } from "mobx";
 import graphQLMenuController from "../../controller/graphQL/graphql-MenuController";
-import dataStore  from "../dataStore/DataStore";
+import dataStore  from "../DataStore";
 
 class MenuStore{
 

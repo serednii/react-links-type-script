@@ -1,5 +1,5 @@
 import Breadcrumb from "react-bootstrap/Breadcrumb";
-import dataStore from "../../mobx/dataStore/DataStore";
+import dataStore from "../../mobx/DataStore";
 
 function BreadcrumbExample() {
   console.log("BreadcrumbExample");
