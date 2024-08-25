@@ -13,7 +13,7 @@ export const useUsefulLinksController = (
   menuRef: RefObject<HTMLDivElement> | null
 ) => {
   const handlerOpenPopup = (): void => {
-    if(!adminController.accessUserActivated() || !adminController.accessUserAddedContent()){
+    if(!adminController.accessUserActivated() ){
       return
     }
       logicStore.setButtonPlus(!logicStore.isButtonPlus);

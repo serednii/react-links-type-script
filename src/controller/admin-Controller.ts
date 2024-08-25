@@ -15,7 +15,7 @@ openAdminPanel(openAdmin: boolean){
 
 accessUserActivated(){
     if(!authStore.user.isActivated){
-    logicStore.info = "Ви повинні активуватися по Email"
+    logicStore.info = "You must activate by email"
     return false
   }else{
     return true
@@ -25,16 +25,12 @@ accessUserActivated(){
 accessUserAddedContent(){
 
     if(!authStore.user.isAddedContent){
-        logicStore.info = "Ви не мщжете змінювати контент зверніться до адміністратора"
+        logicStore.info = "You cannot change the content, contact the administrator userullinks@gmail.com"
         return false
       }else {
         return true
       }
 }
-
-
-
-
 
 }
 

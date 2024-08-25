@@ -46,7 +46,9 @@ const App: React.FC = () => {
       <main className="flex-grow-1 d-flex flex-column">
         <Header />
         {authStore.user.isBlocked && (
-          <h1>Вас заблоковано зверніться до адміністратора</h1>
+          <h1>
+            You are blocked, contact the administrator userullinks@gmail.com
+          </h1>
         )}
         {authStore.isAuth && !authStore.user.isBlocked && <UsefulLinks />}
       </main>
