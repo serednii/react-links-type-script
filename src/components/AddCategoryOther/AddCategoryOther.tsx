@@ -1,205 +1,45 @@
-import { useState } from "react";
-import "./AddCategoryOther.scss";
-import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../otherFunction/functions";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import React from "react";
 import { observer } from "mobx-react-lite";
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../mobx/dataStore/DataStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
-
-import { useSelector, useDispatch } from "react-redux";
-import { setError, setModal, setAddCategoryOther } from "../../redux/uiSlice";
-import {
-  toggleUpdateListLink,
-  toggleUpdateDataMain,
-} from "../../redux/dataSlice";
-import { RootState } from "../../redux/rootReducer"; // Убедитесь, что путь правильный
+import useAddCategoryController from "../../controller/AddCategoryController";
+import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
-import authStore from "../../mobx/AuthStore";
+import { svgIconClose } from "../../icon";
+import logicStore from "../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
-  const dispatch = useDispatch();
-  const { isModal } = useSelector((state: RootState) => state.ui);
+  const {
+    name,
+    link,
+    article,
+    selectAction,
+    isArr,
+    isObj,
+    setName,
+    setLink,
+    setSelectAction,
+    setArticle,
+    handleSetText,
+    handleRenameMenu,
+    handleDeleteMenu,
+    handleAddSubMenu,
+    handleAddMenu,
+    handleAddLink,
+    handleAddArticle,
+    handleCloseModal,
+    dataMenu,
+    key,
+    arrayKeys,
+  } = useAddCategoryController();
 
-  const [name, setName] = useState<string>("");
-  const [link, setLink] = useState<string>("");
-  const [selectAction, setSelectAction] = useState<string>("");
-  const [article, setArticle] = useState("");
-
-  let { dataMenu, prevDataMenu, key, arrayKeys } = dataStore.sluice || {};
-
-  dataMenu = dataMenu[0];
-  const prevKey = arrayKeys && arrayKeys[0];
-  console.log(prevDataMenu);
-  const isArr = isArray(dataMenu[key]);
-  const isObj = isObject(dataMenu[key]);
-  console.log(prevKey);
-  const OtherAction = () => {
-    menuStore.updateMenu(authStore.user.id, dataStore.dataMain).then(() => {
-      dispatch(toggleUpdateDataMain()); //restart
-    });
-    handleCloseModal();
-  };
-
-  const handlerSetSelectAction = (select: string) => {
-    setSelectAction(select);
-    if (select === "rename") setName(key);
-  };
-
-  const handleSetText = (value: string) => {
-    const regex = /^[a-zA-Z_0-9]*$/;
-    if (regex.test(value)) {
-      setName(value);
-    }
-  };
-
-  const handleRenameMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-
-    if (!name.length) {
-      dispatch(setError("Add name Link"));
-      return;
-    }
-
-    dataMenu[name] = dataMenu[key];
-    delete dataMenu[key];
-    key = name;
-    OtherAction();
-    setName(name);
-  };
-
-  const handleDeleteMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-
-    console.log(prevKey);
-    delete dataMenu[key];
-    console.log(prevDataMenu);
-
-    if (prevDataMenu && Object.keys(prevDataMenu[prevKey]).length === 0) {
-      console.log("add null");
-      prevDataMenu[prevKey] = null;
-    }
-
-    OtherAction();
-    dispatch(setAddCategoryOther(false));
-  };
-
-  const handleAddSubMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    if (!name.length) {
-      dispatch(setError("Add name Link"));
-      return;
-    }
-    console.log(dataMenu);
-    if (dataMenu[key] === null) dataMenu[key] = {};
-    if (isObject(dataMenu[key])) dataMenu[key][name] = null;
-    OtherAction();
-    setName("");
-  };
-
-  const handleAddMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-
-    if (!name.length) {
-      dispatch(setError("Add name Link"));
-      return;
-    }
-
-    dataMenu[name] = null;
-    OtherAction();
-    setName("");
-  };
-
-  const handleAddLink = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-
-    if (!name.length) {
-      dispatch(setError("Add name Link"));
-      return;
-    }
-
-    if (!urlPattern.test(link)) {
-      dispatch(setError("Error synaxsys link"));
-      return;
-    }
-
-    linkStore
-      .addLink(link)
-      .then((resId) => {
-        if (dataMenu[key] === null) dataMenu[key] = [];
-        if (isArray(dataMenu[key]))
-          dataMenu[key].push({
-            name: name,
-            link: resId,
-          });
-        OtherAction();
-        setName("");
-        dispatch(toggleUpdateListLink());
-      })
-      .catch((error) => {
-        console.error(
-          "Error, failed to add link. Please try again later",
-          error
-        );
-        throw error;
-      });
-  };
-
-  const handleAddArticle = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-
-    if (!name.length) {
-      dispatch(setError("Add name Link"));
-      return;
-    }
-
-    articleStore
-      .addArticle(article)
-      .then((resId) => {
-        if (dataMenu[key] === null) dataMenu[key] = [];
-        if (isArray(dataMenu[key]))
-          dataMenu[key].push({
-            name: name,
-            article: resId,
-          });
-        OtherAction();
-        setName("");
-        dispatch(toggleUpdateListLink());
-      })
-      .catch((error) => {
-        console.error(
-          "Error, failed to add link. Please try again later",
-          error
-        );
-        throw error;
-      });
-  };
-
-  const handleCloseModal = () => {
-    dispatch(setModal(false));
-    dispatch(setAddCategoryOther(false));
-  };
+  if (!dataMenu || !key || !arrayKeys) {
+    return null;
+  }
 
   return (
     <div className="add-category modal-window">
       <div
         className={`add-category__wrapper modal-window__wrapper ${
-          isModal ? "open" : ""
+          logicStore.isModal ? "open" : ""
         }`}
         style={{
           maxWidth: selectAction === "add-article" ? "1200px" : "500px",
@@ -215,7 +55,7 @@ const AddCategory: React.FC = () => {
             className="form-select"
             name="action"
             id="action-select"
-            onChange={(event) => handlerSetSelectAction(event.target.value)}
+            onChange={(event) => setSelectAction(event.target.value)}
           >
             <option value="">Select an action</option>
             <option value="rename">Rename menu</option>
@@ -238,7 +78,10 @@ const AddCategory: React.FC = () => {
               />
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleRenameMenu(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleRenameMenu();
+                }}
               >
                 Rename menu
               </button>
@@ -251,13 +94,16 @@ const AddCategory: React.FC = () => {
               </div>
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleDeleteMenu(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleDeleteMenu();
+                }}
               >
                 Delete menu
               </button>
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={() => dispatch(setAddCategoryOther(false))}
+                onClick={() => logicStore.setAddCategoryOther(false)}
               >
                 No
               </button>
@@ -274,7 +120,10 @@ const AddCategory: React.FC = () => {
               />
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddMenu(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleAddMenu();
+                }}
               >
                 Add menu
               </button>
@@ -292,7 +141,10 @@ const AddCategory: React.FC = () => {
 
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddSubMenu(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleAddSubMenu();
+                }}
               >
                 Add sub menu
               </button>
@@ -315,7 +167,10 @@ const AddCategory: React.FC = () => {
 
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddLink(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleAddLink();
+                }}
               >
                 Add New Link
               </button>
@@ -336,7 +191,10 @@ const AddCategory: React.FC = () => {
               />
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddArticle(event)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleAddArticle();
+                }}
               >
                 Add New Article
               </button>

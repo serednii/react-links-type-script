@@ -1,6 +1,6 @@
-import { API_URL } from '../../AuthUser/http';
+
 import { IUser } from '../../AuthUser/models/IUser';
-import { URL } from '../../const';
+import { URL_GRAPHQL, URL_AUTH } from '../../const';
 import authStore from '../../mobx/AuthStore';
 
 class MakeRequest {
@@ -9,7 +9,7 @@ class MakeRequest {
   url: string;
 
   constructor() {
-    this.url = URL;
+    this.url = URL_GRAPHQL;
     this.data = {
       method: "POST",
       headers: {
@@ -26,7 +26,7 @@ class MakeRequest {
   }
 
   async refreshToken() {
-    const refreshResponse = await fetch(`${API_URL}/refresh`, { credentials: 'include' });
+    const refreshResponse = await fetch(`${URL_AUTH}/refresh`, { credentials: 'include' });
     if (refreshResponse.ok) {
       const { accessToken } = await refreshResponse.json();
       localStorage.setItem('token', accessToken);
@@ -47,18 +47,18 @@ class MakeRequest {
       this.isLoading = true;
       this.setAuthToken(); // Додаємо токен перед запитом
 
-      let response = await fetch(this.url, { ...this.data });
+      let response = await fetch(this.url, { ...this.data, credentials: 'include' });
 
       // Якщо отримали 401, пробуємо оновити токен
       if (response.status === 401) {
         const isTokenRefreshed = await this.refreshToken();
         if (isTokenRefreshed) {
           // Повторний запит з оновленим токеном
-          response = await fetch(this.url, { ...this.data });
+          response = await fetch(this.url, { ...this.data, credentials: 'include' });
           
           if (response.status === 401) {
             localStorage.removeItem("token");
-            authStore.setAuth(false)
+            authStore.setAuth(false);
             authStore.setUser({} as IUser);
             throw new Error("Unauthorized: Unable to refresh token");
           }

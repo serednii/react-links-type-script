@@ -3,6 +3,7 @@ import JoditEditor from "jodit-react";
 import "./myJoditEditor.scss";
 
 const MyJoditEditor = ({ placeholder, article, setArticle }) => {
+  console.log("MyJoditEditor");
   const editor = useRef(null);
   const config = useMemo(
     () => ({

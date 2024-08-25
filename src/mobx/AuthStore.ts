@@ -1,14 +1,14 @@
 import { AxiosError } from "axios";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction  } from "mobx";
 import axios from 'axios';
 import UserService from "../AuthUser/services/UserService";
 import { IUser } from "../AuthUser/models/IUser";
 import { AuthResponse } from "../AuthUser/models/response/authResponse";
-import { API_URL } from "../AuthUser/http";
+import { URL_AUTH } from "../const";
 import AuthService from "../AuthUser/services/AuthServices"; // Додайте цей імпорт
 import menuStore from "./asyncDataStore/AsyncMenuStore";
-import  store  from '../redux/store'; // Імпортуйте ваш store
-import { setError } from '../redux/uiSlice'; // Імпортуйте екшн для помилок
+import dataStore from "./DataStore";
+import logicStore from "./LogicStore";
 
 class AuthStore {
   user: IUser = {} as IUser;
@@ -31,6 +31,7 @@ class AuthStore {
   setLoading(bool: boolean) {
     this.isLoading = bool;
   }
+  
   setUsers(users: IUser[]){
     this.users = users
   }
@@ -40,11 +41,13 @@ class AuthStore {
     
     try {
       const response = await UserService.fetchUsers();
-      this.users = response?.data;
+      runInAction(() => {
+        this.users = response?.data;
+      });
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error getUsers"));
+      logicStore.setError(error.response?.data?.message || "Error getUsers");
     }
   }
 
@@ -58,7 +61,7 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error login"));
+      logicStore.setError(error.response?.data?.message || "Error login");
     }
   }
 
@@ -76,17 +79,32 @@ class AuthStore {
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error?.response?.data?.message);
-      store.dispatch(setError(error.response?.data?.message || "Error registration"));
+      logicStore.setError(error.response?.data?.message || "Error registration");
     }
   }
 
   async updateUser(user: IUser) {
     console.log('updateUser')
     try {
-      const response = await UserService.updateUser(user);
+      await UserService.updateUser(user);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
+    }
+  }
+
+  async logout() {
+    console.log('logout')
+    try {
+      await AuthService.logout();
+      localStorage.removeItem("token");
+      this.setAuth(false);
+      this.setUser({} as IUser);
+      dataStore.clearStore()
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      console.log(error?.response?.data?.message);
+      logicStore.setError(error?.response?.data?.message || "Error logout");
     }
   }
 
@@ -109,7 +127,7 @@ class AuthStore {
     console.log('deleteUser', id)
 
     try {
-      const response = await UserService.deleteUser(id);
+      await UserService.deleteUser(id);
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       console.log(error.response?.data?.message);
@@ -117,26 +135,14 @@ class AuthStore {
   }
 
 
-  async logout() {
-    console.log('logout')
-    try {
-      await AuthService.logout();
-      localStorage.removeItem("token");
-      this.setAuth(false);
-      this.setUser({} as IUser);
-    } catch (e) {
-      const error = e as AxiosError<{ message: string }>;
-      console.log(error?.response?.data?.message);
-      store.dispatch(setError(error?.response?.data?.message || "Error logout"));
-    }
-  }
+
 
   async checkAuth() {
     console.log('checkAuth')
 
     this.setLoading(true);
     try {
-      const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
+      const response = await axios.get<AuthResponse>(`${URL_AUTH}/refresh`, { withCredentials: true });
       this.setAuth(true);
       this.setUser(response?.data?.user);
     } catch (e) {

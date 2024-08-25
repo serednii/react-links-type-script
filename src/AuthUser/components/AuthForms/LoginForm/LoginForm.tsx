@@ -3,16 +3,14 @@ import { observer } from "mobx-react-lite";
 import authStore from "../../../../mobx/AuthStore";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-// import { useDispatch } from "react-redux";
-// import { setError } from "../../../../redux/uiSlice";
 
 import "./LoginForm.scss";
 
 const LoginForm: React.FC = () => {
-  // const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  console.log("LoginForm");
 
   const handleLogin = (event: FormEvent) => {
     event.preventDefault();
@@ -28,6 +26,7 @@ const LoginForm: React.FC = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
+              autoComplete="current-email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Text className="text-muted">
@@ -40,6 +39,7 @@ const LoginForm: React.FC = () => {
             <Form.Control
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <Form.Group className="mb-3" controlId="formBasicCheckbox">

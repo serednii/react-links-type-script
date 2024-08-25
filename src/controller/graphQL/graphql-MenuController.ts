@@ -98,9 +98,9 @@ class GraphQLMenuController extends MakeRequest {
   getDataMenuByIdUser = async (idUser: string) => {
     try {
       const resMutation = this.mutationGetMenuById(idUser);
-      console.log('resMutation', resMutation)
+      // console.log('resMutation', resMutation)
       const data = await this.request(resMutation);
-      console.log(data)
+      // console.log(data)
       const menuData = data?.data?.menuByUserId[0]?.menu;
       return menuData;
     } catch (error) {
@@ -112,9 +112,9 @@ class GraphQLMenuController extends MakeRequest {
   createDataMenuByIdUser = async (idUser: string) => {
     try {
       const resMutation = this.mutationCreateMenuById(idUser);
-      console.log('resMutation', resMutation)
+      // console.log('resMutation', resMutation)
       const data = await this.request(resMutation);
-      console.log(data)
+      // console.log(data)
       const menuData = data?.createMenu?.menuByUserId[0]?.menu || {}
       return menuData;
     } catch (error) {

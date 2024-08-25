@@ -1,69 +1,27 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import todoStore from "../../../mobx/dataStore/DataStore";
-import { useSelector, useDispatch } from "react-redux";
-import { setModal, setAddCategoryOther } from "../../../redux/uiSlice";
-import { RootState } from "../../../redux/rootReducer"; // Убедитесь, что путь правильный
+import { IMenuLinks, IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
-
-type MenuFunctionType = (value: string) => void;
-type ActiveMenuType = {
-  setIsOpenCloseSubMenu: MenuFunctionType;
-  isOpenCloseSubMenu: string;
-  level: number;
-};
-
-interface IMenuLinksProps {
-  dataMenu: Record<string, any>[];
-  arrayKeys: string[];
-  firstMenu: boolean;
-  level: number;
-  activesMenu: ActiveMenuType[];
-}
-
-interface IMenuLinks {
-  dataMenu: Record<string, any>;
-  prevDataMenu?: Record<string, any>;
-  arrayKeys?: string[];
-  key: string;
-}
+import {
+  handleSubMenuState,
+  updateDataStoreWithLink,
+  openSettingsMenu,
+} from "../../../controller/menuLinksController"; // Importing model functions
+import logicStore from "../../../mobx/LogicStore";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
-  dataMenu = [],
+  dataMenu,
   firstMenu,
   level = 0,
   activesMenu,
   arrayKeys,
 }) => {
-  const dispatch = useDispatch();
-  const { isButtonPlus } = useSelector((state: RootState) => state.ui);
+  firstMenu && (dataMenu = [dataMenu]);
+
   const [isOpenCloseSubMenu, setIsOpenCloseSubMenu] = useState<string>("");
-  console.log("dataMenu", dataMenu);
-
-  //Друкуємо ссилки
-  const handlePrintLinks = (obj: IMenuLinks): void => {
-    const findIndex = activesMenu.findIndex((e) => e.level === level);
-    const slice = activesMenu.slice(findIndex);
-
-    if (findIndex >= 0) {
-      activesMenu.splice(findIndex);
-      slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-    }
-
-    console.log("activesMenu", activesMenu);
-    todoStore.setListLinkData(obj);
-  };
-
-  const plusOther = useCallback(
-    (data: IMenuLinks): void => {
-      dispatch(setModal(true));
-      dispatch(setAddCategoryOther(true));
-      todoStore.setSluice(data); // передаємо ссилку на об'єкт, який будемо змінювати
-    },
-    [dispatch, todoStore.setSluice]
-  );
+  console.log("MenuLinks");
 
   useEffect(() => {
     if (isOpenCloseSubMenu) {
@@ -75,30 +33,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
     }
   }, [isOpenCloseSubMenu, activesMenu, level]);
 
-  const handleSetIsOpenCloseSubMenu = useCallback(
-    (key: string) => {
-      const findIndex = activesMenu.findIndex((e) => e.level === level);
-      const menuLevel = activesMenu[findIndex]?.isOpenCloseSubMenu;
-      const slice = activesMenu.slice(findIndex);
-
-      if (findIndex >= 0) {
-        activesMenu.splice(findIndex);
-        slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-      }
-
-      if (findIndex !== level) {
-        setIsOpenCloseSubMenu((prev) =>
-          prev ? (prev === key ? "" : key) : key
-        );
-      }
-
-      if (findIndex === level && menuLevel !== key) {
-        setIsOpenCloseSubMenu(key);
-      }
-    },
-    [activesMenu, level]
-  );
-
+  // Generate the menu items based on data
   const menuItems = () => {
     if (!dataMenu[0]) return null;
 
@@ -111,11 +46,11 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
           ${isArray(dataMenu[0][key]) && "color-array"}
           ${isOpenCloseSubMenu === key && "open-click"}`}
         >
-          {isButtonPlus && (
+          {logicStore.isButtonPlus && (
             <span
               className="svg-plus"
               onClick={() =>
-                plusOther({
+                openSettingsMenu({
                   dataMenu,
                   prevDataMenu: dataMenu && dataMenu[1],
                   key,
@@ -131,7 +66,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
             <button
               className="submenu-links__menu"
               onClick={() =>
-                handlePrintLinks({
+                updateDataStoreWithLink({
                   dataMenu: dataMenu[0],
                   key,
                   arrayKeys,
@@ -146,7 +81,14 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
             <>
               <button
                 className="submenu-links__menu"
-                onClick={() => handleSetIsOpenCloseSubMenu(key)}
+                onClick={() =>
+                  handleSubMenuState(
+                    key,
+                    level,
+                    activesMenu,
+                    setIsOpenCloseSubMenu
+                  )
+                }
               >
                 {key}
                 <span className="svg-arrow-right">{svgIconArrowRight}</span>
@@ -154,7 +96,6 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
 
               <MenuLinks
                 key={key}
-                //передаємо в масив список послідовних лінків, добавляємо в початок масиву
                 dataMenu={[dataMenu[0][key], ...dataMenu]}
                 firstMenu={false}
                 level={level + 1}

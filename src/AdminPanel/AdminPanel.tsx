@@ -1,6 +1,5 @@
 import React, { useEffect, FormEvent, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import { useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -13,9 +12,9 @@ import InputChecked from "./InputChecked";
 import SelectRole from "./SelectRole";
 import InputText from "./InputText";
 import { svgDeleted } from "../icon";
-import { setError } from "../redux/uiSlice";
 
 import "./AdminPanel.scss";
+import logicStore from "../mobx/LogicStore";
 
 const testUsers = [
   {
@@ -87,12 +86,13 @@ const testUsers = [
 ];
 
 const AdminPanel: React.FC = () => {
-  const dispatch = useDispatch();
   const [updateUser, setUpdateUser] = useState(true);
   const tempUpdateUser = useRef(false);
   const isAdmin = authStore?.user?.roles?.includes("admin");
   const isUser = authStore?.user?.roles?.includes("user");
   const idUser = authStore?.user?.id;
+
+  console.log("AdminPanel");
 
   const generateUsers = async () => {
     for (const { email, password, userName, lastUserName } of testUsers) {
@@ -120,11 +120,7 @@ const AdminPanel: React.FC = () => {
       }
     };
 
-    // if (tempUpdateUser.current !== updateUser) {
     getUsers();
-    // }
-
-    // tempUpdateUser.current = updateUser;
   }, []);
 
   const handelSaveChange = async (event: FormEvent) => {
@@ -151,7 +147,7 @@ const AdminPanel: React.FC = () => {
     const id = event.currentTarget.getAttribute("data-id");
     if (!id) return;
     if (id === "66bcd8a5ac0fbc3a862aee33") {
-      dispatch(setError("you cannot remove an admin"));
+      logicStore.setError("you cannot remove an admin");
       return;
     }
 
@@ -169,7 +165,7 @@ const AdminPanel: React.FC = () => {
         console.error(`Error deleting user with ID ${id}:`, e);
       }
     } else {
-      dispatch(setError("You have entered an incorrect Name"));
+      logicStore.setError("You have entered an incorrect Name");
     }
   };
 

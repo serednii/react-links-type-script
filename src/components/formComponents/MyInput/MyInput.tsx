@@ -19,6 +19,7 @@ const MyInput: React.FC<IInput> = ({
   className,
   ...rest // Решта параметрів
 }) => {
+  console.log("MyInput");
   return (
     <input
       className={`form-control ${className ? className : ""}`}

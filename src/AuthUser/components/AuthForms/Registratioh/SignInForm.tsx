@@ -3,39 +3,29 @@ import { observer } from "mobx-react-lite";
 import authStore from "../../../../mobx/AuthStore";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useDispatch } from "react-redux";
-import { setError } from "../../../../redux/uiSlice";
 import "./SignInForm.scss";
+import logicStore from "../../../../mobx/LogicStore";
 
-const testUsers = [
-  {
-    email: "serednii@gmail.com",
-    password: "mdcvsww8097",
-    userName: "mykola",
-    lastUserName: "serednii",
-  },
-];
 const SignInForm: React.FC = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [lastUserName, setLastUserName] = useState<string>("");
-
+  console.log("SignInForm");
   const handleSignIn = (event: FormEvent) => {
     event.preventDefault();
 
     if (userName.length < 3 || lastUserName.length < 3) {
-      dispatch(setError("The text must have at least 3 characters"));
+      logicStore.setError("The text must have at least 3 characters");
     } else if (!email) {
-      dispatch(setError("Email is required"));
+      logicStore.setError("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      dispatch(setError("Email address is invalid"));
+      logicStore.setError("Email address is invalid");
     } else if (!password) {
-      dispatch(setError("Password is required"));
+      logicStore.setError("Password is required");
     } else if (password.length < 6) {
-      dispatch(setError("Password must be at least 6 characters"));
+      logicStore.setError("Password must be at least 6 characters");
     } else {
       authStore.registration(email, password, userName, lastUserName);
     }
@@ -45,16 +35,17 @@ const SignInForm: React.FC = () => {
     <div className="login-form">
       <div className="login-form__inner">
         <Form className="login-form__registration">
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>UserName</Form.Label>
             <Form.Control
               type="text"
               placeholder="input user name"
+              autoComplete="current-name"
               onChange={(e) => setUserName(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formBasicLastName">
             <Form.Label>Last User Name</Form.Label>
             <Form.Control
               type="text"
@@ -68,6 +59,7 @@ const SignInForm: React.FC = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
+              autoComplete="current-email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Text className="text-muted">
@@ -80,6 +72,7 @@ const SignInForm: React.FC = () => {
             <Form.Control
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <Form.Group className="mb-3" controlId="formBasicCheckbox">

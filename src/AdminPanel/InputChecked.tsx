@@ -12,6 +12,7 @@ const InputChecked: React.FC<IInputChecked> = ({ user, nameAction }) => {
   const [state, setState] = useState<boolean>(
     (user[nameAction] as boolean) || false
   );
+  console.log("InputChecked");
 
   // console.log("++++++++++++++++++++++++++++++++");
   // console.log("userName", authStore.user.userName);
@@ -30,22 +31,22 @@ const InputChecked: React.FC<IInputChecked> = ({ user, nameAction }) => {
 
   const handleChange = (checked: boolean) => {
     setState(checked);
-    console.log(checked);
+    // console.log(checked);
     user.isMutation = true;
-    console.log("user.isMutation", user.isMutation);
+    // console.log("user.isMutation", user.isMutation);
 
     switch (nameAction as string) {
       case "isAddedContent":
         user.isAddedContent = checked;
-        console.log(user.isAddedContent);
+        // console.log(user.isAddedContent);
         break;
       case "isBlocked":
         user.isBlocked = checked;
-        console.log(user.isBlocked);
+        // console.log(user.isBlocked);
         break;
       case "isActivated":
         user.isActivated = checked;
-        console.log(user.isActivated);
+        // console.log(user.isActivated);
         break;
       default:
         console.log(`Sorry, we are out of ${nameAction}.`);

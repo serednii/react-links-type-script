@@ -4,7 +4,7 @@ a {
     font-size: 1.1rem;
 }
 
-.list_links {
+.list-links {
     border: 1px solid black;
     padding: 20px;
     background-color: rgba(23, 89, 103, 0.9);
@@ -12,6 +12,24 @@ a {
     color: white;
     border-radius: 20px;
     margin-bottom: 20px;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__header {
+        .breadcrumb {
+            background-color: #316dc0;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .breadcrumb-item::before {
+            color: aliceblue;
+        }
+    }
 
     .list-group-item.color-link {
 
