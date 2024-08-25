@@ -1,9 +1,9 @@
 // menuLinksModel.ts
 
-import dataStore from "../../../mobx/DataStore";
-import logicStore from "../../../mobx/LogicStore";
-import { IMenuLinks } from "./Interface";
-import { ActiveMenuType } from "./type";
+import dataStore from "../mobx/DataStore";
+import logicStore from "../mobx/LogicStore";
+import { IMenuLinks } from "../components/UsefulLinks/MenuLinks/Interface";
+import { ActiveMenuType } from "../components/UsefulLinks/MenuLinks/type";
 
 
 // Set the active submenu and handle state cleanup

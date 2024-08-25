@@ -8,7 +8,7 @@ import {
   handleSubMenuState,
   updateDataStoreWithLink,
   openSettingsMenu,
-} from "./menuLinksModel"; // Importing model functions
+} from "../../../controller/menuLinksController"; // Importing model functions
 import logicStore from "../../../mobx/LogicStore";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
