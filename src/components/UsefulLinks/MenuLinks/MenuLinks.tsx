@@ -69,7 +69,9 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
                   dataMenu: dataMenu[0],
                   key,
                   arrayKeys,
-                })
+                },
+                activesMenu,
+                    level,)
               }
             >
               {key}

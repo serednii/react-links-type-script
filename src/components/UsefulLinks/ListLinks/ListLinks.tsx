@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
-import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
 import dataStore from "../../../mobx/DataStore";
 import Breadcrumbs from "../../Breadkrumbs/Breadcrumbs";
-
-import "./ListLinks.scss";
 import MySpinner from "../../MySpinner/MySpinner";
 import logicStore from "../../../mobx/LogicStore";
+import { handlerChangeLink, fetchLinks } from "./linkHelpers"; 
 
-interface ILink {
-  id: string;
-  link: string;
-}
+import "./ListLinks.scss";
 
 const ListLinks: React.FC = () => {
   const { dataMenu, key, arrayKeys } = dataStore?.listLinkData || {};
@@ -21,118 +16,36 @@ const ListLinks: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
 
   console.log("ListLinks");
-  function handlerChangeLink() {
-    logicStore.setModal(true);
-    logicStore.toggleChangeLinks();
-    logicStore.setAddCategoryOther(false);
-    logicStore.setButtonPlus(false);
-  }
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const fetchLinks = async () => {
-      if (dataMenu && key && dataMenu[key]) {
-        setLoadingList(true);
-        try {
-          const elements = await Promise.all(
-            dataMenu[key].map(async (obj: any) => {
-              let resLink: ILink | null = null;
-              let id: string = "";
-              let link: string = "";
-
-              if (obj.link) {
-                const res = await linkStore.getLink(obj.link);
-                id = obj.link;
-                link = res.link;
-              } else if (obj.article) {
-                id = obj.article;
-              }
-
-              return (
-                <React.Fragment key={id}>
-                  {obj.link && (
-                    <li className="list-group-item color-link rounded-3 mb-2">
-                      <a
-                        onClick={() => logicStore.setIdArticle("")}
-                        className="active link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                        target="_blank"
-                        href={link}
-                        rel="noopener noreferrer"
-                      >
-                        {obj.name}
-                      </a>
-                    </li>
-                  )}
-
-                  {obj.article && (
-                    <li
-                      key={id}
-                      className="list-group-item color-article rounded-3 mb-2"
-                    >
-                      <button onClick={() => logicStore.setIdArticle(id)}>
-                        {obj.name}
-                      </button>
-                    </li>
-                  )}
-                </React.Fragment>
-              );
-            })
-          );
-
-          if (!signal.aborted) {
-            setDataArrayElements(elements);
-          }
-        } catch (e) {
-          if (!signal.aborted) {
-            console.error("Error fetching links:", e);
-          }
-        } finally {
-          if (!signal.aborted) {
-            setLoadingList(false);
-          }
-        }
-      } else {
-        setDataArrayElements(<p>No data available</p>);
-      }
-    };
-
-    fetchLinks();
+    fetchLinks(dataMenu, key, signal, setLoadingList, setDataArrayElements);
 
     return () => {
-      controller.abort(); // Скасування запиту при розмонтуванні компонента
+      controller.abort(); // Cancel the request when the component unmounts
     };
   }, [key, logicStore.updateListLink]);
-
-  // if (loadingList) {
-  //   return (
-  //     <div className="article">
-  //       <MySpinner />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="list-links">
       {loadingList && <MySpinner />}
       {!loadingList && (
-        <>
-          <div className="list-links__header">
-            {dataArrayElements && dataArrayElements.length > 0 && (
-              <>
-                <Breadcrumbs />
-                <Button
-                  className="btn btn-primary me-md-2 mb-3 btn-lg"
-                  onClick={handlerChangeLink}
-                >
-                  Change links
-                </Button>
-              </>
-            )}
-          </div>
+        <React.Fragment key="ListLinks">
+          {dataArrayElements && dataArrayElements.length > 0 && (
+            <div className="list-links__header">
+              <Breadcrumbs />
+              <Button
+                className="btn btn-primary me-md-2 mb-3 btn-lg"
+                onClick={handlerChangeLink}
+              >
+                Change links
+              </Button>
+            </div>
+          )}
           <ul className="list-group list-group-flush">{dataArrayElements}</ul>
-        </>
+        </React.Fragment>
       )}
     </div>
   );
