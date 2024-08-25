@@ -8,20 +8,9 @@ import { ActiveMenuType } from "./type";
 
 // Handle the printing of links, updating the active menu state
 export const handlePrintLinks = (
-  obj: IMenuLinks,
-  activesMenu: ActiveMenuType[],
-  level: number
+  dataMenu: IMenuLinks
 ): void => {
-
-  const findIndex = activesMenu.findIndex((e) => e.level === level);
-  const slice = activesMenu.slice(findIndex);
-
-  if (findIndex >= 0) {
-    activesMenu.splice(findIndex);
-    slice.forEach((e) => e.setIsOpenCloseSubMenu(""));
-  }
-
-  dataStore.setListLinkData(obj);
+  dataStore.setListLinkData(dataMenu);
 };
 
 // Open settings menu for a given data item
