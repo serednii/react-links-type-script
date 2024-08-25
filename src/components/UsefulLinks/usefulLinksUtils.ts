@@ -1,10 +1,14 @@
 // usefulLinksUtils.ts
 
+import adminController from "../../controller/admin-Controller";
 import logicStore from "../../mobx/LogicStore";
 import { ActiveMenuType } from "./MenuLinks/type";
 
 // Toggles the state of the buttonPlus and sets changeLinks to false
 export const handlerOpenPopup = (): void => {
+  if(!adminController.accessUserActivated()){
+    return
+  }
   logicStore.setButtonPlus(!logicStore.isButtonPlus);
   logicStore.setChangeLinks(false);
 };

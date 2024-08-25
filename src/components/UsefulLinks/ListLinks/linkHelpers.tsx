@@ -1,11 +1,18 @@
 // linkHelpers.ts
 
 import React from "react";
+import adminController from "../../../controller/admin-Controller";
 import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
 import logicStore from "../../../mobx/LogicStore";
 
 // Handles change link action
 export const handlerChangeLink = () => {
+  if (
+    !adminController.accessUserActivated() ||
+    !adminController.accessUserAddedContent()
+  ) {
+    return;
+  }
   logicStore.setModal(true);
   logicStore.toggleChangeLinks();
   logicStore.setAddCategoryOther(false);

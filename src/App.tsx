@@ -45,8 +45,13 @@ const App: React.FC = () => {
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
         <Header />
-        {/* {isLoading && <h1>Loading...</h1>} */}
-        {authStore.isAuth && <UsefulLinks />}
+        {authStore.user.isBlocked && (
+          <h1>
+            You are blocked, please contact the administrator
+            userullinks@gmail.com
+          </h1>
+        )}
+        {authStore.isAuth && !authStore.user.isBlocked && <UsefulLinks />}
       </main>
       <Portal />
       {adminStore.openAdmin && <AdminPanel />}
