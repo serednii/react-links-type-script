@@ -1,16 +1,16 @@
 import { useState } from "react";
 import "./AddCategoryOther.scss";
-import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../otherFunction/functions";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import { svgIconClose } from "../../../icon";
+import { isObject, isArray } from "../../../otherFunction/functions";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
 import { observer } from "mobx-react-lite";
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../mobx/DataStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
-import MyInput from "../formComponents/MyInput/MyInput";
-import authStore from "../../mobx/AuthStore";
-import logicStore from "../../mobx/LogicStore";
+import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../../mobx/DataStore";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
+import MyInput from "../../formComponents/MyInput/MyInput";
+import authStore from "../../../mobx/AuthStore";
+import logicStore from "../../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -34,6 +34,9 @@ const AddCategory: React.FC = () => {
     menuStore.updateMenu(authStore?.user?.id, dataStore?.dataMain).then(() => {
       logicStore.toggleUpdateDataMain(); //restart
     });
+    setName("");
+    setLink("");
+    setArticle("");
     handleCloseModal();
   };
 
@@ -218,19 +221,47 @@ const AddCategory: React.FC = () => {
         </form>
 
         <div className="action">
-          {selectAction === "rename" && (
+          {selectAction === "add-link" && (
             <form className="add-other__links">
-              <p>a-zA-Z_</p>
               <MyInput
                 value={name}
                 type="text"
-                callbackFunction={handleSetText}
+                placeholder="Add Name link"
+                callbackFunction={setName}
+              />
+              <MyInput
+                value={link}
+                type="text"
+                callbackFunction={setLink}
+                placeholder="Add link"
+              />
+
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleAddLink(event)}
+              >
+                Add New Link
+              </button>
+            </form>
+          )}
+          {selectAction === "add-article" && (
+            <form className="add-other__links">
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add Name Article"
+                callbackFunction={setName}
+              />
+              <MyJoditEditor
+                placeholder={"Вставте свій текст"}
+                article={article}
+                setArticle={setArticle}
               />
               <button
                 className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleRenameMenu(event)}
+                onClick={(event) => handleAddArticle(event)}
               >
-                Rename menu
+                Add New Article
               </button>
             </form>
           )}
@@ -250,6 +281,22 @@ const AddCategory: React.FC = () => {
                 onClick={() => logicStore.setAddCategoryOther(false)}
               >
                 No
+              </button>
+            </form>
+          )}
+          {selectAction === "rename" && (
+            <form className="add-other__links">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                callbackFunction={handleSetText}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) => handleRenameMenu(event)}
+              >
+                Rename menu
               </button>
             </form>
           )}
@@ -285,50 +332,6 @@ const AddCategory: React.FC = () => {
                 onClick={(event) => handleAddSubMenu(event)}
               >
                 Add sub menu
-              </button>
-            </form>
-          )}
-          {selectAction === "add-link" && (
-            <form className="add-other__links">
-              <MyInput
-                value={name}
-                type="text"
-                placeholder="Add Name link"
-                callbackFunction={setName}
-              />
-              <MyInput
-                value={link}
-                type="text"
-                placeholder="Add link"
-                callbackFunction={setLink}
-              />
-
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddLink(event)}
-              >
-                Add New Link
-              </button>
-            </form>
-          )}
-          {selectAction === "add-article" && (
-            <form className="add-other__links">
-              <MyInput
-                value={name}
-                type="text"
-                placeholder="Add Name Article"
-                callbackFunction={setName}
-              />
-              <MyJoditEditor
-                placeholder={"Вставте свій текст"}
-                article={article}
-                setArticle={setArticle}
-              />
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) => handleAddArticle(event)}
-              >
-                Add New Article
               </button>
             </form>
           )}

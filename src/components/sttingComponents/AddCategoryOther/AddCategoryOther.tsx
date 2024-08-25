@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./AddCategoryOther.scss";
-import { svgIconClose } from "../../icon";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import MyInput from "../formComponents/MyInput/MyInput";
+import { svgIconClose } from "../../../icon";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
+import MyInput from "../../formComponents/MyInput/MyInput";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../mobx/DataStore";
+import dataStore from "../../../mobx/DataStore";
 import {
   handlerSetSelectAction,
   handleSetText,
@@ -17,8 +17,8 @@ import {
   handleCloseModal,
 } from "./AddCategoryUtils";
 
-import { isArray, isObject } from "../../otherFunction/functions";
-import logicStore from "../../mobx/LogicStore";
+import { isArray, isObject } from "../../../otherFunction/functions";
+import logicStore from "../../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -78,83 +78,6 @@ const AddCategory: React.FC = () => {
         </form>
 
         <div className="action">
-          {selectAction === "rename" && (
-            <form className="add-other__links">
-              <p>a-zA-Z_</p>
-              <MyInput
-                value={name}
-                type="text"
-                callbackFunction={(value) => handleSetText(value, setName)}
-              />
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) =>
-                  handleRenameMenu(event, name, dataMenu, key, setName)
-                }
-              >
-                Rename menu
-              </button>
-            </form>
-          )}
-          {selectAction === "delete" && (
-            <form className="add-other__links">
-              <div className="alert alert-danger" role="alert">
-                Are you sure you want to delete the menu item {key}
-              </div>
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) =>
-                  handleDeleteMenu(event, dataMenu, key, prevDataMenu, prevKey)
-                }
-              >
-                Delete menu
-              </button>
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={() => logicStore.setAddCategoryOther(false)}
-              >
-                No
-              </button>
-            </form>
-          )}
-          {selectAction === "add-menu" && (
-            <form className="add-other__links">
-              <p>a-zA-Z_</p>
-              <MyInput
-                value={name}
-                type="text"
-                placeholder="Add menu"
-                callbackFunction={(value) => handleSetText(value, setName)}
-              />
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) =>
-                  handleAddMenu(event, name, dataMenu, setName)
-                }
-              >
-                Add menu
-              </button>
-            </form>
-          )}
-          {selectAction === "add-sub-menu" && (
-            <form className="add-other__links">
-              <p>a-zA-Z_</p>
-              <MyInput
-                value={name}
-                type="text"
-                placeholder="Add sub menu"
-                callbackFunction={(value) => handleSetText(value, setName)}
-              />
-              <button
-                className="add-other__btn btn btn-secondary"
-                onClick={(event) =>
-                  handleAddSubMenu(event, name, dataMenu, key, setName)
-                }
-              >
-                Add sub menu
-              </button>
-            </form>
-          )}
           {selectAction === "add-link" && (
             <form className="add-other__links">
               <MyInput
@@ -200,6 +123,84 @@ const AddCategory: React.FC = () => {
                 }
               >
                 Add New Article
+              </button>
+            </form>
+          )}
+          {selectAction === "delete" && (
+            <form className="add-other__links">
+              <div className="alert alert-danger" role="alert">
+                Are you sure you want to delete the menu item {key}
+              </div>
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) =>
+                  handleDeleteMenu(event, dataMenu, key, prevDataMenu, prevKey)
+                }
+              >
+                Delete menu
+              </button>
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={() => logicStore.setAddCategoryOther(false)}
+              >
+                No
+              </button>
+            </form>
+          )}
+          {selectAction === "rename" && (
+            <form className="add-other__links">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                callbackFunction={(value) => handleSetText(value, setName)}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) =>
+                  handleRenameMenu(event, name, dataMenu, key, setName)
+                }
+              >
+                Rename menu
+              </button>
+            </form>
+          )}
+
+          {selectAction === "add-menu" && (
+            <form className="add-other__links">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add menu"
+                callbackFunction={(value) => handleSetText(value, setName)}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) =>
+                  handleAddMenu(event, name, dataMenu, setName)
+                }
+              >
+                Add menu
+              </button>
+            </form>
+          )}
+          {selectAction === "add-sub-menu" && (
+            <form className="add-other__links">
+              <p>a-zA-Z_</p>
+              <MyInput
+                value={name}
+                type="text"
+                placeholder="Add sub menu"
+                callbackFunction={(value) => handleSetText(value, setName)}
+              />
+              <button
+                className="add-other__btn btn btn-secondary"
+                onClick={(event) =>
+                  handleAddSubMenu(event, name, dataMenu, key, setName)
+                }
+              >
+                Add sub menu
               </button>
             </form>
           )}

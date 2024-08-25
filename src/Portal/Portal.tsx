@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import ReactDom from "react-dom";
-import AddCategoryOther from "../components/AddCategoryOther/AddCategoryOther";
-import ChangeLinks from "../components/ChangeLinks/ChangeLinks";
+import AddCategoryOther from "../components/sttingComponents/AddCategoryOther/AddCategoryOther";
+import ChangeLinks from "../components/sttingComponents/ChangeLinks/ChangeLinks";
 import Errors from "../components/Errors/Errors";
 import InfoModal from "../components/InfoModal/InfoModal";
 import logicStore from "../mobx/LogicStore";

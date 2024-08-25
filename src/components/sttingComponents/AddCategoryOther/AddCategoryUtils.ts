@@ -1,10 +1,10 @@
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../mobx/DataStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
-import authStore from "../../mobx/AuthStore";
-import logicStore from "../../mobx/LogicStore";
-import { isObject, isArray } from "../../otherFunction/functions";
+import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../../mobx/DataStore";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
+import authStore from "../../../mobx/AuthStore";
+import logicStore from "../../../mobx/LogicStore";
+import { isObject, isArray } from "../../../otherFunction/functions";
 
 export const OtherAction = () => {
   menuStore.updateMenu(authStore?.user?.id, dataStore?.dataMain).then(() => {
@@ -12,6 +12,7 @@ export const OtherAction = () => {
   });
   handleCloseModal();
 };
+
 
 export const handlerSetSelectAction = (
   select: string,
