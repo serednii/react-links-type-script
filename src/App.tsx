@@ -8,6 +8,7 @@ import AdminPanel from "./AdminPanel/AdminPanel";
 import adminStore from "./mobx/adminStore";
 import Portal from "./Portal/Portal";
 import logicStore from "./mobx/LogicStore";
+// import ParticlesComponent from "./Particles/Particles"; // Adjust the path if necessary
 import "./App.css";
 
 const App: React.FC = () => {
@@ -44,6 +45,7 @@ const App: React.FC = () => {
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
+        {/* <ParticlesComponent /> */}
         <Header />
         {authStore.user.isBlocked && (
           <h1>
