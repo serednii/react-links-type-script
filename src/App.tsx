@@ -1,11 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Header from "./components/Header/Header";
 import UsefulLinks from "./components/UsefulLinks/UsefulLinks";
 import { observer } from "mobx-react-lite";
 import menuStore from "./mobx/asyncDataStore/AsyncMenuStore";
 import authStore from "./mobx/AuthStore";
-import AdminPanel from "./components/AdminPanel/AdminPanel";
-import adminStore from "./mobx/adminStore";
 import Portal from "./Portal/Portal";
 import logicStore from "./mobx/LogicStore";
 // import ParticlesComponent from "./Particles/Particles"; // Adjust the path if necessary
@@ -18,6 +16,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      console.log("APP RENDER localStorage");
+
       authStore.checkAuth();
     }
   }, []);
@@ -38,9 +38,9 @@ const App: React.FC = () => {
     userId && fetchData();
   }, [logicStore.updateDataMain, userId]);
 
-  // if (authStore.isLoading) {
-  //   return <div>Downloading...</div>;
-  // }
+  if (authStore.isLoading) {
+    return <div>Downloading...</div>;
+  }
 
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
@@ -55,7 +55,6 @@ const App: React.FC = () => {
         {authStore.isAuth && !authStore.user.isBlocked && <UsefulLinks />}
       </main>
       <Portal />
-      {adminStore.openAdmin && <AdminPanel />}
     </div>
   );
 };
