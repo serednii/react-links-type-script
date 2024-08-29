@@ -4,7 +4,7 @@ import UsefulLinks from "./components/UsefulLinks/UsefulLinks";
 import { observer } from "mobx-react-lite";
 import menuStore from "./mobx/asyncDataStore/AsyncMenuStore";
 import authStore from "./mobx/AuthStore";
-import AdminPanel from "./AdminPanel/AdminPanel";
+import AdminPanel from "./components/AdminPanel/AdminPanel";
 import adminStore from "./mobx/adminStore";
 import Portal from "./Portal/Portal";
 import logicStore from "./mobx/LogicStore";

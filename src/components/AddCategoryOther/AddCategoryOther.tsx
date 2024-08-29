@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import useAddCategoryController from "../../controller/AddCategoryController";
+import useAddCategoryController from "./AddCategoryController/AddCategoryController";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";
 import { svgIconClose } from "../../icon";

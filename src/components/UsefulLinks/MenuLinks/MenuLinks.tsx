@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import { IMenuLinks, IMenuLinksProps } from "./Interface";
+import { IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
 import {
-  handleSubMenuState,
+  MenuLinksController,
   updateDataStoreWithLink,
   openSettingsMenu,
-} from "../../../controller/menuLinksController"; // Importing model functions
+} from "./MenuLinksController/MenuLinksController"; // Importing model functions
 import logicStore from "../../../mobx/LogicStore";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
@@ -82,7 +82,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
               <button
                 className="submenu-links__menu"
                 onClick={() =>
-                  handleSubMenuState(
+                  MenuLinksController(
                     key,
                     level,
                     activesMenu,

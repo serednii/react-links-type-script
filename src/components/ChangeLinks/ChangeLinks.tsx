@@ -2,7 +2,7 @@
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { useChangeLinksController } from "../../controller/ChangeLinksController";
+import { useChangeLinksController } from "./ChangeLinksController/ChangeLinksController";
 import { svgIconClose } from "../../icon";
 import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
 import MyInput from "../formComponents/MyInput/MyInput";

@@ -9,7 +9,7 @@ import { svgIoSettings } from "../../icon";
 import "./UsefulLinks.scss";
 import { ActiveMenuType } from "./MenuLinks/type";
 import dataStore from "../../mobx/DataStore";
-import { useUsefulLinksController } from "../../controller/UsefulLinksController";
+import { useUsefulLinksController } from "./UsefulLinksController/UsefulLinksController";
 import logicStore from "../../mobx/LogicStore";
 
 const UsefulLinks: React.FC = () => {

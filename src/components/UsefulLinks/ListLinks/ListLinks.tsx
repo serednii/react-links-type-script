@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import Breadcrumbs from "../../Breadkrumbs/Breadcrumbs";
 import MySpinner from "../../MySpinner/MySpinner";
-import { useListLinksController } from "../../../controller/ListLinksController";
+import { useListLinksController } from "./ListLinksController/ListLinksController";
 import "./ListLinks.scss";
 
 const ListLinks: React.FC = () => {
