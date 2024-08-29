@@ -11,6 +11,7 @@ import { ActiveMenuType } from "./MenuLinks/type";
 import dataStore from "../../mobx/DataStore";
 import { useUsefulLinksController } from "./UsefulLinksController/UsefulLinksController";
 import logicStore from "../../mobx/LogicStore";
+import MySpinner from "../MySpinner/MySpinner";
 
 const UsefulLinks: React.FC = () => {
   const activesMenu = useRef<ActiveMenuType[]>([]);
@@ -24,7 +25,7 @@ const UsefulLinks: React.FC = () => {
       <main className="main">
         <div ref={menuRef} className="menu-wrapper">
           <button onClick={handlerOpenPopup}>{svgIoSettings}</button>
-
+          {logicStore.isLoading && <MySpinner />}
           <MenuLinks
             key={"MenuLinks"}
             arrayKeys={arrayKeysStart.current}

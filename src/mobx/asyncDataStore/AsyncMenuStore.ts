@@ -1,6 +1,7 @@
 import { makeAutoObservable, action, runInAction } from "mobx";
 import graphQLMenuController from "../../controller/graphQL/graphql-MenuController";
 import dataStore  from "../DataStore";
+import logicStore from "../LogicStore";
 
 class MenuStore{
 
@@ -12,10 +13,13 @@ class MenuStore{
 
   async getMenu(idUser: string) {
     // console.log('**********', idUser)
+    logicStore.setLoading(true)
     try {
       const response = await graphQLMenuController.getDataMenuByIdUser(idUser);
       runInAction(() => {
         dataStore.dataMain = response;
+        logicStore.setLoading(false)
+
       });
     } catch (error) {
       console.log(error);

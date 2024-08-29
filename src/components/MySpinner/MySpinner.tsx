@@ -2,7 +2,7 @@ const MySpinner: React.FC = () => {
   console.log("MySpinner");
   return (
     <>
-      <h1>Loading...</h1>
+      <h3>Loading...</h3>
       <div className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
