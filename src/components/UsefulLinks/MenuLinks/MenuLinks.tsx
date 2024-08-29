@@ -6,10 +6,11 @@ import { IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
 import logicStore from "../../../mobx/LogicStore";
 import {
-  handlePrintLinks,
-  handleOpenSettingMenu,
-  handleSetIsOpenCloseSubMenu,
-} from "./menuLinksUtils"; // Import the utility functions
+  MenuLinksController,
+  updateDataStoreWithLink,
+  openSettingsMenu,
+} from "./MenuLinksController/MenuLinksController"; // Importing model functions
+import logicStore from "../../../mobx/LogicStore";
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
   dataMenu,
@@ -83,7 +84,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
               <button
                 className="submenu-links__menu"
                 onClick={() =>
-                  handleSetIsOpenCloseSubMenu(
+                  MenuLinksController(
                     key,
                     activesMenu,
                     level,
