@@ -20,7 +20,6 @@
     "jodit-react": "^4.1.2",
     "mobx": "^6.13.1",
     "mobx-react-lite": "^4.0.7",
-    "particles.js": "^2.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
@@ -39,8 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "gh-pages -d build",
-    "build_deploy": "react-scripts build gh-pages -d build"
+    "deploy": "react-scripts build gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

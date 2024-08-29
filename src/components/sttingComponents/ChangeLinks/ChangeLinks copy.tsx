@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../mobx/DataStore";
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
+import dataStore from "../../../mobx/DataStore";
+import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
 
-import { svgIconClose } from "../../icon";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import MyInput from "../formComponents/MyInput/MyInput";
+import { svgIconClose } from "../../../icon";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
+import MyInput from "../../formComponents/MyInput/MyInput";
 
-import authStore from "../../mobx/AuthStore";
+import authStore from "../../../mobx/AuthStore";
 import "./ChangeLinks.scss";
-import logicStore from "../../mobx/LogicStore";
+import logicStore from "../../../mobx/LogicStore";
 
 interface LinkData {
   name: string;
@@ -31,7 +31,9 @@ const ChangeLinks: React.FC = () => {
   console.log("ChangeLinks");
 
   const OtherAction = () => {
-    menuStore.updateMenu(authStore.user.id, dataStore.dataMain);
+    menuStore.updateMenu(authStore?.user?.id, dataStore?.dataMain).then(() => {
+      logicStore.toggleUpdateDataMain(); //restart
+    });
     setName("");
     setLink("");
     setArticle("");
@@ -313,15 +315,15 @@ const ChangeLinks: React.FC = () => {
                 <MyInput
                   value={name}
                   type="text"
-                  callbackFunction={setName}
                   placeholder="Add Name link"
+                  callbackFunction={setName}
                 />
 
                 <MyInput
                   value={link}
                   type="text"
-                  callbackFunction={setLink}
                   placeholder="Add link"
+                  callbackFunction={setLink}
                 />
                 <button
                   className="add-other__btn btn btn-secondary"
@@ -352,6 +354,27 @@ const ChangeLinks: React.FC = () => {
                   onClick={(event) => handleAddArticle(event)}
                 >
                   Add New Article
+                </button>
+              </form>
+            </div>
+          )}
+
+          {selectAction === "delete" && (
+            <div className="action-type">
+              <form className="change-links__links">
+                <div className="alert alert-danger" role="alert">
+                  Are you sure you want to delete the menu item{" "}
+                  {selectActionLink !== "" &&
+                    dataMenu[key] &&
+                    dataMenu[key].length > 0 &&
+                    dataMenu[key][+selectActionLink]?.name}
+                </div>
+                <button
+                  disabled={selectActionLink === ""}
+                  className="add-other__btn btn btn-secondary"
+                  onClick={handleDeleteLink}
+                >
+                  Delete menu
                 </button>
               </form>
             </div>
@@ -391,27 +414,6 @@ const ChangeLinks: React.FC = () => {
                 >
                   {isTypeSelect.current === "link" && "Change link"}
                   {isTypeSelect.current === "article" && "Change Article"}
-                </button>
-              </form>
-            </div>
-          )}
-
-          {selectAction === "delete" && (
-            <div className="action-type">
-              <form className="change-links__links">
-                <div className="alert alert-danger" role="alert">
-                  Are you sure you want to delete the menu item{" "}
-                  {selectActionLink !== "" &&
-                    dataMenu[key] &&
-                    dataMenu[key].length > 0 &&
-                    dataMenu[key][+selectActionLink]?.name}
-                </div>
-                <button
-                  disabled={selectActionLink === ""}
-                  className="add-other__btn btn btn-secondary"
-                  onClick={handleDeleteLink}
-                >
-                  Delete menu
                 </button>
               </form>
             </div>

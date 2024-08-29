@@ -1,6 +1,9 @@
 import AuthUser from "../../AuthUser/components/AuthUser/AuthUser";
+// import ButtonsAdd from "./ButtonsAdd/ButtonsAdd111";
 import authStore from "../../mobx/AuthStore";
 import AuthForms from "../../AuthUser/components/AuthForms/AuthForms";
+import usefulLinksImg from "../../images/5326787.png";
+import usefulLinksTitle from "../../images/Useful+Links.png";
 
 import "./Header.scss";
 
@@ -16,7 +19,7 @@ const Header: React.FC = () => {
         </div>
       </div> */}
       <div className="header__top">
-        <img src="/images/5326787.png" className="logo" alt="useful_links" />
+        <img src={usefulLinksImg} className="logo" alt="useful_links" />
 
         {/* <div>
           <img src={usefulLinksTitle} className="title" alt="useful_links" />

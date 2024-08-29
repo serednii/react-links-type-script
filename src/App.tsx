@@ -4,11 +4,10 @@ import UsefulLinks from "./components/UsefulLinks/UsefulLinks";
 import { observer } from "mobx-react-lite";
 import menuStore from "./mobx/asyncDataStore/AsyncMenuStore";
 import authStore from "./mobx/AuthStore";
-import AdminPanel from "./components/AdminPanel/AdminPanel";
+import AdminPanel from "./AdminPanel/AdminPanel";
 import adminStore from "./mobx/adminStore";
 import Portal from "./Portal/Portal";
 import logicStore from "./mobx/LogicStore";
-// import ParticlesComponent from "./Particles/Particles"; // Adjust the path if necessary
 import "./App.css";
 
 const App: React.FC = () => {
@@ -45,11 +44,11 @@ const App: React.FC = () => {
   return (
     <div className="App vh-100 container-xxl d-flex flex-column justify-content-between">
       <main className="flex-grow-1 d-flex flex-column">
-        {/* <ParticlesComponent /> */}
         <Header />
         {authStore.user.isBlocked && (
           <h1>
-            You are blocked, contact the administrator userullinks@gmail.com
+            You are blocked, please contact the administrator
+            userullinks@gmail.com
           </h1>
         )}
         {authStore.isAuth && !authStore.user.isBlocked && <UsefulLinks />}
