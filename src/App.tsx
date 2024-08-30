@@ -8,7 +8,8 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import adminStore from "./mobx/adminStore";
 import Portal from "./Portal/Portal";
 import logicStore from "./mobx/LogicStore";
-// import ParticlesComponent from "./Particles/Particles"; // Adjust the path if necessary
+
+import ParticlesComponent from "./Particles/Particles"; // Adjust the path if necessary
 import "./App.css";
 
 const App: React.FC = () => {

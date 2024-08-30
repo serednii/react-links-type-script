@@ -1,108 +1,115 @@
-import React, { useEffect } from 'react';
-import { tsParticles } from 'tsparticles';
-import { loadFull } from 'tsparticles';
-import Particles from 'react-tsparticles';
-
+import React, { useCallback, useEffect } from 'react';
+import Particles from "@tsparticles/react";
+// import { loadFull } from "tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import "./particles.scss"
 const ParticlesComponent = () => {
-    useEffect(() => {
-        // Load tsparticles engine
-        loadFull(tsParticles);
+    const particlesInit = useCallback(async engine => {
+        console.log(engine);
+        // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+        // starting from v2 you can add only the features you need reducing the bundle size
+        //await loadFull(engine);
+        await loadSlim(engine);
+    }, []);
 
-        // Initialize particles.js with the configuration
-        tsParticles.load("tsparticles", {
-            particles: {
-                number: {
-                    value: 380,
-                    density: {
-                        enable: true,
-                        value_area: 800,
-                    },
-                },
-                color: {
-                    value: "#ffffff",
-                },
-                shape: {
-                    type: "circle",
-                    stroke: {
-                        width: 0,
-                        color: "#000000",
-                    },
-                },
-                opacity: {
-                    value: 0.5,
-                    random: false,
-                },
-                size: {
-                    value: 3,
-                    random: true,
-                },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#ffffff",
-                    opacity: 0.4,
-                    width: 1,
-                },
-                move: {
-                    enable: true,
-                    speed: 6,
-                    direction: "none",
-                    random: false,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false,
-                },
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: {
-                        enable: true,
-                        mode: "grab",
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: "push",
-                    },
-                },
-                modes: {
-                    grab: {
-                        distance: 140,
-                        line_linked: {
-                            opacity: 1,
-                        },
-                    },
-                    bubble: {
-                        distance: 400,
-                        size: 40,
-                        duration: 2,
-                        opacity: 8,
-                        speed: 3,
-                    },
-                    repulse: {
-                        distance: 200,
-                        duration: 0.4,
-                    },
-                    push: {
-                        particles_nb: 4,
-                    },
-                    remove: {
-                        particles_nb: 2,
-                    },
-                },
-            },
-            retina_detect: true,
-        });
+    const particlesLoaded = useCallback(async container => {
+        await console.log(container);
     }, []);
 
     return (
-        <div id="tsparticles">
-            {/* Container for particles.js */}
-            <div className="count-particles">
-                <span className="js-count-particles">--</span> particles
-            </div>
-        </div>
+        <Particles id="tsparticles" url="http://foo.bar/particles.json" init={particlesInit} loaded={particlesLoaded} />
     );
+    //     const particlesInit = async (main) => {
+    //         // Це дозволить завантажити повну конфігурацію tsParticles
+    //         await loadFull(main);
+    //     };
+
+    //     const particlesLoaded = (container) => {
+    //         console.log(container);
+    //     };
+
+    //     return (
+    //         <div className="App">
+    //             <Particles
+    //                 id="tsparticles"
+    //                 init={particlesInit}
+    //                 loaded={particlesLoaded}
+    //                 options={{
+    //                     background: {
+    //                         color: {
+    //                             value: "#0d47a1",
+    //                         },
+    //                     },
+    //                     fpsLimit: 120,
+    //                     interactivity: {
+    //                         events: {
+    //                             onClick: {
+    //                                 enable: true,
+    //                                 mode: "push",
+    //                             },
+    //                             onHover: {
+    //                                 enable: true,
+    //                                 mode: "repulse",
+    //                             },
+    //                             resize: true,
+    //                         },
+    //                         modes: {
+    //                             push: {
+    //                                 quantity: 4,
+    //                             },
+    //                             repulse: {
+    //                                 distance: 200,
+    //                                 duration: 0.4,
+    //                             },
+    //                         },
+    //                     },
+    //                     particles: {
+    //                         color: {
+    //                             value: "#ffffff",
+    //                         },
+    //                         links: {
+    //                             color: "#ffffff",
+    //                             distance: 150,
+    //                             enable: true,
+    //                             opacity: 0.5,
+    //                             width: 1,
+    //                         },
+    //                         collisions: {
+    //                             enable: true,
+    //                         },
+    //                         move: {
+    //                             direction: "none",
+    //                             enable: true,
+    //                             outModes: {
+    //                                 default: "bounce",
+    //                             },
+    //                             random: false,
+    //                             speed: 6,
+    //                             straight: false,
+    //                         },
+    //                         number: {
+    //                             density: {
+    //                                 enable: true,
+    //                                 area: 800,
+    //                             },
+    //                             value: 80,
+    //                         },
+    //                         opacity: {
+    //                             value: 0.5,
+    //                         },
+    //                         shape: {
+    //                             type: "circle",
+    //                         },
+    //                         size: {
+    //                             value: { min: 1, max: 5 },
+    //                         },
+    //                     },
+    //                     detectRetina: true,
+    //                 }}
+    //             />
+    //         </div>
+    //     );
 };
 
 export default ParticlesComponent;
