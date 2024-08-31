@@ -86,8 +86,9 @@ class GraphQLArticleController extends MakeRequest {
 
   addDataArticle = async (article: string) => {
     try {
-      article = article.replaceAll('"', "'");
+      article = article.replaceAll('"', "'").replace(/\n/g, ' ');
       const resMutation = this.mutationAddArticle(article);
+      console.log(resMutation)
       let result = await this.request(resMutation);
       result = result.data.addArticle.id;
       return result;
@@ -96,10 +97,11 @@ class GraphQLArticleController extends MakeRequest {
       throw error;
     }
   };
-
+  
   updateDataArticle = async (id: string, article: string) => {
     try {
-      article = article.replaceAll('"', "'");
+      article = article.replaceAll('"', "'").replace(/\n/g, ' ');
+      // article = article.replace(/\n/g, ' ');
       const resMutation = this.mutationUpdateArticle(id, article);
       let result = await this.request(resMutation);
       return result;
