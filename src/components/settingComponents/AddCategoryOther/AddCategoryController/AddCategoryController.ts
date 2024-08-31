@@ -1,12 +1,12 @@
 // useAddCategoryController.ts
 import { useState } from "react";
-import { isObject, isArray } from "../../../otherFunction/functions";
-import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../../mobx/DataStore";
-import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
-import authStore from "../../../mobx/AuthStore";
-import logicStore from "../../../mobx/LogicStore";
+import { isObject, isArray } from "../../../../otherFunction/functions";
+import menuStore from "../../../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../../../mobx/DataStore";
+import linkStore from "../../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../../mobx/asyncDataStore/AsyncArticleStore";
+import authStore from "../../../../mobx/AuthStore";
+import logicStore from "../../../../mobx/LogicStore";
 
 const useAddCategoryController = () => {
   const [name, setName] = useState<string>("");
@@ -121,7 +121,10 @@ const useAddCategoryController = () => {
         logicStore.toggleUpdateListLink();
       })
       .catch((error) => {
-        console.error("Error, failed to add link. Please try again later", error);
+        console.error(
+          "Error, failed to add link. Please try again later",
+          error
+        );
       });
   };
 
@@ -145,7 +148,10 @@ const useAddCategoryController = () => {
         logicStore.toggleUpdateListLink();
       })
       .catch((error) => {
-        console.error("Error, failed to add link. Please try again later", error);
+        console.error(
+          "Error, failed to add link. Please try again later",
+          error
+        );
       });
   };
 

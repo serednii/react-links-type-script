@@ -1,12 +1,12 @@
 // ChangeLinksController.ts
 
 import { useState, useRef } from "react";
-import dataStore from "../../../mobx/DataStore";
-import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
-import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
-import authStore from "../../../mobx/AuthStore";
-import logicStore from "../../../mobx/LogicStore";
+import dataStore from "../../../../mobx/DataStore";
+import menuStore from "../../../../mobx/asyncDataStore/AsyncMenuStore";
+import linkStore from "../../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../../mobx/asyncDataStore/AsyncArticleStore";
+import authStore from "../../../../mobx/AuthStore";
+import logicStore from "../../../../mobx/LogicStore";
 
 export const useChangeLinksController = () => {
   const { dataMenu, key } = dataStore.listLinkData;
@@ -88,13 +88,8 @@ export const useChangeLinksController = () => {
       logicStore.toggleUpdateListLink();
       OtherAction();
     } catch (error) {
-      console.error(
-        "Error, failed to add link. Please try again later",
-        error
-      );
-      logicStore.setError(
-        "Error, failed to add link. Please try again later"
-      );
+      console.error("Error, failed to add link. Please try again later", error);
+      logicStore.setError("Error, failed to add link. Please try again later");
     }
   };
 

@@ -1,16 +1,16 @@
 import { useState } from "react";
 import "./AddCategoryOther.scss";
-import { svgIconClose } from "../../icon";
-import { isObject, isArray } from "../../otherFunction/functions";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
+import { svgIconClose } from "../../../icon";
+import { isObject, isArray } from "../../../otherFunction/functions";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
 import { observer } from "mobx-react-lite";
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import dataStore from "../../mobx/DataStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
-import MyInput from "../formComponents/MyInput/MyInput";
-import authStore from "../../mobx/AuthStore";
-import logicStore from "../../mobx/LogicStore";
+import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
+import dataStore from "../../../mobx/DataStore";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
+import MyInput from "../../formComponents/MyInput/MyInput";
+import authStore from "../../../mobx/AuthStore";
+import logicStore from "../../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
   const [name, setName] = useState<string>("");

@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import ReactDom from "react-dom";
-import AddCategoryOther from "../components/AddCategoryOther/AddCategoryOther";
+import AddCategoryOther from "../components/settingComponents/AddCategoryOther/AddCategoryOther";
 import AdminPanel from "../components/AdminPanel/AdminPanel";
-import ChangeLinks from "../components/ChangeLinks/ChangeLinks";
+import ChangeLinks from "../components/settingComponents/ChangeLinks/ChangeLinks";
 import Errors from "../components/Errors/Errors";
 import InfoModal from "../components/InfoModal/InfoModal";
 import adminStore from "../mobx/adminStore";

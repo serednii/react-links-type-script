@@ -1,10 +1,10 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import useAddCategoryController from "./AddCategoryController/AddCategoryController";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import MyInput from "../formComponents/MyInput/MyInput";
-import { svgIconClose } from "../../icon";
-import logicStore from "../../mobx/LogicStore";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
+import MyInput from "../../formComponents/MyInput/MyInput";
+import { svgIconClose } from "../../../icon";
+import logicStore from "../../../mobx/LogicStore";
 
 const AddCategory: React.FC = () => {
   const {

@@ -3,11 +3,11 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { useChangeLinksController } from "./ChangeLinksController/ChangeLinksController";
-import { svgIconClose } from "../../icon";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import MyInput from "../formComponents/MyInput/MyInput";
-import dataStore from "../../mobx/DataStore";
-import logicStore from "../../mobx/LogicStore";
+import { svgIconClose } from "../../../icon";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
+import MyInput from "../../formComponents/MyInput/MyInput";
+import dataStore from "../../../mobx/DataStore";
+import logicStore from "../../../mobx/LogicStore";
 import { LinkData } from "./ChangeLinksTypes";
 import "./ChangeLinks.scss";
 

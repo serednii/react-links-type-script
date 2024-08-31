@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import dataStore from "../../mobx/DataStore";
-import menuStore from "../../mobx/asyncDataStore/AsyncMenuStore";
-import linkStore from "../../mobx/asyncDataStore/AsyncLinkStore";
-import articleStore from "../../mobx/asyncDataStore/AsyncArticleStore";
+import dataStore from "../../../mobx/DataStore";
+import menuStore from "../../../mobx/asyncDataStore/AsyncMenuStore";
+import linkStore from "../../../mobx/asyncDataStore/AsyncLinkStore";
+import articleStore from "../../../mobx/asyncDataStore/AsyncArticleStore";
 
-import { svgIconClose } from "../../icon";
-import MyJoditEditor from "../MyJoditEditor/MyJoditEditor";
-import MyInput from "../formComponents/MyInput/MyInput";
+import { svgIconClose } from "../../../icon";
+import MyJoditEditor from "../../MyJoditEditor/MyJoditEditor";
+import MyInput from "../../formComponents/MyInput/MyInput";
 
-import authStore from "../../mobx/AuthStore";
+import authStore from "../../../mobx/AuthStore";
 import "./ChangeLinks.scss";
-import logicStore from "../../mobx/LogicStore";
+import logicStore from "../../../mobx/LogicStore";
 
 interface LinkData {
   name: string;
