@@ -31,11 +31,11 @@ export const handlerSetSelectAction = (
   setLink: (value: string) => void,
   setArticle: (value: string) => void,
   setSelectActionLink: (value: string) => void,
-  isTypeSelect: string,
+  setTypeSelect: (value: string) => void,
   selectId: string
 ) => {
   const { dataMenu, key } = dataStore.listLinkData;
-  
+
   if (select === "Empty") {
     setName("");
     setLink("");
@@ -43,12 +43,12 @@ export const handlerSetSelectAction = (
     setSelectActionLink("");
     return;
   }
-  
+
   setSelectActionLink(select);
 
   if (dataMenu[key][+select].link) {
-     isTypeSelect = "link";
-     selectId = dataMenu[key][+select].link;
+    setTypeSelect("link");
+    selectId = dataMenu[key][+select].link;
     linkStore
       .getLink(dataMenu[key][+select].link)
       .then((res) => {
@@ -60,7 +60,7 @@ export const handlerSetSelectAction = (
   }
 
   if (dataMenu[key][+select].article) {
-    isTypeSelect = "article";
+    setTypeSelect("article");
     selectId = dataMenu[key][+select].article;
     articleStore
       .getArticle(dataMenu[key][+select].article)
@@ -104,16 +104,17 @@ export const handleAddLink = (
     .then((resId) => {
       dataMenu[key].push({ name, link: resId });
       logicStore.toggleUpdateListLink();
-      OtherAction(setName, setLink, setArticle, setSelectActionLink, handleCloseModal);
+      OtherAction(
+        setName,
+        setLink,
+        setArticle,
+        setSelectActionLink,
+        handleCloseModal
+      );
     })
     .catch((error) => {
-      console.error(
-        "Error, failed to add link. Please try again later",
-        error
-      );
-      logicStore.setError(
-        "Error, failed to add link. Please try again later"
-      );
+      console.error("Error, failed to add link. Please try again later", error);
+      logicStore.setError("Error, failed to add link. Please try again later");
     });
 };
 
@@ -140,7 +141,13 @@ export const handleAddArticle = (
     .then((resId) => {
       dataMenu[key].push({ name, article: resId });
       logicStore.toggleUpdateListLink();
-      OtherAction(setName, setLink, setArticle, setSelectActionLink, handleCloseModal);
+      OtherAction(
+        setName,
+        setLink,
+        setArticle,
+        setSelectActionLink,
+        handleCloseModal
+      );
     })
     .catch((error) => {
       console.error(
@@ -159,8 +166,8 @@ export const handleSaveChang = (
   link: string,
   article: string,
   selectActionLink: string,
-  isTypeSelect: string,
   selectId: string,
+  isTypeSelect: string,
   setName: (value: string) => void,
   setLink: (value: string) => void,
   setArticle: (value: string) => void,
@@ -214,7 +221,13 @@ export const handleSaveChang = (
       });
   }
 
-  OtherAction(setName, setLink, setArticle, setSelectActionLink, handleCloseModal);
+  OtherAction(
+    setName,
+    setLink,
+    setArticle,
+    setSelectActionLink,
+    handleCloseModal
+  );
 };
 
 export const handleDeleteLink = (
@@ -259,7 +272,13 @@ export const handleDeleteLink = (
     dataMenu[key] = null;
   }
 
-  OtherAction(setName, setLink, setArticle, setSelectActionLink, handleCloseModal);
+  OtherAction(
+    setName,
+    setLink,
+    setArticle,
+    setSelectActionLink,
+    handleCloseModal
+  );
 };
 
 export const handleCloseModal = (

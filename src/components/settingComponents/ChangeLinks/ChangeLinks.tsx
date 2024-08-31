@@ -29,7 +29,7 @@ const ChangeLinks: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
   const [article, setArticle] = useState("");
-  const isTypeSelect = useRef<string | null>(null);
+  const [isTypeSelect, setTypeSelect] = useState<string>("");
   const selectId = useRef<string | null>("");
 
   return (
@@ -82,7 +82,7 @@ const ChangeLinks: React.FC = () => {
                     setLink,
                     setArticle,
                     setSelectActionLink,
-                    isTypeSelect.current || "",
+                    setTypeSelect,
                     selectId.current || ""
                   )
                 }
@@ -215,7 +215,7 @@ const ChangeLinks: React.FC = () => {
                   placeholder="Add Name link"
                 />
 
-                {isTypeSelect.current === "link" && (
+                {isTypeSelect === "link" && (
                   <MyInput
                     value={link}
                     type="text"
@@ -224,7 +224,7 @@ const ChangeLinks: React.FC = () => {
                     placeholder="Add link"
                   />
                 )}
-                {isTypeSelect.current === "article" && (
+                {isTypeSelect === "article" && (
                   <MyJoditEditor
                     placeholder={"Вставте свій текст"}
                     article={article}
@@ -241,7 +241,7 @@ const ChangeLinks: React.FC = () => {
                       link,
                       article,
                       selectActionLink,
-                      isTypeSelect.current || "",
+                      isTypeSelect,
                       selectId.current || "",
                       setName,
                       setLink,
@@ -251,8 +251,8 @@ const ChangeLinks: React.FC = () => {
                     )
                   }
                 >
-                  {isTypeSelect.current === "link" && "Change link"}
-                  {isTypeSelect.current === "article" && "Change Article"}
+                  {isTypeSelect === "link" && "Change link"}
+                  {isTypeSelect === "article" && "Change Article"}
                 </button>
               </form>
             </div>
