@@ -152,7 +152,7 @@ const ChangeLinks: React.FC = () => {
                   placeholder="Add Name link"
                 />
 
-                {dataStore.listLinkData.isTypeSelect.current === "link" && (
+                {dataStore?.listLinkData?.isTypeSelect?.current === "link" && (
                   <MyInput
                     value={link}
                     type="text"
@@ -161,7 +161,8 @@ const ChangeLinks: React.FC = () => {
                     placeholder="Add link"
                   />
                 )}
-                {dataStore.listLinkData.isTypeSelect.current === "article" && (
+                {dataStore?.listLinkData?.isTypeSelect?.current ===
+                  "article" && (
                   <MyJoditEditor
                     placeholder={"Вставте свій текст"}
                     article={article}
@@ -173,10 +174,10 @@ const ChangeLinks: React.FC = () => {
                   className="add-other__btn btn btn-secondary"
                   onClick={handleSaveChange}
                 >
-                  {dataStore.listLinkData.isTypeSelect.current === "link" &&
+                  {dataStore?.listLinkData?.isTypeSelect?.current === "link" &&
                     "Change link"}
-                  {dataStore.listLinkData.isTypeSelect.current === "article" &&
-                    "Change Article"}
+                  {dataStore?.listLinkData?.isTypeSelect?.current ===
+                    "article" && "Change Article"}
                 </button>
               </form>
             </div>
