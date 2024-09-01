@@ -231,29 +231,55 @@ const ChangeLinks: React.FC = () => {
                     setArticle={setArticle}
                   />
                 )}
-                <button
-                  disabled={selectActionLink === ""}
-                  className="add-other__btn btn btn-secondary"
-                  onClick={(e) =>
-                    handleSaveChang(
-                      e,
-                      name,
-                      link,
-                      article,
-                      selectActionLink,
-                      isTypeSelect,
-                      selectId.current || "",
-                      setName,
-                      setLink,
-                      setArticle,
-                      setSelectActionLink,
-                      handleCloseModal
-                    )
-                  }
-                >
-                  {isTypeSelect === "link" && "Change link"}
-                  {isTypeSelect === "article" && "Change Article"}
-                </button>
+                {isTypeSelect === "link" && (
+                  <button
+                    disabled={selectActionLink === ""}
+                    className="add-other__btn btn btn-secondary"
+                    onClick={(e) =>
+                      handleSaveChang(
+                        e,
+                        name,
+                        link,
+                        article,
+                        selectActionLink,
+                        isTypeSelect,
+                        selectId.current || "",
+                        setName,
+                        setLink,
+                        setArticle,
+                        setSelectActionLink,
+                        handleCloseModal
+                      )
+                    }
+                  >
+                    Change link
+                  </button>
+                )}
+
+                {isTypeSelect === "article" && (
+                  <button
+                    disabled={selectActionLink === ""}
+                    className="add-other__btn btn btn-secondary"
+                    onClick={(e) =>
+                      handleSaveChang(
+                        e,
+                        name,
+                        link,
+                        article,
+                        selectActionLink,
+                        isTypeSelect,
+                        selectId.current || "",
+                        setName,
+                        setLink,
+                        setArticle,
+                        setSelectActionLink,
+                        handleCloseModal
+                      )
+                    }
+                  >
+                    Change Article
+                  </button>
+                )}
               </form>
             </div>
           )}
