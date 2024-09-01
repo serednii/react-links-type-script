@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { isObject, isArray } from "../../../otherFunction/functions";
 import { svgIconPencil, svgIconArrowRight } from "../../../icon";
 import { observer } from "mobx-react-lite";
-import { IMenuLinks, IMenuLinksProps } from "./Interface";
+import { IMenuLinksProps } from "./Interface";
 import "./MenuLinks.scss";
-import {
-  handleSubMenuState,
-  updateDataStoreWithLink,
-  openSettingsMenu,
-} from "../../../controller/menuLinksController"; // Importing model functions
 import logicStore from "../../../mobx/LogicStore";
+import {
+  handlePrintLinks,
+  handleOpenSettingMenu,
+  handleSetIsOpenCloseSubMenu,
+} from "./menuLinksUtils"; // Import the utility functions
 
 const MenuLinks: React.FC<IMenuLinksProps> = ({
   dataMenu,
@@ -33,7 +33,6 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
     }
   }, [isOpenCloseSubMenu, activesMenu, level]);
 
-  // Generate the menu items based on data
   const menuItems = () => {
     if (!dataMenu[0]) return null;
 
@@ -50,7 +49,7 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
             <span
               className="svg-plus"
               onClick={() =>
-                openSettingsMenu({
+                handleOpenSettingMenu({
                   dataMenu,
                   prevDataMenu: dataMenu && dataMenu[1],
                   key,
@@ -66,11 +65,13 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
             <button
               className="submenu-links__menu"
               onClick={() =>
-                updateDataStoreWithLink({
+                handlePrintLinks({
                   dataMenu: dataMenu[0],
                   key,
                   arrayKeys,
-                })
+                },
+                activesMenu,
+                    level,)
               }
             >
               {key}
@@ -82,10 +83,10 @@ const MenuLinks: React.FC<IMenuLinksProps> = ({
               <button
                 className="submenu-links__menu"
                 onClick={() =>
-                  handleSubMenuState(
+                  handleSetIsOpenCloseSubMenu(
                     key,
-                    level,
                     activesMenu,
+                    level,
                     setIsOpenCloseSubMenu
                   )
                 }

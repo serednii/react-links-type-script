@@ -18,7 +18,12 @@ button {
   outline: none;
   border: 1px solid transparent;
   transition: border-color 0.3s ease-in-out;
+}
 
+a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.1rem;
 }
 
 button:focus {
@@ -31,26 +36,36 @@ button:hover {
 }
 
 body {
-  background-image: url('./images/gd5.jpg');
+  background-image: url("../public/images/gd5.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
   min-width: 350px;
+}
 
+.main {
+  display: grid;
+  grid-template-columns: minmax(150px, 18%) auto;
+  row-gap: 20px;
+}
+
+
+
+ul {
+  padding-left: 0;
 }
 
 .modal-window {
   position: fixed;
-  top: 0;
+  top: 50px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 105px;
   background-color: rgba(#faebd7, 0);
   z-index: 10;
 
   &__wrapper {
     position: absolute;
-    // padding: 10px;
     transition-duration: 1s;
     transition-behavior: allow-discrete;
     display: none;
@@ -99,7 +114,6 @@ body {
       top: 6px;
       // position: absolute;
       cursor: pointer;
-
     }
 
     &__btn {

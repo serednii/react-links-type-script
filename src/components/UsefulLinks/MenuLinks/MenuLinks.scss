@@ -87,12 +87,6 @@
     background-color: #88d560;
 }
 
-// .submenu-links:hover>.submenu-links__links {
-//     width: max-content;
-//     height: auto;
-//     visibility: visible;
-// }
-
 .submenu-links.open-click>.submenu-links__links {
     width: 100%;
     height: auto;
@@ -122,16 +116,4 @@
         width: 100%;
     }
 
-}
-
-@media(max-width: 576px) {
-    .submenu-links__parent {
-        // max-width: 40%;
-    }
-
-    // .menu-wrapper {
-    //     position: absolute;
-    //     width: 160px;
-    //     z-index: 100;
-    // }
 }

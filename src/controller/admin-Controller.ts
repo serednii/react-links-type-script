@@ -23,9 +23,8 @@ accessUserActivated(){
 }
 
 accessUserAddedContent(){
-
     if(!authStore.user.isAddedContent){
-        logicStore.info = "You cannot change the content, contact the administrator userullinks@gmail.com"
+        logicStore.info = "You cannot change the content, contact the administrator"
         return false
       }else {
         return true
