@@ -15,7 +15,7 @@ export const useChangeLinksController = () => {
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState("");
   const [article, setArticle] = useState("");
-  const isTypeSelect = useRef<string | null>(null);
+  const [isTypeSelect, setTypeSelect] = useState<string>("");
   const selectId = useRef<string>("");
 
   const OtherAction = () => {
@@ -39,7 +39,7 @@ export const useChangeLinksController = () => {
 
     const selectedItem = dataMenu[key][+select];
     if (selectedItem.link) {
-      isTypeSelect.current = "link";
+      setTypeSelect("link");
       selectId.current = selectedItem.link;
       linkStore
         .getLink(selectedItem.link)
@@ -52,7 +52,7 @@ export const useChangeLinksController = () => {
     }
 
     if (selectedItem.article) {
-      isTypeSelect.current = "article";
+      setTypeSelect("article");
       selectId.current = selectedItem.article;
       articleStore
         .getArticle(selectedItem.article)
@@ -130,7 +130,7 @@ export const useChangeLinksController = () => {
     }
 
     try {
-      if (isTypeSelect.current === "link") {
+      if (isTypeSelect === "link") {
         const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
         if (!urlPattern.test(link)) {
           logicStore.setError("Error syntax URL");
@@ -145,7 +145,7 @@ export const useChangeLinksController = () => {
         logicStore.setInfo("Update link");
       }
 
-      if (isTypeSelect.current === "article") {
+      if (isTypeSelect === "article") {
         await articleStore.updateArticle(selectId.current, article);
         dataMenu[key][+selectActionLink] = {
           name,
@@ -157,10 +157,10 @@ export const useChangeLinksController = () => {
 
       OtherAction();
     } catch (error) {
-      if (isTypeSelect.current === "link") {
+      if (isTypeSelect === "link") {
         console.error("Error, update link. Please try again later", error);
         logicStore.setError("Error updating link. Please try again later");
-      } else if (isTypeSelect.current === "article") {
+      } else if (isTypeSelect === "article") {
         console.error("Error, update article. Please try again later", error);
         logicStore.setError("Error updating Article. Please try again later");
       }
@@ -214,6 +214,7 @@ export const useChangeLinksController = () => {
   dataStore.setBreadcrumbs([...(dataStore.listLinkData.arrayKeys || []), key]);
 
   return {
+    isTypeSelect,
     selectAction,
     setSelectAction,
     selectActionLink,

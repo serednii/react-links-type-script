@@ -13,6 +13,7 @@ import "./ChangeLinks.scss";
 
 const ChangeLinks: React.FC = () => {
   const {
+    isTypeSelect,
     selectAction,
     setSelectAction,
     selectActionLink,
@@ -152,7 +153,7 @@ const ChangeLinks: React.FC = () => {
                   placeholder="Add Name link"
                 />
 
-                {dataStore?.listLinkData?.isTypeSelect?.current === "link" && (
+                {isTypeSelect === "link" && (
                   <MyInput
                     value={link}
                     type="text"
@@ -161,24 +162,33 @@ const ChangeLinks: React.FC = () => {
                     placeholder="Add link"
                   />
                 )}
-                {dataStore?.listLinkData?.isTypeSelect?.current ===
-                  "article" && (
+                {isTypeSelect === "article" && (
                   <MyJoditEditor
                     placeholder={"Вставте свій текст"}
                     article={article}
                     setArticle={setArticle}
                   />
                 )}
-                <button
-                  disabled={selectActionLink === ""}
-                  className="add-other__btn btn btn-secondary"
-                  onClick={handleSaveChange}
-                >
-                  {dataStore?.listLinkData?.isTypeSelect?.current === "link" &&
-                    "Change link"}
-                  {dataStore?.listLinkData?.isTypeSelect?.current ===
-                    "article" && "Change Article"}
-                </button>
+
+                {isTypeSelect === "link" && (
+                  <button
+                    disabled={selectActionLink === ""}
+                    className="add-other__btn btn btn-secondary"
+                    onClick={handleSaveChange}
+                  >
+                    Change link
+                  </button>
+                )}
+
+                {isTypeSelect === "article" && (
+                  <button
+                    disabled={selectActionLink === ""}
+                    className="add-other__btn btn btn-secondary"
+                    onClick={handleSaveChange}
+                  >
+                    Change Article
+                  </button>
+                )}
               </form>
             </div>
           )}
