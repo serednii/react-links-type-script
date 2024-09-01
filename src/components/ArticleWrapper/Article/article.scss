@@ -1,12 +1,12 @@
 .main .article {
     // background-color: aliceblue;
-    // background-image: url("/images/sheet.jpg");
+    background-image: url("../../../../public/images/sheet.jpg");
+    background-size: 100%;
     grid-column-start: 1;
     grid-column-end: 3;
     padding: 20px;
     border-radius: 20px;
     border: 2px solid black;
-    background-color: white;
     width: 100%;
 
     p {
