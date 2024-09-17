@@ -17,7 +17,6 @@ const App: React.FC = () => {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       console.log("APP RENDER localStorage");
-
       authStore.checkAuth();
     }
   }, []);

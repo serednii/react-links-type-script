@@ -39,6 +39,16 @@ body {
 
 }
 
+.main {
+  display: grid;
+  grid-template-columns: minmax(200px, 18%) auto;
+  row-gap: 20px;
+}
+
+ul {
+  padding-left: 0;
+}
+
 .modal-window {
   position: fixed;
   top: 0;

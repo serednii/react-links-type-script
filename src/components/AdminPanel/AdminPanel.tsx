@@ -16,75 +16,6 @@ import { svgDeleted } from "../../icon";
 import "./AdminPanel.scss";
 import logicStore from "../../mobx/LogicStore";
 
-const testUsers = [
-  {
-    email: "serednii@gmail.com",
-    password: "mdcvsww8097",
-    userName: "mykola",
-    lastUserName: "serednii",
-  },
-  {
-    email: "ivanov@gmail.com",
-    password: "mdcvsww8097",
-    userName: "ivan",
-    lastUserName: "ivanov",
-  },
-  {
-    email: "petrenko@gmail.com",
-    password: "mdcvsww8097",
-    userName: "petro",
-    lastUserName: "petrenko",
-  },
-  {
-    email: "shevchenko@gmail.com",
-    password: "mdcvsww8097",
-    userName: "taras",
-    lastUserName: "shevchenko",
-  },
-  // {
-  //   email: "kobzar@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "oles",
-  //   lastUserName: "kobzar",
-  // },
-  // {
-  //   email: "bondarenko@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "andrii",
-  //   lastUserName: "bondarenko",
-  // },
-  // {
-  //   email: "zhuravlyova@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "olena",
-  //   lastUserName: "zhuravlyova",
-  // },
-  // {
-  //   email: "melnyk@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "oleh",
-  //   lastUserName: "melnyk",
-  // },
-  // {
-  //   email: "sokolov@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "serhiy",
-  //   lastUserName: "sokolov",
-  // },
-  // {
-  //   email: "poltava@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "artem",
-  //   lastUserName: "poltava",
-  // },
-  // {
-  //   email: "dovzhenko@gmail.com",
-  //   password: "mdcvsww8097",
-  //   userName: "oleksandr",
-  //   lastUserName: "dovzhenko",
-  // },
-];
-
 const AdminPanel: React.FC = () => {
   const [updateUser, setUpdateUser] = useState(true);
   const tempUpdateUser = useRef(false);
@@ -93,23 +24,6 @@ const AdminPanel: React.FC = () => {
   const idUser = authStore?.user?.id;
 
   console.log("AdminPanel");
-
-  const generateUsers = async () => {
-    for (const { email, password, userName, lastUserName } of testUsers) {
-      try {
-        await authStore.createUser(email, password, userName, lastUserName);
-      } catch (e) {
-        console.error(`Error creating user:`, e);
-      }
-    }
-
-    try {
-      await authStore.getUsers();
-      setUpdateUser((prev) => !prev);
-    } catch (e) {
-      console.error("Error fetching updated users:", e);
-    }
-  };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -259,10 +173,6 @@ const AdminPanel: React.FC = () => {
           >
             Close
           </Button>
-          <Button variant="secondary" onClick={generateUsers}>
-            Generate users
-          </Button>
-
           <Button variant="primary" onClick={handelSaveChange}>
             Save changes
           </Button>

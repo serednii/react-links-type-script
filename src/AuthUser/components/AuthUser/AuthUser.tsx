@@ -16,11 +16,16 @@ const AuthUser = () => {
             authStore.user.userName}
         </h4>
 
-        <button onClick={() => adminController.openAdminPanel(true)}>
+        <button
+          className="user-panel"
+          onClick={() => adminController.openAdminPanel(true)}
+        >
           {svgAdmin}
         </button>
 
-        <button onClick={() => authStore.logout()}>{svgLogOut}</button>
+        <button className="user-exit" onClick={() => authStore.logout()}>
+          {svgLogOut}
+        </button>
       </div>
       {!authStore.user.isActivated && (
         <h5 className="auth-user__verify">VERIFY ACCOUNT BY MAIL!!!</h5>
