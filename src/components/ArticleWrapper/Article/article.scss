@@ -8,6 +8,7 @@
     border-radius: 20px;
     border: 2px solid black;
     width: 100%;
+    max-width: 1300px;
 
     p {
         text-align: left;
@@ -24,8 +25,4 @@
         display: flex;
         justify-content: flex-end;
     }
-}
-
-@media(max-width: 576px) {
-    .article {}
 }

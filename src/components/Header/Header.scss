@@ -19,3 +19,9 @@
 .title {
     height: 50px;
 }
+
+@media(max-width: 760px) {
+    .logo {
+        margin-right: 10px;
+    }
+}

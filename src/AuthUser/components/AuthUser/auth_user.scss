@@ -11,3 +11,11 @@
         color: red;
     }
 }
+
+@media(max-width: 760px) {
+    .auth-user {
+        position: initial;
+        padding-top: 10px;
+
+    }
+}
