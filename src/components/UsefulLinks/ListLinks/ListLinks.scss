@@ -17,6 +17,7 @@ a {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     &__header {
@@ -28,6 +29,10 @@ a {
 
         .breadcrumb-item::before {
             color: aliceblue;
+        }
+
+        button {
+            font-size: 1rem;
         }
     }
 

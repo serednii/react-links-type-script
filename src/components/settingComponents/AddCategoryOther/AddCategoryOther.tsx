@@ -41,9 +41,9 @@ const AddCategory: React.FC = () => {
         className={`add-category__wrapper modal-window__wrapper ${
           logicStore.isModal ? "open" : ""
         }`}
-        style={{
-          maxWidth: selectAction === "add-article" ? "1200px" : "500px",
-        }}
+        // style={{
+        //   maxWidth: selectAction === "add-article" ? "1200px" : "500px",
+        // }}
       >
         <button className="add-category__btn-close" onClick={handleCloseModal}>
           {svgIconClose}
